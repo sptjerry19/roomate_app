@@ -20,7 +20,7 @@ class ApiResponse
         $response = [
             'success' => true,
             'data' => $data,
-            ... !empty($collectionData['data']) ? $collectionData : [],
+            ...($collectionData ?? []), // Luôn thêm toàn bộ dữ liệu đã chuyển đổi từ Collection
             'message' => $message
         ];
 

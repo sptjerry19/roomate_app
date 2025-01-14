@@ -36,6 +36,13 @@
                             <input
                                 type="text"
                                 placeholder="Tìm kiếm"
+                                v-model="selectedFilters.keyword"
+                                @input="
+                                    selectFilter(
+                                        selectedFilters.keyword,
+                                        'keyword'
+                                    )
+                                "
                                 class="w-full rounded-full border-4 border-orange-500 py-2 px-4 text-sm focus:border-orange-500 focus:ring-1 focus:ring-orange-500"
                             />
                             <button
@@ -118,12 +125,14 @@
                                 Login
                             </button>
                         </router-link>
-                        <button
-                            type="button"
-                            class="rounde mr-3 hidden bg-blue-700 py-1.5 px-6 text-center text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 md:mr-0 md:inline-block rounded-lg"
-                        >
-                            Register
-                        </button>
+                        <router-link to="register">
+                            <button
+                                type="button"
+                                class="rounde mr-3 hidden bg-blue-700 py-1.5 px-6 text-center text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 md:mr-0 md:inline-block rounded-lg"
+                            >
+                                Register
+                            </button>
+                        </router-link>
                         <!-- Register Button -->
                         <button
                             data-collapse-toggle="navbar-sticky"
@@ -175,31 +184,50 @@
                 </div>
             </nav>
 
-            <!-- Title -->
+            <!-- filters -->
             <div
                 class="mt-32 flex items-center justify-center pt-4 pb-3 bg-gray-100"
             >
                 <div
+                    @click="toggleDropdown(index)"
                     v-for="(filter, index) in filters"
                     :key="index"
-                    class="flex items-center ml-6 space-x-2 rounded-full border border-orange-400 px-4 py-2 text-orange-500 hover:bg-orange-100 cursor-pointer"
+                    class="relative flex items-center ml-6 space-x-2 rounded-full border border-orange-400 px-4 py-2 text-orange-500 hover:bg-orange-100 cursor-pointer"
                 >
                     <!-- Icon -->
                     <span :class="filter.icon" class="text-orange-500"></span>
 
                     <!-- Label hoặc Placeholder -->
-                    <span v-if="filter.placeholder" class="text-sm">{{
-                        filter.placeholder
-                    }}</span>
-                    <span v-else class="text-sm">{{ filter.label }}</span>
+                    <span v-if="filter.placeholder" class="text-sm">
+                        {{ filter.placeholder }}
+                    </span>
+                    <span v-else class="text-sm">
+                        <!-- Hiển thị giá trị đã chọn nếu có -->
+                        {{ selectedFilters[filter.type] || filter.label }}
+                    </span>
 
                     <!-- Dropdown Icon -->
                     <span class="material-icons">arrow_drop_down</span>
+
+                    <!-- Dropdown Menu -->
+                    <div
+                        v-if="openDropdown === index && filter.data"
+                        class="absolute top-full left-0 ml-10 right-0 mt-2 w-52 max-h-40 bg-white border border-gray-300 rounded-lg shadow-lg z-10 overflow-y-auto"
+                    >
+                        <div
+                            v-for="(item, i) in filter.data"
+                            :key="i"
+                            class="px-4 py-2 hover:bg-orange-100 cursor-pointer"
+                            @click="selectFilter(item, filter.type)"
+                        >
+                            {{ item.name }}
+                        </div>
+                    </div>
                 </div>
             </div>
 
             <!-- Danh sách bài đăng -->
-            <section class="bg-gray-100">
+            <section class="bg-gray-100" @click="toggleDropdown(index)">
                 <div class="mx-auto max-w-3xl grid-cols-1 gap-6 p-6">
                     <article
                         v-for="post in posts"
@@ -207,10 +235,10 @@
                         class="rounded-xl bg-white p-3 shadow-lg hover:shadow-xl hover:transform hover:scale-105 duration-300 mb-5"
                     >
                         <a href="#">
-                            <!-- Bố cục hình ảnh: 1 ảnh bên trái và 1 ảnh bên phải -->
+                            <!-- Bố cục hình ảnh: 70% bên trái và 30% bên phải -->
                             <div class="flex items-center space-x-4">
-                                <!-- Ảnh chính (bên trái) -->
-                                <div class="flex-shrink-0 w-1/2">
+                                <!-- Ảnh chính (bên trái, chiếm 70%) -->
+                                <div class="flex-shrink-0 basis-7/10">
                                     <img
                                         class="w-full h-64 object-cover rounded-lg"
                                         :src="
@@ -224,8 +252,8 @@
                                     />
                                 </div>
 
-                                <!-- Ảnh bên phải (1 ảnh hoặc nhiều ảnh) -->
-                                <div class="w-1/2 relative">
+                                <!-- Ảnh bên phải (chiếm 30%) -->
+                                <div class="basis-3/10 relative">
                                     <img
                                         v-if="post.images.length > 1"
                                         class="w-full h-64 object-cover rounded-lg opacity-75 hover:opacity-100 transition-opacity duration-300"
@@ -297,6 +325,13 @@
                     </article>
                 </div>
             </section>
+
+            <div v-if="showNoDataMessage" class="no-data-message">
+                Không tìm thấy bài đăng nào.
+            </div>
+            <div v-else>
+                <!-- Hiển thị danh sách bài đăng -->
+            </div>
 
             <!-- Modal xem tất cả ảnh theo kiểu slide -->
             <div
@@ -455,29 +490,84 @@ export default {
             modalVisible: false,
             modalImages: [], // Mảng ảnh sẽ hiển thị trong modal
             currentImageIndex: 0, // Chỉ số ảnh hiện tại trong slide
+            selectedFilters: {
+                district: "",
+                area: "",
+                price: "",
+                keyword: "",
+            },
+            debounceTimeout: null,
             filters: [
                 {
                     label: "Từ khóa",
                     placeholder: "Từ khóa, Đường, Quận, Địa điểm...",
                     icon: "material-icons-outlined search",
+                    type: "keyword",
                 },
                 {
                     label: "Khu vực",
+                    data: [
+                        { name: "Tất cả", value: null },
+                        { name: "Quận Ba Đình", value: "Quận Ba Đình" },
+                        { name: "Quận Cầu Giấy", value: "Quận Cầu Giấy" },
+                        { name: "Quận Hoàn Kiếm", value: "Quận Hoàn Kiếm" },
+                        {
+                            name: "Quận Hai Bà Trưng",
+                            value: "Quận Hai Bà Trưng",
+                        },
+                        { name: "Quận Hoàng Mai", value: "Quận Hoàng Mai" },
+                        { name: "Quận Đống Đa", value: "Quận Đống Đa" },
+                        { name: "Quận Tây Hồ", value: "Quận Tây Hồ" },
+                        { name: "Quận Thanh Xuân", value: "Quận Thanh Xuân" },
+                        { name: "Quận Bắc Từ Liêm", value: "Quận Bắc Từ Liêm" },
+                        { name: "Quận Hà Đông", value: "Quận Hà Đông" },
+                        { name: "Quận Long Biên", value: "Quận Long Biên" },
+                        { name: "Quận Nam Từ Liêm", value: "Quận Nam Từ Liêm" },
+                        { name: "Huyện Ba Vì", value: "Huyện Ba Vì" },
+                        { name: "Huyện Chương Mỹ", value: "Huyện Chương Mỹ" },
+                        { name: "Huyện Đan Phượng", value: "Huyện Đan Phượng" },
+                        { name: "Huyện Đông Anh", value: "Huyện Đông Anh" },
+                        { name: "Huyện Gia Lâm", value: "Huyện Gia Lâm" },
+                        { name: "Huyện Hoài Đức", value: "Huyện Hoài Đức" },
+                    ],
                     icon: "material-icons-outlined location_on",
+                    type: "district",
                 },
                 {
                     label: "Diện tích",
+                    data: [
+                        { name: "Tất cả", value: null },
+                        { name: "Dưới 10m²", value: "10" },
+                        { name: "Từ 10m² đến 20m²", value: "20" },
+                        { name: "Từ 20m² đến 30m²", value: "30" },
+                        { name: "Từ 30m² đến 40m²", value: "40" },
+                        { name: "Từ 40m² đến 50m²", value: "50" },
+                        { name: "Trên 50m²", value: "1000" },
+                    ],
                     icon: "material-icons-outlined category",
+                    type: "area",
                 },
                 {
                     label: "Giá thuê",
+                    data: [
+                        { name: "Tất cả", value: null },
+                        { name: "Dưới 1 triệu", value: "1000000" },
+                        { name: "Dưới 2 triệu", value: "2000000" },
+                        { name: "Dưới 3 triệu", value: "3000000" },
+                        { name: "Dưới 4 triệu", value: "4000000" },
+                        { name: "Dưới 5 triệu", value: "5000000" },
+                        { name: "Trên 5 triệu", value: "1000000000" },
+                    ],
                     icon: "material-icons-outlined attach_money",
+                    type: "price",
                 },
                 {
                     label: "Lọc thêm",
                     icon: "material-icons-outlined filter_list",
+                    type: "additional",
                 },
             ],
+            openDropdown: null, // Trạng thái theo dõi dropdown đang mở
             posts: [
                 {
                     id: 1,
@@ -563,7 +653,8 @@ export default {
 
             loading: false,
             user: null,
-            products: [],
+            showNoDataMessage: false,
+
             currentPage: 1, // Trang hiện tại
             itemsPerPage: 12, // Số sản phẩm mỗi trang
             totalPages: 6, // Số sản phẩm mỗi trang
@@ -597,20 +688,68 @@ export default {
                 this.currentImageIndex--;
             }
         },
+        toggleDropdown(index) {
+            // Đóng nếu dropdown đang mở, mở nếu chưa mở
+            this.openDropdown = this.openDropdown === index ? null : index;
+        },
+        selectFilter(item, type) {
+            if (type === "district") {
+                this.selectedFilters.district = item.name; // Lưu tên quận vào selectedFilters
+                this.district = item.value; // Cập nhật giá trị lọc
+            } else if (type === "area") {
+                this.selectedFilters.area = item.name; // Lưu tên diện tích vào selectedFilters
+                this.area = item.value; // Cập nhật giá trị lọc
+            } else if (type === "price") {
+                this.selectedFilters.price = item.name; // Lưu tên giá thuê vào selectedFilters
+                this.price = item.value; // Cập nhật giá trị lọc
+            } else if (type === "keyword") {
+                this.keyword = item; // Cập nhật giá trị lọc
+                // Hủy timeout trước đó nếu người dùng đang nhập tiếp
+                if (this.debounceTimeout) {
+                    clearTimeout(this.debounceTimeout);
+                }
+
+                // Thiết lập timeout mới để gọi API sau 0,5s
+                this.debounceTimeout = setTimeout(() => {
+                    this.fetchRoomatesData(); // Gọi API sau khi người dùng không nhập trong 500ms
+                }, 500);
+
+                this.openDropdown = null;
+            }
+            if (type !== "keyword") {
+                this.fetchRoomatesData(); // Gọi API để lấy dữ liệu mới
+                this.openDropdown = null; // Đóng dropdown sau khi chọn
+            }
+        },
         async fetchRoomatesData(page = 1) {
             this.loading = true;
             try {
                 // Truyền tham số page và itemsPerPage vào API
-                const response = await apiClient.get("/product", {
+                const response = await apiClient.get("/roomate", {
                     params: {
+                        keyword: this.keyword,
+                        area: this.area,
+                        district: this.district,
+                        type: this.type,
+                        price: this.price,
                         page: page,
                         limit: this.itemsPerPage, // hoặc 'per_page' tuỳ theo API của bạn
                     },
                 });
-                this.products = response.data.data;
-                this.currentPage = response.data.pagination.current_page;
-                this.itemsPerPage = response.data.pagination.per_page;
-                this.totalPages = response.data.pagination.last_page;
+
+                // Kiểm tra nếu dữ liệu rỗng
+                if (response.data.data.length === 0) {
+                    this.posts = []; // Đặt danh sách bài đăng thành rỗng
+                    this.totalPages = 0;
+                    this.currentPage = 0;
+                    this.showNoDataMessage = true; // Biến để hiển thị thông báo "Không tìm thấy bài đăng nào"
+                } else {
+                    this.posts = response.data.data;
+                    this.currentPage = response.data.pagination.current_page;
+                    this.itemsPerPage = response.data.pagination.per_page;
+                    this.totalPages = response.data.pagination.last_page;
+                    this.showNoDataMessage = false; // Ẩn thông báo nếu có dữ liệu
+                }
             } catch (error) {
                 console.error("Error fetching data", error);
             } finally {

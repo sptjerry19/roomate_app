@@ -67,17 +67,58 @@ class AuthController extends Controller
     // Đăng nhập và trả về token
     public function login(Request $request)
     {
-        $credentials = $request->only('email', 'password');
+        $fields = $request->validate([
+            'email' => 'required',
+            'password' => 'required|string|min:6',
+        ], [
+            'email.required' => 'Vui lòng nhập Email hoặc Số điện thoại.',
+            'password.required' => 'Vui lòng nhập mật khẩu.',
+            'password.min' => 'Mật khẩu phải tối thiểu 6 ký tự',
+        ]);
 
-        if (!$token = Auth::attempt($credentials)) {
-            return response()->json(['error' => 'Unauthorized'], 401);
+        $email = $fields['email'];
+        $password = $fields['password'];
+
+        if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            $user = User::where('email', $email)->first();
+        } else if (preg_match('/^0[0-9]{9,10}$/', $email)) {
+            $user = User::where('phone', $email)->first();
+        } else {
+            return ApiResponse::error('Vui lòng nhập đúng định dạng Email hoặc Số điện thoại.', 400);
         }
 
-        return response()->json([
+        if (!$user) {
+            return ApiResponse::error('Tài khoản không tồn tại.', 404);
+        }
+
+        if (!$token = auth()->attempt(['email' => $user->email, 'password' => $password])) {
+            return response()->json([
+                'success' => false,
+                'errors' => [
+                    'message' => ['Tài khoản hoặc mật khẩu không chính xác'],
+                ]
+            ], 401);
+        }
+
+        // Tạo token sử dụng JWT::fromUser()
+        $token = JWTAuth::fromUser($user);
+
+        $response = [
+            'message' => 'login success',
+            'data' => $this->createNewToken($token),
+            'user' => $user,
+        ];
+
+        return response($response, 200);
+    }
+
+    protected function createNewToken($token)
+    {
+        return [
             'access_token' => $token,
             'token_type' => 'bearer',
-            'expires_in' => auth()->factory()->getTTL() * 60
-        ]);
+            'expires_in' => auth()->factory()->getTTL() * 60, // thời gian sống của token
+        ];
     }
 
     // Đăng xuất người dùng

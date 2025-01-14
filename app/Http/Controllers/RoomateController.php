@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Helpers\ApiResponse;
+use App\Http\Resources\RoomateCollection;
 use App\Models\Post;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -26,6 +27,7 @@ class RoomateController extends Controller
             $area = $params['area'] ?? null;
             $price = $params['price'] ?? null;
             $district = $params['district'] ?? null;
+            $limit = $request->input('limit', 10);
 
             $roomates = Post::query()
                 ->when(!is_null($area), function ($query) use ($area) {
@@ -38,9 +40,11 @@ class RoomateController extends Controller
                     return $query->where('district', $district);
                 })
                 ->when(!is_null($keyword), function ($query) use ($keyword) {
-                    return $query->where('keyword', 'like', '%' . $keyword . '%');
+                    return $query->where('title', 'like', '%' . $keyword . '%');
                 })
-                ->get();
+                ->paginate($limit);
+
+            return ApiResponse::success(new RoomateCollection($roomates), 'Lấy danh sách Roomate thành công!');
         } catch (\Exception $e) {
             Log::error($e->getMessage());
             return ApiResponse::error('Lấy danh sách roomate thất bại!', 500);

@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from "vue-router";
 import Home from "../components/Home.vue"; // Đảm bảo đường dẫn này đúng
 import Login from "../components/Auth/Login.vue";
+import Register from "../components/Auth/Register.vue";
 import Dashboard from "../components/Admin/DashBoard.vue";
 import ImageCollection from "../components/ImageCollection.vue";
 import UploadImages from "../components/Upload/UploadImages.vue";
@@ -13,6 +14,10 @@ const routes = [
     {
         path: "/login",
         component: Login,
+    },
+    {
+        path: "/register",
+        component: Register,
     },
     {
         path: "/admin",

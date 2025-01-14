@@ -1,6 +1,6 @@
 <template>
     <nav>
-        <ul class="flex items-center justify-center">
+        <ul class="flex items-center justify-center bg-gray-100 pb-5">
             <li>
                 <a
                     class="mx-1 flex h-9 w-9 items-center justify-center rounded-full border border-blue-gray-100 bg-transparent p-0 text-sm text-blue-gray-500 transition duration-150 ease-in-out hover:bg-light-300"
@@ -18,7 +18,7 @@
                     :class="[
                         'mx-1 flex h-9 w-9 items-center justify-center rounded-full p-0 text-sm transition duration-150 ease-in-out',
                         currentPage === page
-                            ? 'bg-gradient-to-tr from-pink-600 to-pink-400 text-white shadow-md shadow-pink-500/20'
+                            ? 'bg-gradient-to-tr from-blue-600 to-blue-400 text-white shadow-md shadow-pink-500/20'
                             : 'border border-blue-gray-100 bg-transparent text-blue-gray-500 hover:bg-light-300',
                     ]"
                     href="#"
