@@ -27,6 +27,7 @@ Route::group(['middleware' => 'api', 'prefix' => 'v1'], function () {
 
     Route::group(['middleware' => 'api', 'prefix' => 'roomate'], function () {
         Route::get('/', [RoomateController::class, 'index'])->name('roomate.view');
+        Route::get('/{id}', [RoomateController::class, 'show'])->name('roomate.show');
         Route::post('/', [RoomateController::class, 'store'])->name('roomate.upload');
     });
 });

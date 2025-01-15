@@ -115,12 +115,7 @@ export default {
                     response.data.data.access_token
                 );
 
-                // Ví dụ: chuyển hướng người dùng hoặc lưu token đăng nhập
-                if (response.data.roles.includes("Admin")) {
-                    this.$router.push("/admin");
-                } else {
-                    this.$router.push("/");
-                }
+                this.$router.push("/");
             } catch (error) {
                 // Xử lý lỗi đăng nhập
                 console.error(

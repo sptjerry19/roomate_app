@@ -273,54 +273,58 @@
                             </div>
 
                             <!-- Thông tin bài đăng -->
-                            <div class="mt-2 p-2">
-                                <h2
-                                    class="text-slate-700 font-bold text-lg truncate"
-                                >
-                                    {{ post.title }}
-                                </h2>
-                                <p class="mt-1 text-sm text-slate-400">
-                                    {{ post.location }}
-                                </p>
-                                <p class="mt-1 text-sm text-slate-400">
-                                    Diện tích: {{ post.area }} m²
-                                </p>
-                                <p class="mt-1 text-sm text-slate-400">
-                                    Người đăng: {{ post.posted_by }}
-                                </p>
-                                <p class="mt-1 text-sm text-slate-400">
-                                    {{ post.description }}
-                                </p>
-
-                                <div
-                                    class="mt-3 flex items-center justify-between"
-                                >
-                                    <p class="text-lg font-bold text-blue-500">
-                                        {{ post.price }} VNĐ/tháng
-                                    </p>
-                                    <div
-                                        class="flex items-center space-x-1.5 rounded-lg bg-blue-500 px-4 py-1.5 text-white duration-100 hover:bg-blue-600"
+                            <router-link :to="`/room/${post.id}`">
+                                <div class="mt-2 p-2">
+                                    <h2
+                                        class="text-slate-700 font-bold text-lg truncate"
                                     >
-                                        <svg
-                                            xmlns="http://www.w3.org/2000/svg"
-                                            fill="none"
-                                            viewBox="0 0 24 24"
-                                            stroke-width="1.5"
-                                            stroke="currentColor"
-                                            class="h-4 w-4"
+                                        {{ post.title }}
+                                    </h2>
+                                    <p class="mt-1 text-sm text-slate-400">
+                                        {{ post.location }}
+                                    </p>
+                                    <p class="mt-1 text-sm text-slate-400">
+                                        Diện tích: {{ post.area }} m²
+                                    </p>
+                                    <p class="mt-1 text-sm text-slate-400">
+                                        Người đăng: {{ post.posted_by }}
+                                    </p>
+                                    <p class="mt-1 text-sm text-slate-400">
+                                        {{ post.description }}
+                                    </p>
+
+                                    <div
+                                        class="mt-3 flex items-center justify-between"
+                                    >
+                                        <p
+                                            class="text-lg font-bold text-blue-500"
                                         >
-                                            <path
-                                                stroke-linecap="round"
-                                                stroke-linejoin="round"
-                                                d="M15.75 9V5.25a3.75 3.75 0 00-7.5 0V9m0 0a3.75 3.75 0 017.5 0m-7.5 0v10.5a3.75 3.75 0 007.5 0V9"
-                                            />
-                                        </svg>
-                                        <button class="text-sm">
-                                            Xem chi tiết
-                                        </button>
+                                            {{ post.price }} VNĐ/tháng
+                                        </p>
+                                        <div
+                                            class="flex items-center space-x-1.5 rounded-lg bg-blue-500 px-4 py-1.5 text-white duration-100 hover:bg-blue-600"
+                                        >
+                                            <svg
+                                                xmlns="http://www.w3.org/2000/svg"
+                                                fill="none"
+                                                viewBox="0 0 24 24"
+                                                stroke-width="1.5"
+                                                stroke="currentColor"
+                                                class="h-4 w-4"
+                                            >
+                                                <path
+                                                    stroke-linecap="round"
+                                                    stroke-linejoin="round"
+                                                    d="M15.75 9V5.25a3.75 3.75 0 00-7.5 0V9m0 0a3.75 3.75 0 017.5 0m-7.5 0v10.5a3.75 3.75 0 007.5 0V9"
+                                                />
+                                            </svg>
+                                            <button class="text-sm">
+                                                Xem chi tiết
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
+                            </router-link>
                         </a>
                     </article>
                 </div>

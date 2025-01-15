@@ -4,10 +4,10 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Roommates</title>
-    @vite('resources/css/app.css')
+    <link rel="stylesheet" href="{{ asset('build/assets/app.css') }}">
 </head>
 <body>
     <div id="app"></div>
-    @vite('resources/js/app.js')
+    <script src="{{ asset('build/assets/app.js') }}" defer></script>
 </body>
 </html>

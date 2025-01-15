@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Helpers\ApiResponse;
 use App\Http\Resources\RoomateCollection;
+use App\Http\Resources\RoomateResource;
 use App\Models\Post;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -69,7 +70,14 @@ class RoomateController extends Controller
      */
     public function show(string $id)
     {
-        //
+        try {
+            $roommate = Post::query()->findOrFail($id);
+
+            return ApiResponse::success(new RoomateResource($roommate), 'Lấy Roomate thành công!');
+        } catch (\Exception $e) {
+            Log::error($e->getMessage());
+            return ApiResponse::error('Lấy danh sách roomate thất bại!', 500);
+        }
     }
 
     /**
