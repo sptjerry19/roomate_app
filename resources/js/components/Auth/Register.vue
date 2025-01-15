@@ -132,27 +132,32 @@ export default {
                     password_confirmation: this.passwordConfirm,
                 });
 
-                // Xử lý khi đăng ký thành công
                 console.log("Đăng ký thành công:", response.data.data);
+
+                // Sau khi đăng ký thành công, tự động gọi API login
+                const loginResponse = await defaultApiClient.post("/login", {
+                    email: this.emailOrPhone,
+                    password: this.password,
+                });
+
+                console.log("Đăng nhập thành công:", loginResponse.data);
+
+                // Lưu thông tin người dùng và token vào localStorage
                 localStorage.setItem(
                     "user",
-                    JSON.stringify(response.data.user)
+                    JSON.stringify(loginResponse.data.user)
                 );
                 localStorage.setItem(
                     "access_token",
-                    response.data.data.access_token
+                    loginResponse.data.data.access_token
                 );
 
-                // Chuyển hướng người dùng sau khi đăng ký thành công
-                if (response.data.roles.includes("Admin")) {
-                    this.$router.push("/admin");
-                } else {
-                    this.$router.push("/");
-                }
+                // Chuyển hướng về trang chủ
+                this.$router.push("/");
             } catch (error) {
-                // Xử lý lỗi đăng ký
+                // Xử lý lỗi đăng ký hoặc đăng nhập
                 console.error(
-                    "Đăng ký thất bại:",
+                    "Đăng ký hoặc đăng nhập thất bại:",
                     error.response?.data || error.message
                 );
             }

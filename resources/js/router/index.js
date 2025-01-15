@@ -5,11 +5,21 @@ import Register from "../components/Auth/Register.vue";
 import Dashboard from "../components/Admin/DashBoard.vue";
 import ImageCollection from "../components/ImageCollection.vue";
 import UploadImages from "../components/Upload/UploadImages.vue";
+import Room from "../components/Room.vue";
+import Roomate from "../components/Roomate.vue";
 
 const routes = [
     {
         path: "/",
         component: Home,
+    },
+    {
+        path: "/room",
+        component: Room,
+    },
+    {
+        path: "/roommate",
+        component: Roomate,
     },
     {
         path: "/login",

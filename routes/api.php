@@ -26,7 +26,7 @@ Route::group(['middleware' => 'api', 'prefix' => 'v1'], function () {
     Route::post('/logout', [AuthController::class, 'logout']);
 
     Route::group(['middleware' => 'api', 'prefix' => 'roomate'], function () {
-        Route::get('/', [RoomateController::class, 'index'])->name('file.private.view');
-        Route::post('/', [RoomateController::class, 'store'])->name('file.private.upload');
+        Route::get('/', [RoomateController::class, 'index'])->name('roomate.view');
+        Route::post('/', [RoomateController::class, 'store'])->name('roomate.upload');
     });
 });

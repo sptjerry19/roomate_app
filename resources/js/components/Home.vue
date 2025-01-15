@@ -163,22 +163,22 @@
                 <div
                     class="mt-6 flex justify-center text-2xl font-bold text-blue-700"
                 >
-                    <router-link to="home" class="hover:underline px-10 py-1"
+                    <router-link
+                        to="/"
+                        class="hover:bg-blue-200 px-10 py-1 bg-blue-200"
                         >Trang chủ</router-link
                     >
-                    <router-link
-                        to="phong-tro"
-                        class="hover:underline px-10 py-1"
+                    <router-link to="room" class="hover:bg-blue-200 px-10 py-1"
                         >Phòng trọ</router-link
                     >
                     <router-link
-                        to="roomates"
-                        class="hover:underline px-10 py-1"
+                        to="roommate"
+                        class="hover:bg-blue-200 px-10 py-1"
                         >Tìm roommates</router-link
                     >
                     <router-link
                         to="bang-gia"
-                        class="hover:underline px-10 py-1"
+                        class="hover:bg-blue-200 px-10 py-1"
                         >Bảng giá</router-link
                     >
                 </div>
@@ -283,7 +283,7 @@
                                     {{ post.location }}
                                 </p>
                                 <p class="mt-1 text-sm text-slate-400">
-                                    Diện tích: {{ post.area }}
+                                    Diện tích: {{ post.area }} m²
                                 </p>
                                 <p class="mt-1 text-sm text-slate-400">
                                     Người đăng: {{ post.posted_by }}

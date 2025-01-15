@@ -20,6 +20,7 @@ class RoomateController extends Controller
             'area' => 'nullable|string',
             'price' => 'nullable|integer',
             'district' => 'nullable|string',
+            'type' => 'nullable|string',
         ]);
 
         try {
@@ -27,6 +28,7 @@ class RoomateController extends Controller
             $area = $params['area'] ?? null;
             $price = $params['price'] ?? null;
             $district = $params['district'] ?? null;
+            $type = $params['type'] ?? null;
             $limit = $request->input('limit', 10);
 
             $roomates = Post::query()
@@ -41,6 +43,9 @@ class RoomateController extends Controller
                 })
                 ->when(!is_null($keyword), function ($query) use ($keyword) {
                     return $query->where('title', 'like', '%' . $keyword . '%');
+                })
+                ->when(!is_null($type), function ($query) use ($type) {
+                    return $query->where('type', $type);
                 })
                 ->paginate($limit);
 
