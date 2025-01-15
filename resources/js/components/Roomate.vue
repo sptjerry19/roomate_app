@@ -116,7 +116,7 @@
                     </div>
 
                     <div v-else class="mt-2 sm:mt-0 sm:flex md:order-2">
-                        <router-link to="login">
+                        <router-link to="/login">
                             <!-- Login Button -->
                             <button
                                 type="button"
@@ -125,7 +125,7 @@
                                 Login
                             </button>
                         </router-link>
-                        <router-link to="register">
+                        <router-link to="/register">
                             <button
                                 type="button"
                                 class="rounde mr-3 hidden bg-blue-700 py-1.5 px-6 text-center text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 md:mr-0 md:inline-block rounded-lg"
@@ -166,16 +166,16 @@
                     <router-link to="/" class="hover:bg-blue-200 px-10 py-1"
                         >Trang chủ</router-link
                     >
-                    <router-link to="room" class="hover:bg-blue-200 px-10 py-1"
+                    <router-link to="/room" class="hover:bg-blue-200 px-10 py-1"
                         >Phòng trọ</router-link
                     >
                     <router-link
-                        to="roommate"
+                        to="/roommate"
                         class="hover:bg-blue-200 px-10 py-1 bg-blue-200"
                         >Tìm roommates</router-link
                     >
                     <router-link
-                        to="bang-gia"
+                        to="/bang-gia"
                         class="hover:bg-blue-200 px-10 py-1"
                         >Bảng giá</router-link
                     >
@@ -271,54 +271,58 @@
                             </div>
 
                             <!-- Thông tin bài đăng -->
-                            <div class="mt-2 p-2">
-                                <h2
-                                    class="text-slate-700 font-bold text-lg truncate"
-                                >
-                                    {{ post.title }}
-                                </h2>
-                                <p class="mt-1 text-sm text-slate-400">
-                                    {{ post.location }}
-                                </p>
-                                <p class="mt-1 text-sm text-slate-400">
-                                    Diện tích: {{ post.area }}
-                                </p>
-                                <p class="mt-1 text-sm text-slate-400">
-                                    Người đăng: {{ post.posted_by }}
-                                </p>
-                                <p class="mt-1 text-sm text-slate-400">
-                                    {{ post.description }}
-                                </p>
-
-                                <div
-                                    class="mt-3 flex items-center justify-between"
-                                >
-                                    <p class="text-lg font-bold text-blue-500">
-                                        {{ post.price }} VNĐ/tháng
-                                    </p>
-                                    <div
-                                        class="flex items-center space-x-1.5 rounded-lg bg-blue-500 px-4 py-1.5 text-white duration-100 hover:bg-blue-600"
+                            <router-link :to="`/room/${post.id}`">
+                                <div class="mt-2 p-2">
+                                    <h2
+                                        class="text-slate-700 font-bold text-lg truncate"
                                     >
-                                        <svg
-                                            xmlns="http://www.w3.org/2000/svg"
-                                            fill="none"
-                                            viewBox="0 0 24 24"
-                                            stroke-width="1.5"
-                                            stroke="currentColor"
-                                            class="h-4 w-4"
+                                        {{ post.title }}
+                                    </h2>
+                                    <p class="mt-1 text-sm text-slate-400">
+                                        {{ post.location }}
+                                    </p>
+                                    <p class="mt-1 text-sm text-slate-400">
+                                        Diện tích: {{ post.area }}
+                                    </p>
+                                    <p class="mt-1 text-sm text-slate-400">
+                                        Người đăng: {{ post.posted_by }}
+                                    </p>
+                                    <p class="mt-1 text-sm text-slate-400">
+                                        {{ post.description }}
+                                    </p>
+
+                                    <div
+                                        class="mt-3 flex items-center justify-between"
+                                    >
+                                        <p
+                                            class="text-lg font-bold text-blue-500"
                                         >
-                                            <path
-                                                stroke-linecap="round"
-                                                stroke-linejoin="round"
-                                                d="M15.75 9V5.25a3.75 3.75 0 00-7.5 0V9m0 0a3.75 3.75 0 017.5 0m-7.5 0v10.5a3.75 3.75 0 007.5 0V9"
-                                            />
-                                        </svg>
-                                        <button class="text-sm">
-                                            Xem chi tiết
-                                        </button>
+                                            {{ post.price }} VNĐ/tháng
+                                        </p>
+                                        <div
+                                            class="flex items-center space-x-1.5 rounded-lg bg-blue-500 px-4 py-1.5 text-white duration-100 hover:bg-blue-600"
+                                        >
+                                            <svg
+                                                xmlns="http://www.w3.org/2000/svg"
+                                                fill="none"
+                                                viewBox="0 0 24 24"
+                                                stroke-width="1.5"
+                                                stroke="currentColor"
+                                                class="h-4 w-4"
+                                            >
+                                                <path
+                                                    stroke-linecap="round"
+                                                    stroke-linejoin="round"
+                                                    d="M15.75 9V5.25a3.75 3.75 0 00-7.5 0V9m0 0a3.75 3.75 0 017.5 0m-7.5 0v10.5a3.75 3.75 0 007.5 0V9"
+                                                />
+                                            </svg>
+                                            <button class="text-sm">
+                                                Xem chi tiết
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
+                            </router-link>
                         </a>
                     </article>
                 </div>
@@ -506,27 +510,27 @@ export default {
                     label: "Khu vực",
                     data: [
                         { name: "Tất cả", value: null },
-                        { name: "Quận Ba Đình", value: "Quận Ba Đình" },
-                        { name: "Quận Cầu Giấy", value: "Quận Cầu Giấy" },
-                        { name: "Quận Hoàn Kiếm", value: "Quận Hoàn Kiếm" },
+                        { name: "Ba Đình", value: "Ba Đình" },
+                        { name: "Cầu Giấy", value: "Cầu Giấy" },
+                        { name: "Hoàn Kiếm", value: "Hoàn Kiếm" },
                         {
-                            name: "Quận Hai Bà Trưng",
-                            value: "Quận Hai Bà Trưng",
+                            name: "Hai Bà Trưng",
+                            value: "Hai Bà Trưng",
                         },
-                        { name: "Quận Hoàng Mai", value: "Quận Hoàng Mai" },
-                        { name: "Quận Đống Đa", value: "Quận Đống Đa" },
-                        { name: "Quận Tây Hồ", value: "Quận Tây Hồ" },
-                        { name: "Quận Thanh Xuân", value: "Quận Thanh Xuân" },
-                        { name: "Quận Bắc Từ Liêm", value: "Quận Bắc Từ Liêm" },
-                        { name: "Quận Hà Đông", value: "Quận Hà Đông" },
-                        { name: "Quận Long Biên", value: "Quận Long Biên" },
-                        { name: "Quận Nam Từ Liêm", value: "Quận Nam Từ Liêm" },
-                        { name: "Huyện Ba Vì", value: "Huyện Ba Vì" },
-                        { name: "Huyện Chương Mỹ", value: "Huyện Chương Mỹ" },
-                        { name: "Huyện Đan Phượng", value: "Huyện Đan Phượng" },
-                        { name: "Huyện Đông Anh", value: "Huyện Đông Anh" },
-                        { name: "Huyện Gia Lâm", value: "Huyện Gia Lâm" },
-                        { name: "Huyện Hoài Đức", value: "Huyện Hoài Đức" },
+                        { name: "Hoàng Mai", value: "Hoàng Mai" },
+                        { name: "Đống Đa", value: "Đống Đa" },
+                        { name: "Tây Hồ", value: "Tây Hồ" },
+                        { name: "Thanh Xuân", value: "Thanh Xuân" },
+                        { name: "Bắc Từ Liêm", value: "Bắc Từ Liêm" },
+                        { name: "Hà Đông", value: "Hà Đông" },
+                        { name: "Long Biên", value: "Long Biên" },
+                        { name: "Nam Từ Liêm", value: "Nam Từ Liêm" },
+                        { name: "Ba Vì", value: "Ba Vì" },
+                        { name: "Chương Mỹ", value: "Chương Mỹ" },
+                        { name: "Đan Phượng", value: "Đan Phượng" },
+                        { name: "Đông Anh", value: "Đông Anh" },
+                        { name: "Gia Lâm", value: "Gia Lâm" },
+                        { name: "Hoài Đức", value: "Hoài Đức" },
                     ],
                     icon: "material-icons-outlined location_on",
                     type: "district",

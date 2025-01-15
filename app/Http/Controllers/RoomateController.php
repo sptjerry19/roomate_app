@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Helpers\ApiResponse;
+use App\Helpers\Common;
+use App\Http\Requests\PostRequest;
 use App\Http\Resources\RoomateCollection;
 use App\Http\Resources\RoomateResource;
 use App\Models\Post;
@@ -40,7 +42,7 @@ class RoomateController extends Controller
                     return $query->where('price', '<=', $price);
                 })
                 ->when(!is_null($district), function ($query) use ($district) {
-                    return $query->where('district', $district);
+                    return $query->where('district', 'like', '%' . $district . '%');
                 })
                 ->when(!is_null($keyword), function ($query) use ($keyword) {
                     return $query->where('title', 'like', '%' . $keyword . '%');
@@ -48,6 +50,7 @@ class RoomateController extends Controller
                 ->when(!is_null($type), function ($query) use ($type) {
                     return $query->where('type', $type);
                 })
+                ->orderByDesc('created_at')
                 ->paginate($limit);
 
             return ApiResponse::success(new RoomateCollection($roomates), 'Lấy danh sách Roomate thành công!');
@@ -60,9 +63,59 @@ class RoomateController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(PostRequest $request)
     {
-        //
+        try {
+            // Xác thực dữ liệu
+            $params = $request->validated();
+
+            // Lấy danh sách ảnh base64 từ yêu cầu
+            $base64Images = $params['images'];
+
+            // Upload ảnh base64
+            $images = Common::uploadbase64Image($base64Images, '/room', true);
+
+            // Biến chứa URL ảnh sau khi upload
+            $uploadedImages = [];
+            foreach ($images as $image) {
+                // Xử lý và thêm URL ảnh đã upload vào mảng $uploadedImages
+                $uploadedImages[] = Common::responseImage($image); // Giả sử responseImage trả về URL của ảnh
+            }
+
+            // Xem dữ liệu đã upload
+            Log::info('Uploaded Images:', $uploadedImages);
+
+            // Dữ liệu bài đăng
+            $data = [
+                'title' => $params['title'],
+                'location' => $params['location'],
+                'district' => $params['district'],
+                'ward' => $params['ward'],
+                'price' => $params['price'],
+                'area' => $params['area'],
+                'posted_by' => $params['posted_by'],
+                'phone' => $params['phone'],
+                'description' => $params['description'],
+                'images' => $uploadedImages, // Lưu ảnh đã upload
+                'type' => $params['type'],
+                'status' => 'available',
+            ];
+
+            // Log dữ liệu để kiểm tra
+            Log::info('Roommate data:', $data);
+
+            // Tạo bài đăng
+            $roomate = Post::create($data);
+
+            // Trả về kết quả thành công
+            return ApiResponse::success(new RoomateResource($roomate), 'Tạo Roomate thành công!');
+        } catch (\Exception $e) {
+            // Ghi lại lỗi vào log
+            Log::error('Error creating roommate post: ' . $e->getMessage());
+
+            // Trả về lỗi
+            return ApiResponse::error('Tạo Roomate thất bại!', 500);
+        }
     }
 
     /**

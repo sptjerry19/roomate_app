@@ -79,7 +79,7 @@ class Common
 
     public static function responseImage($pathImg)
     {
-        $domain = 'https://fnbapi.vietapp.vn/storage/image/';
+        $domain = env('APP_URL', 'https://jerry-roommate-app.click/storage');
         return $domain . $pathImg;
     }
 

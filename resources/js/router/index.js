@@ -8,11 +8,16 @@ import UploadImages from "../components/Upload/UploadImages.vue";
 import Room from "../components/Room.vue";
 import Roomate from "../components/Roomate.vue";
 import Detail from "../components/Detail.vue";
+import CreatePost from "../components/Upload/CreatePost.vue";
 
 const routes = [
     {
         path: "/",
         component: Home,
+    },
+    {
+        path: "/post",
+        component: CreatePost,
     },
     {
         path: "/room",

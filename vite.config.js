@@ -11,6 +11,7 @@ export default defineConfig({
         vue(),
     ],
     build: {
-        outDir: "public/build", // Hoặc thư mục mà bạn muốn build ra
+        outDir: "public/build",
     },
+    base: "/build/",
 });

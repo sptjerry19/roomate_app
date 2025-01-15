@@ -80,7 +80,7 @@
                     </div>
 
                     <div v-else class="mt-2 sm:mt-0 sm:flex md:order-2">
-                        <router-link to="login">
+                        <router-link to="/login">
                             <!-- Login Button -->
                             <button
                                 type="button"
@@ -89,7 +89,7 @@
                                 Login
                             </button>
                         </router-link>
-                        <router-link to="register">
+                        <router-link to="/register">
                             <button
                                 type="button"
                                 class="rounde mr-3 hidden bg-blue-700 py-1.5 px-6 text-center text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 md:mr-0 md:inline-block rounded-lg"
@@ -132,16 +132,16 @@
                         class="hover:bg-blue-200 px-10 py-1 bg-blue-200"
                         >Trang chủ</router-link
                     >
-                    <router-link to="room" class="hover:bg-blue-200 px-10 py-1"
+                    <router-link to="/room" class="hover:bg-blue-200 px-10 py-1"
                         >Phòng trọ</router-link
                     >
                     <router-link
-                        to="roommate"
+                        to="/roommate"
                         class="hover:bg-blue-200 px-10 py-1"
                         >Tìm roommates</router-link
                     >
                     <router-link
-                        to="bang-gia"
+                        to="/bang-gia"
                         class="hover:bg-blue-200 px-10 py-1"
                         >Bảng giá</router-link
                     >
@@ -161,7 +161,7 @@
                     <!-- Slide ảnh -->
                     <div class="relative mb-6">
                         <div class="flex items-center justify-center">
-                            <!-- Hiển thị các ảnh trong slide -->
+                            <!-- Hiển thị ảnh chính -->
                             <div class="relative w-full max-w-3xl mx-auto">
                                 <img
                                     :src="modalImages[currentImageIndex]"
@@ -190,15 +190,38 @@
                                 </button>
                             </div>
                         </div>
+
                         <!-- Hiển thị số ảnh hiện tại -->
                         <div class="mt-2 text-center text-sm text-gray-600">
                             {{ currentImageIndex + 1 }} /
                             {{ modalImages.length }} ảnh
                         </div>
+
+                        <!-- Hiển thị tất cả ảnh nhỏ bên dưới ảnh chính -->
+                        <div class="flex justify-start space-x-2">
+                            <div
+                                v-for="(image, index) in modalImages"
+                                :key="index"
+                                class="w-20 h-20 cursor-pointer"
+                                :class="{
+                                    'border-4 rounded-lg border-blue-500':
+                                        index === currentImageIndex,
+                                }"
+                                @click="selectImage(index)"
+                            >
+                                <img
+                                    :src="image"
+                                    :alt="'Thumbnail ' + (index + 1)"
+                                    class="w-full h-full object-cover rounded-lg"
+                                />
+                            </div>
+                        </div>
                     </div>
 
                     <!-- Thông tin phòng trọ -->
-                    <div class="space-y-6 bg-blue-200 px-5 py-8 rounded-xl">
+                    <div
+                        class="space-y-6 bg-blue-200 mt-12 px-5 py-8 rounded-xl"
+                    >
                         <div class="flex flex-wrap gap-6">
                             <div class="flex-1">
                                 <p class="text-lg font-semibold text-gray-600">
@@ -246,6 +269,45 @@
                                     roomDetail.posted_by || "Chưa có thông tin"
                                 }}
                             </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tin đăng cùng khu vực -->
+                <div class="equal-area mt-20">
+                    <h2 class="text-center text-4xl font-bold size-20 w-full">
+                        Tin đăng cùng khu vực
+                    </h2>
+                    <div class="flex justify-center">
+                        <div
+                            class="room-slider flex space-x-4 overflow-x-auto p-4"
+                            :style="{ maxWidth: maxWidth }"
+                        >
+                            <div
+                                class="room-item flex-none w-64"
+                                v-for="room in roomItems"
+                                :key="room.id"
+                            >
+                                <router-link :to="`/room/${room.id}`">
+                                    <div class="room-image">
+                                        <img
+                                            :src="room.images[0]"
+                                            alt="Room Image"
+                                            class="w-full h-48 object-cover rounded-lg shadow-lg"
+                                        />
+                                    </div>
+                                    <div class="room-info mt-2">
+                                        <h3
+                                            class="text-md font-bold text-gray-900"
+                                        >
+                                            {{ room.title }}
+                                        </h3>
+                                        <p class="text-sm text-gray-700">
+                                            {{ room.location }}
+                                        </p>
+                                    </div>
+                                </router-link>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -347,10 +409,26 @@ export default {
             modalImages: [], // Danh sách ảnh trong modal
             currentImageIndex: 0, // Chỉ số ảnh hiện tại
             modalVisible: false, // Hiển thị modal
+            roomItems: [],
+            maxWidth: "100%",
         };
     },
     mounted() {
         this.fetchRoomDetail();
+        this.setMaxWidth(); // Gọi hàm thiết lập maxWidth khi load trang
+        window.addEventListener("resize", this.setMaxWidth); // Lắng nghe sự kiện resize
+    },
+    beforeDestroy() {
+        window.removeEventListener("resize", this.setMaxWidth);
+    },
+    watch: {
+        // Theo dõi sự thay đổi của route.params.id
+        "$route.params.id": {
+            immediate: true,
+            handler() {
+                this.fetchRoomDetail(); // Gọi API khi id thay đổi
+            },
+        },
     },
     methods: {
         openModal(images) {
@@ -371,6 +449,17 @@ export default {
                 this.currentImageIndex--;
             }
         },
+        selectImage(index) {
+            this.currentImageIndex = index;
+        },
+        setMaxWidth() {
+            const screenWidth = window.innerWidth;
+            if (screenWidth <= 768) {
+                this.maxWidth = "100%"; // Nếu màn hình nhỏ hơn hoặc bằng 768px, chiếm toàn bộ chiều rộng
+            } else {
+                this.maxWidth = "80%"; // Nếu màn hình lớn hơn 768px, chiếm 2/3 chiều rộng
+            }
+        },
         async fetchRoomDetail() {
             try {
                 const postId = this.$route.params.id; // Lấy postId từ URL
@@ -379,6 +468,10 @@ export default {
                 console.log("Room details:", response.data);
                 this.roomDetail = response.data;
                 this.modalImages = response.data.images;
+
+                this.fetchRoomatesData();
+
+                window.scrollTo({ top: 0, behavior: "smooth" });
             } catch (error) {
                 console.error("Error fetching data", error);
                 // Hiển thị lỗi cho người dùng
@@ -389,6 +482,48 @@ export default {
                 this.loading = false;
             }
         },
+        async fetchRoomatesData(page = 1) {
+            this.loading = true;
+            try {
+                // Truyền tham số page và itemsPerPage vào API
+                const response = await apiClient.get("/roomate", {
+                    params: {
+                        district: this.roomDetail.district,
+                        page: page,
+                        limit: this.itemsPerPage, // hoặc 'per_page' tuỳ theo API của bạn
+                    },
+                });
+
+                // Kiểm tra nếu dữ liệu rỗng
+                if (response.data.data.length === 0) {
+                    this.roomItems = []; // Đặt danh sách bài đăng thành rỗng
+                    this.totalPages = 0;
+                    this.currentPage = 0;
+                    this.showNoDataMessage = true; // Biến để hiển thị thông báo "Không tìm thấy bài đăng nào"
+                } else {
+                    this.roomItems = response.data.data;
+                    this.currentPage = response.data.pagination.current_page;
+                    this.itemsPerPage = response.data.pagination.per_page;
+                    this.totalPages = response.data.pagination.last_page;
+                    this.showNoDataMessage = false; // Ẩn thông báo nếu có dữ liệu
+                }
+            } catch (error) {
+                console.error("Error fetching data", error);
+            } finally {
+                this.loading = false; // Ẩn spinner
+            }
+        },
     },
 };
 </script>
+
+<style scoped>
+.room-slider {
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+}
+
+.room-item {
+    scroll-snap-align: start;
+}
+</style>
