@@ -411,9 +411,14 @@ export default {
             modalVisible: false, // Hiển thị modal
             roomItems: [],
             maxWidth: "100%",
+            user: null,
         };
     },
     mounted() {
+        const storedUser = localStorage.getItem("user");
+        if (storedUser) {
+            this.user = JSON.parse(storedUser);
+        }
         this.fetchRoomDetail();
         this.setMaxWidth(); // Gọi hàm thiết lập maxWidth khi load trang
         window.addEventListener("resize", this.setMaxWidth); // Lắng nghe sự kiện resize

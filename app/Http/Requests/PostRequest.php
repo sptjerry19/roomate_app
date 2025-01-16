@@ -34,7 +34,7 @@ class PostRequest extends FormRequest
             'description' => 'required|string',
             'images' => 'required|array|min:1',
             'images.*' => 'required|string', // Xác thực base64
-            'type' => 'required|in:roommate,rental',
+            'type' => 'required|in:roommate,room',
         ];
     }
 

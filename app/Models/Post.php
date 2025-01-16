@@ -19,6 +19,7 @@ class Post extends Model
         'area',
         'status',
         'posted_by',
+        'phone',
         'user_id',
         'description',
         'images',
