@@ -39,7 +39,7 @@ class RoomateController extends Controller
                     return $query->where('area', '<=', $area);
                 })
                 ->when(!is_null($price), function ($query) use ($price) {
-                    return $query->where('price', '<=', $price);
+                    return $query->where('price', '<', $price);
                 })
                 ->when(!is_null($district), function ($query) use ($district) {
                     return $query->where('district', 'like', '%' . $district . '%');

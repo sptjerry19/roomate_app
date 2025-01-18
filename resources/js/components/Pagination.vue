@@ -1,6 +1,6 @@
 <template>
     <nav>
-        <ul class="flex items-center justify-center bg-gray-100 pb-5">
+        <ul class="flex items-center justify-center bg-white pb-5">
             <li>
                 <a
                     class="mx-1 flex h-9 w-9 items-center justify-center rounded-full border border-blue-gray-100 bg-transparent p-0 text-sm text-blue-gray-500 transition duration-150 ease-in-out hover:bg-light-300"

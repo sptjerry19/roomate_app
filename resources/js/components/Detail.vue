@@ -4,13 +4,13 @@
         <div class="bg-white">
             <!-- Header Navbar -->
             <nav
-                class="fixed top-0 left-0 z-20 w-full bg-sky-100 py-2.5 px-6 border-b border-gray-200"
+                class="fixed top-0 left-0 z-20 w-full bg-white py-2.5 px-4 shadow-md"
             >
                 <div
                     class="container mx-auto flex items-center justify-between"
                 >
-                    <!-- Logo và tên trang -->
-                    <div class="flex items-center">
+                    <!-- Logo and Dropdown -->
+                    <div class="flex items-center space-x-3">
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
                             fill="none"
@@ -25,16 +25,57 @@
                                 d="M21 7.5l-9-5.25L3 7.5m18 0l-9 5.25m9-5.25v9l-9 5.25M3 7.5l9 5.25M3 7.5v9l9 5.25m0-9v9"
                             />
                         </svg>
-                        <span class="ml-2 text-xl font-bold text-blue-700"
-                            >Roomates</span
+                        <select
+                            class="border border-gray-300 rounded-md py-1.5 px-3 text-sm text-gray-700 focus:border-blue-500 focus:ring focus:ring-blue-300 cursor-pointer"
+                            @change="navigateToRoute($event)"
                         >
+                            <option value="/">Chi tiết</option>
+                            <option value="/">Trang chủ</option>
+                            <option value="/room">Phòng Trọ</option>
+                            <option value="/roommate">Roommate</option>
+                        </select>
                     </div>
 
-                    <!-- Icon người dùng, thông báo, và nút Đăng bài -->
-                    <div v-if="user">
-                        <div class="flex items-center space-x-4">
-                            <!-- Icon người dùng -->
-                            <button class="relative">
+                    <!-- Search Bar -->
+                    <div class="flex-grow mx-6">
+                        <div class="relative">
+                            <input
+                                type="text"
+                                placeholder="Tìm kiếm"
+                                class="w-5/6 rounded-full border border-gray-300 py-2 px-4 text-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+                            />
+                            <!-- <button
+                                class="absolute right-2 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700"
+                            >
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    stroke-width="1.5"
+                                    stroke="currentColor"
+                                    class="h-5 w-5"
+                                >
+                                    <path
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        d="M21 21l-6-6m3-9a7.5 7.5 0 11-15 0 7.5 7.5 0 0115 0z"
+                                    />
+                                </svg>
+                            </button> -->
+                        </div>
+                    </div>
+
+                    <!-- Icons and Post Button -->
+                    <div
+                        v-if="user"
+                        class="flex items-center space-x-4 mt-4 md:mt-0 md:order-2"
+                    >
+                        <!-- Avatar -->
+                        <div class="relative">
+                            <button
+                                @click="toggleAvatarDropdown"
+                                class="relative focus:outline-none"
+                            >
                                 <img
                                     class="w-10 h-10 rounded-full"
                                     :src="
@@ -46,45 +87,67 @@
                                 />
                             </button>
 
-                            <!-- Icon thông báo -->
-                            <button class="relative">
-                                <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    fill="none"
-                                    viewBox="0 0 24 24"
-                                    stroke-width="1.5"
-                                    stroke="currentColor"
-                                    class="h-6 w-6 text-blue-700"
+                            <!-- Dropdown menu -->
+                            <div
+                                v-if="showDropdown"
+                                class="absolute -left-12 mt-2 w-48 bg-white rounded-lg shadow-lg z-20"
+                            >
+                                <router-link
+                                    to="/profile"
+                                    class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                                 >
-                                    <path
-                                        stroke-linecap="round"
-                                        stroke-linejoin="round"
-                                        d="M15.75 9.75V8.25a6 6 0 00-12 0v1.5a5.25 5.25 0 0010.5 0zM10.5 21.75a1.5 1.5 0 001.5-1.5H9a1.5 1.5 0 001.5 1.5z"
-                                    />
-                                </svg>
-                                <!-- Badge số thông báo -->
-                                <span
-                                    class="absolute -top-1 -right-1 flex h-3 w-3 items-center justify-center rounded-full bg-red-500 text-[10px] text-white"
+                                    Xem thông tin
+                                </router-link>
+                                <button
+                                    @click="logout"
+                                    class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                                 >
-                                    3
-                                </span>
-                            </button>
+                                    Đăng xuất
+                                </button>
+                            </div>
+                        </div>
 
-                            <!-- Nút Đăng bài -->
+                        <!-- Notification Icon -->
+                        <button class="relative">
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                stroke-width="1.5"
+                                stroke="currentColor"
+                                class="h-6 w-6 text-blue-700"
+                            >
+                                <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    d="M15.75 9.75V8.25a6 6 0 00-12 0v1.5a5.25 5.25 0 0010.5 0zM10.5 21.75a1.5 1.5 0 001.5-1.5H9a1.5 1.5 0 001.5 1.5z"
+                                />
+                            </svg>
+                            <span
+                                class="absolute -top-1 -right-1 flex h-3 w-3 items-center justify-center rounded-full bg-red-500 text-[10px] text-white"
+                            >
+                                3
+                            </span>
+                        </button>
+
+                        <!-- Post Button -->
+                        <router-link to="/post">
                             <button
                                 class="rounded bg-blue-700 py-1.5 px-4 text-sm font-medium text-white hover:bg-blue-800 focus:ring-2 focus:ring-blue-500"
                             >
                                 Đăng bài
                             </button>
-                        </div>
+                        </router-link>
                     </div>
 
-                    <div v-else class="mt-2 sm:mt-0 sm:flex md:order-2">
+                    <div
+                        v-else
+                        class="flex items-center space-x-3 mt-4 md:mt-0 md:order-2"
+                    >
                         <router-link to="/login">
-                            <!-- Login Button -->
                             <button
                                 type="button"
-                                class="rounde mr-3 hidden border border-blue-700 py-1.5 px-6 text-center text-sm font-medium text-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-300 md:inline-block rounded-lg"
+                                class="rounded-lg border border-blue-700 py-1.5 px-4 text-center text-sm font-medium text-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-300"
                             >
                                 Login
                             </button>
@@ -92,66 +155,19 @@
                         <router-link to="/register">
                             <button
                                 type="button"
-                                class="rounde mr-3 hidden bg-blue-700 py-1.5 px-6 text-center text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 md:mr-0 md:inline-block rounded-lg"
+                                class="rounded-lg bg-blue-700 py-1.5 px-4 text-center text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300"
                             >
                                 Register
                             </button>
                         </router-link>
-                        <!-- Register Button -->
-                        <button
-                            data-collapse-toggle="navbar-sticky"
-                            type="button"
-                            class="inline-flex items-center rounded-lg p-2 text-sm text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 md:hidden"
-                            aria-controls="navbar-sticky"
-                            aria-expanded="false"
-                        >
-                            <span class="sr-only">Open main menu</span>
-                            <svg
-                                class="h-6 w-6"
-                                aria-hidden="true"
-                                fill="currentColor"
-                                viewBox="0 0 20 20"
-                                xmlns="http://www.w3.org/2000/svg"
-                            >
-                                <path
-                                    fill-rule="evenodd"
-                                    d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z"
-                                    clip-rule="evenodd"
-                                ></path>
-                            </svg>
-                        </button>
                     </div>
-                </div>
-
-                <!-- Danh sách menu -->
-                <div
-                    class="mt-6 flex justify-center text-2xl font-bold text-blue-700"
-                >
-                    <router-link
-                        to="/"
-                        class="hover:bg-blue-200 px-10 py-1 bg-blue-200"
-                        >Trang chủ</router-link
-                    >
-                    <router-link to="/room" class="hover:bg-blue-200 px-10 py-1"
-                        >Phòng trọ</router-link
-                    >
-                    <router-link
-                        to="/roommate"
-                        class="hover:bg-blue-200 px-10 py-1"
-                        >Tìm roommates</router-link
-                    >
-                    <router-link
-                        to="/bang-gia"
-                        class="hover:bg-blue-200 px-10 py-1"
-                        >Bảng giá</router-link
-                    >
                 </div>
             </nav>
 
             <div class="content min-h-screen">
                 <!-- bài đăng -->
                 <div
-                    class="room-detail mt-36 md:max-w-screen-md sm:max-w-screen-sm container mx-auto p-6 bg-white rounded-lg shadow-lg"
+                    class="room-detail mt-28 md:max-w-screen-md sm:max-w-screen-sm container mx-auto p-6 bg-white rounded-lg shadow-lg"
                 >
                     <!-- Tiêu đề phòng trọ -->
                     <h2 class="text-3xl font-bold text-gray-800 mb-6">
@@ -436,6 +452,10 @@ export default {
         },
     },
     methods: {
+        navigateToRoute(event) {
+            const selectedRoute = event.target.value;
+            this.$router.push(selectedRoute);
+        },
         openModal(images) {
             this.modalImages = images;
             this.currentImageIndex = 0; // Bắt đầu từ ảnh đầu tiên
@@ -464,6 +484,19 @@ export default {
             } else {
                 this.maxWidth = "80%"; // Nếu màn hình lớn hơn 768px, chiếm 2/3 chiều rộng
             }
+        },
+        toggleAvatarDropdown() {
+            // Toggle hiển thị dropdown menu
+            this.showDropdown = !this.showDropdown;
+        },
+        logout() {
+            // Xử lý logic đăng xuất
+            console.log("Đăng xuất");
+            // Thực hiện các bước đăng xuất, ví dụ: gọi API, xóa token, chuyển hướng
+            localStorage.removeItem("access_token");
+            localStorage.removeItem("user");
+            this.user = null;
+            this.$router.push("/login");
         },
         async fetchRoomDetail() {
             try {

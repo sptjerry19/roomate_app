@@ -29,9 +29,9 @@
                             class="border border-gray-300 rounded-md py-1.5 px-3 text-sm text-gray-700 focus:border-blue-500 focus:ring focus:ring-blue-300 cursor-pointer"
                             @change="navigateToRoute($event)"
                         >
-                            <option value="/room">Phòng Trọ</option>
-                            <option value="/">Trang chủ</option>
                             <option value="/roommate">Roommate</option>
+                            <option value="/">Trang chủ</option>
+                            <option value="/room">Phòng Trọ</option>
                         </select>
                     </div>
 
@@ -732,7 +732,7 @@ export default {
             this.loading = true;
             try {
                 // Truyền tham số page và itemsPerPage vào API
-                const response = await apiClient.get("/roomate?type=room", {
+                const response = await apiClient.get("/roomate?type=roommate", {
                     params: {
                         keyword: this.keyword,
                         area: this.area,

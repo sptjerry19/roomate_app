@@ -20,7 +20,7 @@ class RoomateResource extends JsonResource
             "location" => $this->location,
             "district" => $this->district,
             "ward" => $this->ward,
-            "price" => $this->price,
+            "price" => $this->formatPrice($this->price),
             "area" => $this->area,
             "status" => $this->status,
             "posted_by" => $this->posted_by,
@@ -31,5 +31,27 @@ class RoomateResource extends JsonResource
             "created_at" => $this->created_at,
             "updated_at" => $this->updated_at
         ];
+    }
+
+    public function formatPrice($price)
+    {
+        // Remove any non-numeric characters except dot and comma
+        $numericPrice = preg_replace('/[^\d.,]/', '', $price);
+
+        // Handle cases where commas and dots are mixed (e.g., European format)
+        if (strpos($numericPrice, ',') !== false && strpos($numericPrice, '.') === false) {
+            // Convert comma to dot for decimal point
+            $numericPrice = str_replace(',', '.', $numericPrice);
+        } elseif (strpos($numericPrice, ',') !== false && strpos($numericPrice, '.') !== false) {
+            // Remove thousand separators if format is '1.234,56'
+            $numericPrice = str_replace('.', '', $numericPrice);
+            $numericPrice = str_replace(',', '.', $numericPrice);
+        }
+
+        // Convert to float
+        $floatPrice = (float) $numericPrice;
+
+        // Format price
+        return number_format($floatPrice, 0, ',', '.');
     }
 }

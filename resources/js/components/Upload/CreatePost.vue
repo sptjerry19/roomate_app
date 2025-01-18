@@ -66,12 +66,15 @@
             <!-- Price -->
             <div class="mb-4">
                 <label class="block text-sm font-medium mb-2">Giá</label>
+
+                <!-- Trường input hiển thị giá với định dạng VNĐ -->
                 <input
-                    v-model="post.price"
-                    type="number"
+                    v-model="formattedPrice"
+                    type="text"
                     class="w-full p-2 border rounded"
                     placeholder="Nhập giá phòng (VNĐ)"
                     required
+                    @input="updatePrice"
                 />
             </div>
 
@@ -197,7 +200,7 @@ export default {
                 location: "",
                 district: "",
                 ward: "",
-                price: "",
+                price: 0,
                 area: "",
                 status: "available",
                 posted_by: "",
@@ -374,7 +377,34 @@ export default {
             filteredWards: [],
         };
     },
+    computed: {
+        // Hiển thị giá đã được định dạng với 'VNĐ'
+        formattedPrice: {
+            get() {
+                // Chuyển số thành chuỗi có dấu chấm ngăn cách và thêm ' VNĐ'
+                return this.post.price
+                    ? new Intl.NumberFormat("vi-VN").format(this.post.price)
+                    : "";
+            },
+            set(value) {
+                // Loại bỏ 'VNĐ' và dấu phân cách để cập nhật giá trị thực tế
+                const numericValue = parseInt(
+                    value.replace(/\D/g, ""), // Xóa tất cả ký tự không phải số
+                    10
+                );
+                this.post.price = isNaN(numericValue) ? 0 : numericValue;
+            },
+        },
+    },
     methods: {
+        updatePrice(event) {
+            const rawValue = event.target.value;
+            const numericValue = parseInt(
+                rawValue.replace(/\D/g, ""), // Xóa ký tự không phải số
+                10
+            );
+            this.post.price = isNaN(numericValue) ? 0 : numericValue;
+        },
         loadWards() {
             const district = this.wards.find(
                 (item) => item.districtName === this.selectedDistrict

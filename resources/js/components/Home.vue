@@ -4,13 +4,13 @@
         <div class="bg-white">
             <!-- Header Navbar -->
             <nav
-                class="fixed top-0 left-0 z-20 w-full bg-sky-100 py-2.5 px-4 md:px-6 border-b border-gray-200"
+                class="fixed top-0 left-0 z-20 w-full bg-white py-2.5 px-4 shadow-md"
             >
                 <div
-                    class="container mx-auto flex flex-wrap items-center justify-between"
+                    class="container mx-auto flex items-center justify-between"
                 >
-                    <!-- Logo và tên trang -->
-                    <div class="flex items-center">
+                    <!-- Logo and Dropdown -->
+                    <div class="flex items-center space-x-3">
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
                             fill="none"
@@ -25,37 +25,18 @@
                                 d="M21 7.5l-9-5.25L3 7.5m18 0l-9 5.25m9-5.25v9l-9 5.25M3 7.5l9 5.25M3 7.5v9l9 5.25m0-9v9"
                             />
                         </svg>
-                        <span class="ml-2 text-xl font-bold text-blue-700"
-                            >Roomates</span
+                        <select
+                            class="border border-gray-300 rounded-md py-1.5 px-3 text-sm text-gray-700 focus:border-blue-500 focus:ring focus:ring-blue-300 cursor-pointer"
+                            @change="navigateToRoute($event)"
                         >
+                            <option value="/">Trang chủ</option>
+                            <option value="/room">Phòng Trọ</option>
+                            <option value="/roommate">Roommate</option>
+                        </select>
                     </div>
 
-                    <!-- Menu toggle (Mobile) -->
-                    <button
-                        data-collapse-toggle="navbar-sticky"
-                        type="button"
-                        class="inline-flex items-center rounded-lg p-2 text-sm text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 md:hidden"
-                        aria-controls="navbar-sticky"
-                        aria-expanded="false"
-                    >
-                        <span class="sr-only">Open main menu</span>
-                        <svg
-                            class="h-6 w-6"
-                            aria-hidden="true"
-                            fill="currentColor"
-                            viewBox="0 0 20 20"
-                            xmlns="http://www.w3.org/2000/svg"
-                        >
-                            <path
-                                fill-rule="evenodd"
-                                d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z"
-                                clip-rule="evenodd"
-                            ></path>
-                        </svg>
-                    </button>
-
-                    <!-- Thanh tìm kiếm -->
-                    <div class="w-full mt-4 md:mt-0 md:w-[647px] md:order-1">
+                    <!-- Search Bar -->
+                    <div class="flex-grow mx-6">
                         <div class="relative">
                             <input
                                 type="text"
@@ -67,10 +48,10 @@
                                         'keyword'
                                     )
                                 "
-                                class="w-full rounded-full border-4 border-orange-500 py-2 px-4 text-sm focus:border-orange-500 focus:ring-1 focus:ring-orange-500"
+                                class="w-5/6 rounded-full border border-gray-300 py-2 px-4 text-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
                             />
-                            <button
-                                class="absolute right-2 top-1/2 -translate-y-1/2 rounded-full p-2 text-orange-400 hover:text-orange-700"
+                            <!-- <button
+                                class="absolute right-2 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700"
                             >
                                 <svg
                                     xmlns="http://www.w3.org/2000/svg"
@@ -78,7 +59,7 @@
                                     viewBox="0 0 24 24"
                                     stroke-width="1.5"
                                     stroke="currentColor"
-                                    class="h-5 w-4"
+                                    class="h-5 w-5"
                                 >
                                     <path
                                         stroke-linecap="round"
@@ -86,26 +67,53 @@
                                         d="M21 21l-6-6m3-9a7.5 7.5 0 11-15 0 7.5 7.5 0 0115 0z"
                                     />
                                 </svg>
-                            </button>
+                            </button> -->
                         </div>
                     </div>
 
-                    <!-- Icon người dùng, thông báo, và nút Đăng bài -->
+                    <!-- Icons and Post Button -->
                     <div
                         v-if="user"
                         class="flex items-center space-x-4 mt-4 md:mt-0 md:order-2"
                     >
-                        <button class="relative">
-                            <img
-                                class="w-10 h-10 rounded-full"
-                                :src="
-                                    user.avatar
-                                        ? user.avatar
-                                        : 'https://flowbite.com/docs/images/people/profile-picture-5.jpg'
-                                "
-                                alt="User Avatar"
-                            />
-                        </button>
+                        <!-- Avatar -->
+                        <div class="relative">
+                            <button
+                                @click="toggleAvatarDropdown"
+                                class="relative focus:outline-none"
+                            >
+                                <img
+                                    class="w-10 h-10 rounded-full"
+                                    :src="
+                                        user.avatar
+                                            ? user.avatar
+                                            : 'https://flowbite.com/docs/images/people/profile-picture-5.jpg'
+                                    "
+                                    alt="User Avatar"
+                                />
+                            </button>
+
+                            <!-- Dropdown menu -->
+                            <div
+                                v-if="showDropdown"
+                                class="absolute -left-12 mt-2 w-48 bg-white rounded-lg shadow-lg z-20"
+                            >
+                                <router-link
+                                    to="/profile"
+                                    class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                                >
+                                    Xem thông tin
+                                </router-link>
+                                <button
+                                    @click="logout"
+                                    class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                                >
+                                    Đăng xuất
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Notification Icon -->
                         <button class="relative">
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
@@ -127,6 +135,8 @@
                                 3
                             </span>
                         </button>
+
+                        <!-- Post Button -->
                         <router-link to="/post">
                             <button
                                 class="rounded bg-blue-700 py-1.5 px-4 text-sm font-medium text-white hover:bg-blue-800 focus:ring-2 focus:ring-blue-500"
@@ -159,182 +169,199 @@
                     </div>
                 </div>
 
-                <!-- Danh sách menu -->
-                <div
-                    class="mt-6 flex flex-wrap justify-center space-x-4 text-base font-bold text-blue-700"
-                >
-                    <router-link
-                        to="/"
-                        class="hover:bg-blue-200 px-6 py-1 bg-blue-200"
-                        >Trang chủ</router-link
-                    >
-                    <router-link to="/room" class="hover:bg-blue-200 px-6 py-1"
-                        >Phòng trọ</router-link
-                    >
-                    <router-link
-                        to="/roommate"
-                        class="hover:bg-blue-200 px-6 py-1"
-                        >Tìm roommates</router-link
-                    >
-                    <router-link
-                        to="/bang-gia"
-                        class="hover:bg-blue-200 px-6 py-1"
-                        >Bảng giá</router-link
-                    >
-                </div>
-            </nav>
-
-            <!-- filters -->
-            <div
-                class="mt-72 sm:mt-60 md:mt-48 lg:mt-32 flex items-center justify-center pt-4 pb-3 bg-gray-100"
-            >
-                <div
-                    @click="toggleDropdown(index)"
-                    v-for="(filter, index) in filters"
-                    :key="index"
-                    class="relative flex items-center ml-6 space-x-2 rounded-full border border-orange-400 px-4 py-2 text-orange-500 hover:bg-orange-100 cursor-pointer"
-                >
-                    <!-- Icon -->
-                    <span :class="filter.icon" class="text-orange-500"></span>
-
-                    <!-- Label hoặc Placeholder -->
-                    <span v-if="filter.placeholder" class="text-sm">
-                        {{ filter.placeholder }}
-                    </span>
-                    <span v-else class="text-sm">
-                        <!-- Hiển thị giá trị đã chọn nếu có -->
-                        {{ selectedFilters[filter.type] || filter.label }}
-                    </span>
-
-                    <!-- Dropdown Icon -->
-                    <span class="material-icons">arrow_drop_down</span>
-
-                    <!-- Dropdown Menu -->
+                <!-- Filter Bar -->
+                <div class="mt-3 flex items-center justify-center space-x-4">
                     <div
-                        v-if="openDropdown === index && filter.data"
-                        class="absolute top-full left-0 ml-10 right-0 mt-2 w-52 max-h-40 bg-white border border-gray-300 rounded-lg shadow-lg z-10 overflow-y-auto"
+                        @click="toggleDropdown(index)"
+                        v-for="(filter, index) in filters"
+                        :key="index"
+                        class="relative border flex items-center border-gray-300 rounded-md py-1.5 px-3 text-sm text-gray-700 focus:border-blue-500 focus:ring focus:ring-blue-300 cursor-pointer"
                     >
+                        <!-- Icon -->
+                        <span :class="filter.icon" class="text-blue-500"></span>
+
+                        <!-- Label hoặc Placeholder -->
+                        <span v-if="filter.placeholder" class="text-sm">
+                            {{ filter.placeholder }}
+                        </span>
+                        <span v-else class="text-sm">
+                            <!-- Hiển thị giá trị đã chọn nếu có -->
+                            {{ selectedFilters[filter.type] || filter.label }}
+                        </span>
+
+                        <!-- Dropdown Icon -->
+                        <span class="material-icons">arrow_drop_down</span>
+
+                        <!-- Dropdown Menu -->
                         <div
-                            v-for="(item, i) in filter.data"
-                            :key="i"
-                            class="px-4 py-2 hover:bg-orange-100 cursor-pointer"
-                            @click="selectFilter(item, filter.type)"
+                            v-if="openDropdown === index && filter.data"
+                            class="absolute top-full left-0 right-0 mt-2 w-52 max-h-40 bg-white border border-gray-300 rounded-lg shadow-lg z-10 overflow-y-auto"
                         >
-                            {{ item.name }}
+                            <div
+                                v-for="(item, i) in filter.data"
+                                :key="i"
+                                class="px-4 py-2 hover:bg-orange-100 cursor-pointer"
+                                @click="selectFilter(item, filter.type)"
+                            >
+                                {{ item.name }}
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
+            </nav>
 
             <!-- Danh sách bài đăng -->
-            <section class="bg-gray-100" @click="toggleDropdown(index)">
-                <div class="mx-auto max-w-3xl grid-cols-1 gap-6 p-6">
-                    <article
-                        v-for="post in posts"
-                        :key="post.id"
-                        class="rounded-xl bg-white p-3 shadow-lg hover:shadow-xl hover:transform hover:scale-105 duration-300 mb-5"
-                    >
-                        <a href="#">
-                            <!-- Bố cục hình ảnh: 70% bên trái và 30% bên phải -->
-                            <div class="flex items-center space-x-4">
-                                <!-- Ảnh chính (bên trái, chiếm 70%) -->
-                                <div class="flex-shrink-0 basis-7/10">
-                                    <img
-                                        class="w-full h-64 object-cover rounded-lg max-w-full"
-                                        :src="
-                                            post.images[0] &&
-                                            post.images[0] !==
-                                                'https://defaultimage.com'
-                                                ? post.images[0]
-                                                : '/images/default-room.jpg'
-                                        "
-                                        alt="Main Room Image"
-                                    />
-                                </div>
-
-                                <!-- Ảnh bên phải (chiếm 30%) -->
-                                <div class="basis-3/10 relative">
-                                    <img
-                                        v-if="post.images.length > 1"
-                                        class="w-full h-64 object-cover rounded-lg opacity-75 hover:opacity-100 transition-opacity duration-300"
-                                        :src="post.images[1]"
-                                        alt="Right Image"
-                                        @click="openModal(post.images)"
-                                    />
-                                    <!-- Hiển thị thông báo +số ảnh khi có nhiều ảnh -->
-                                    <div
-                                        v-if="post.images.length > 2"
-                                        class="absolute top-0 left-0 w-full h-full bg-black bg-opacity-50 flex items-center justify-center text-white text-lg font-bold cursor-pointer"
-                                        @click="openModal(post.images)"
-                                    >
-                                        +{{ post.images.length - 1 }} ảnh
-                                    </div>
-                                </div>
+            <div class="container mx-auto mt-28 flex">
+                <!-- Bộ lọc bên trái -->
+                <aside class="w-1/4 p-4 bg-white rounded-lg shadow-lg h-full">
+                    <h2 class="text-lg font-bold mb-4">Bộ lọc</h2>
+                    <div class="mt-3 flex flex-col space-y-4">
+                        <div
+                            v-for="(filter, index) in filters"
+                            :key="index"
+                            class="relative border border-gray-300 rounded-md p-3 text-sm text-gray-700"
+                        >
+                            <!-- Tiêu đề bộ lọc -->
+                            <div class="font-bold mb-2 flex items-center">
+                                <span
+                                    :class="filter.icon"
+                                    class="text-blue-500 mr-2"
+                                ></span>
+                                <span>{{ filter.label }}</span>
                             </div>
 
-                            <!-- Thông tin bài đăng -->
-                            <router-link :to="`/room/${post.id}`">
-                                <div class="mt-2 p-2">
-                                    <h2
-                                        class="text-slate-700 font-bold text-lg truncate"
-                                    >
-                                        {{ post.title }}
-                                    </h2>
-                                    <p class="mt-1 text-sm text-slate-400">
-                                        {{ post.location }}
-                                    </p>
-                                    <p class="mt-1 text-sm text-slate-400">
-                                        Diện tích: {{ post.area }} m²
-                                    </p>
-                                    <p class="mt-1 text-sm text-slate-400">
-                                        Người đăng: {{ post.posted_by }}
-                                    </p>
-                                    <p class="mt-1 text-sm text-slate-400">
-                                        {{ post.description }}
-                                    </p>
-
-                                    <div
-                                        class="mt-3 flex items-center justify-between"
-                                    >
-                                        <p
-                                            class="text-lg font-bold text-blue-500"
-                                        >
-                                            {{ post.price }} VNĐ/tháng
-                                        </p>
-                                        <div
-                                            class="flex items-center space-x-1.5 rounded-lg bg-blue-500 px-4 py-1.5 text-white duration-100 hover:bg-blue-600"
-                                        >
-                                            <svg
-                                                xmlns="http://www.w3.org/2000/svg"
-                                                fill="none"
-                                                viewBox="0 0 24 24"
-                                                stroke-width="1.5"
-                                                stroke="currentColor"
-                                                class="h-4 w-4"
-                                            >
-                                                <path
-                                                    stroke-linecap="round"
-                                                    stroke-linejoin="round"
-                                                    d="M15.75 9V5.25a3.75 3.75 0 00-7.5 0V9m0 0a3.75 3.75 0 017.5 0m-7.5 0v10.5a3.75 3.75 0 007.5 0V9"
-                                                />
-                                            </svg>
-                                            <button class="text-sm">
-                                                Xem chi tiết
-                                            </button>
-                                        </div>
-                                    </div>
+                            <!-- Danh sách các tùy chọn -->
+                            <div class="space-y-2">
+                                <div
+                                    v-for="(item, i) in filter.data"
+                                    :key="i"
+                                    class="flex items-center cursor-pointer hover:bg-orange-100 p-2 rounded-md"
+                                    @click="selectFilter(item, filter.type)"
+                                >
+                                    <!-- Checkbox hoặc dấu hiệu tùy chỉnh -->
+                                    <input
+                                        type="radio"
+                                        :name="filter.type"
+                                        :value="item.name"
+                                        v-model="selectedFilters[filter.type]"
+                                        class="mr-2"
+                                    />
+                                    <span>{{ item.name }}</span>
                                 </div>
-                            </router-link>
-                        </a>
-                    </article>
-                </div>
-            </section>
+                            </div>
+                        </div>
+                    </div>
+                </aside>
 
-            <div v-if="showNoDataMessage" class="no-data-message">
-                Không tìm thấy bài đăng nào.
-            </div>
-            <div v-else>
-                <!-- Hiển thị danh sách bài đăng -->
+                <!-- Danh sách bài đăng -->
+                <section class="w-3/4 p-4">
+                    <h1 class="text-2xl font-bold mb-4">
+                        {{ total }} Phòng Trọ Được Cập Nhật
+                    </h1>
+                    <!-- bộ lọc -->
+                    <div class="flex justify-start items-center border-b-2">
+                        <h2
+                            :class="[
+                                'px-4 py-2 font-bold cursor-pointer',
+                                is_select === 'all'
+                                    ? 'border-cyan-700 text-blue-800'
+                                    : 'text-gray-600',
+                            ]"
+                            @click="
+                                is_select = 'all';
+                                fetchRoomatesData();
+                            "
+                        >
+                            Tất cả
+                        </h2>
+                        <h2
+                            :class="[
+                                'px-4 py-2 font-bold cursor-pointer',
+                                is_select === 'room'
+                                    ? 'border-cyan-700 text-blue-800'
+                                    : 'text-gray-600',
+                            ]"
+                            @click="
+                                is_select = 'room';
+                                fetchRoomatesDataRoom();
+                            "
+                        >
+                            Phòng trống
+                        </h2>
+                        <h2
+                            :class="[
+                                'px-4 py-2 font-bold cursor-pointer',
+                                is_select === 'roommate'
+                                    ? 'border-cyan-700 text-blue-800'
+                                    : 'text-gray-600',
+                            ]"
+                            @click="
+                                is_select = 'roommate';
+                                fetchRoomatesDataRoommate();
+                            "
+                        >
+                            Phòng đang tìm roommate
+                        </h2>
+                    </div>
+                    <div
+                        v-if="posts.length === 0"
+                        class="text-center text-gray-500"
+                    >
+                        Không tìm thấy bài đăng nào.
+                    </div>
+                    <div v-else>
+                        <div
+                            v-for="post in posts"
+                            :key="post.id"
+                            class="mb-6 mt-2 bg-white rounded-lg shadow-lg overflow-hidden flex"
+                        >
+                            <!-- Hình ảnh -->
+                            <div class="w-1/3">
+                                <img
+                                    class="w-full h-full object-cover"
+                                    :src="
+                                        post.images[0] ||
+                                        '/images/default-room.jpg'
+                                    "
+                                    alt="Room image"
+                                />
+                            </div>
+                            <!-- Thông tin bài đăng -->
+                            <div class="w-2/3 p-4">
+                                <h2
+                                    class="text-lg font-bold text-blue-600 truncate"
+                                >
+                                    {{ post.title }}
+                                </h2>
+                                <p class="text-gray-500 text-sm">
+                                    {{ post.location }}
+                                </p>
+                                <p class="text-gray-500 text-sm">
+                                    Diện tích: {{ post.area }} m²
+                                </p>
+                                <p class="text-gray-500 text-sm">
+                                    Người đăng: {{ post.posted_by }}
+                                </p>
+                                <p class="text-gray-700 mt-2">
+                                    {{ post.description }}
+                                </p>
+                                <div
+                                    class="flex justify-between items-center mt-4"
+                                >
+                                    <p class="text-lg font-bold text-red-500">
+                                        {{ post.price }} VNĐ/tháng
+                                    </p>
+                                    <router-link
+                                        :to="`/room/${post.id}`"
+                                        class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+                                    >
+                                        Chi tiết
+                                    </router-link>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
             </div>
 
             <!-- Modal xem tất cả ảnh theo kiểu slide -->
@@ -491,6 +518,7 @@ export default {
     },
     data() {
         return {
+            is_select: "all",
             modalVisible: false,
             modalImages: [], // Mảng ảnh sẽ hiển thị trong modal
             currentImageIndex: 0, // Chỉ số ảnh hiện tại trong slide
@@ -502,12 +530,12 @@ export default {
             },
             debounceTimeout: null,
             filters: [
-                {
-                    label: "Từ khóa",
-                    placeholder: "Từ khóa, Đường, Quận, Địa điểm...",
-                    icon: "material-icons-outlined search",
-                    type: "keyword",
-                },
+                // {
+                //     label: "Từ khóa",
+                //     placeholder: "Từ khóa, Đường, Quận, Địa điểm...",
+                //     icon: "material-icons-outlined search",
+                //     type: "keyword",
+                // },
                 {
                     label: "Khu vực",
                     data: [
@@ -572,6 +600,7 @@ export default {
                 },
             ],
             openDropdown: null, // Trạng thái theo dõi dropdown đang mở
+            showDropdown: false, // Điều khiển hiển thị menu dropdown
             posts: [
                 {
                     id: 1,
@@ -662,6 +691,7 @@ export default {
             currentPage: 1, // Trang hiện tại
             itemsPerPage: 12, // Số sản phẩm mỗi trang
             totalPages: 6, // Số sản phẩm mỗi trang
+            total: 0, // tổng trang
         };
     },
     mounted() {
@@ -674,6 +704,10 @@ export default {
         }
     },
     methods: {
+        navigateToRoute(event) {
+            const selectedRoute = event.target.value;
+            this.$router.push(selectedRoute);
+        },
         openModal(images) {
             this.modalImages = images;
             this.currentImageIndex = 0; // Bắt đầu từ ảnh đầu tiên
@@ -695,6 +729,19 @@ export default {
         toggleDropdown(index) {
             // Đóng nếu dropdown đang mở, mở nếu chưa mở
             this.openDropdown = this.openDropdown === index ? null : index;
+        },
+        toggleAvatarDropdown() {
+            // Toggle hiển thị dropdown menu
+            this.showDropdown = !this.showDropdown;
+        },
+        logout() {
+            // Xử lý logic đăng xuất
+            console.log("Đăng xuất");
+            // Thực hiện các bước đăng xuất, ví dụ: gọi API, xóa token, chuyển hướng
+            localStorage.removeItem("access_token");
+            localStorage.removeItem("user");
+            this.user = null;
+            this.$router.push("/login");
         },
         selectFilter(item, type) {
             if (type === "district") {
@@ -752,6 +799,81 @@ export default {
                     this.currentPage = response.data.pagination.current_page;
                     this.itemsPerPage = response.data.pagination.per_page;
                     this.totalPages = response.data.pagination.last_page;
+                    this.total = response.data.pagination.total;
+                    this.showNoDataMessage = false; // Ẩn thông báo nếu có dữ liệu
+                }
+            } catch (error) {
+                console.error("Error fetching data", error);
+            } finally {
+                this.loading = false; // Ẩn spinner
+            }
+        },
+
+        async fetchRoomatesDataRoom(page = 1) {
+            this.loading = true;
+            try {
+                // Truyền tham số page và itemsPerPage vào API
+                const response = await apiClient.get("/roomate?type=room", {
+                    params: {
+                        keyword: this.keyword,
+                        area: this.area,
+                        district: this.district,
+                        type: this.type,
+                        price: this.price,
+                        page: page,
+                        limit: this.itemsPerPage, // hoặc 'per_page' tuỳ theo API của bạn
+                    },
+                });
+
+                // Kiểm tra nếu dữ liệu rỗng
+                if (response.data.data.length === 0) {
+                    this.posts = []; // Đặt danh sách bài đăng thành rỗng
+                    this.totalPages = 0;
+                    this.currentPage = 0;
+                    this.showNoDataMessage = true; // Biến để hiển thị thông báo "Không tìm thấy bài đăng nào"
+                } else {
+                    this.posts = response.data.data;
+                    this.currentPage = response.data.pagination.current_page;
+                    this.itemsPerPage = response.data.pagination.per_page;
+                    this.totalPages = response.data.pagination.last_page;
+                    this.total = response.data.pagination.total;
+                    this.showNoDataMessage = false; // Ẩn thông báo nếu có dữ liệu
+                }
+            } catch (error) {
+                console.error("Error fetching data", error);
+            } finally {
+                this.loading = false; // Ẩn spinner
+            }
+        },
+
+        async fetchRoomatesDataRoommate(page = 1) {
+            this.loading = true;
+            try {
+                // Truyền tham số page và itemsPerPage vào API
+                const response = await apiClient.get("/roomate?type=roommate", {
+                    params: {
+                        keyword: this.keyword,
+                        area: this.area,
+                        district: this.district,
+                        type: this.type,
+                        price: this.price,
+                        page: page,
+                        limit: this.itemsPerPage, // hoặc 'per_page' tuỳ theo API của bạn
+                    },
+                });
+
+                // Kiểm tra nếu dữ liệu rỗng
+                if (response.data.data.length === 0) {
+                    this.posts = []; // Đặt danh sách bài đăng thành rỗng
+                    this.totalPages = 0;
+                    this.currentPage = 0;
+                    this.showNoDataMessage = true; // Biến để hiển thị thông báo "Không tìm thấy bài đăng nào"
+                } else {
+                    this.posts = response.data.data;
+                    this.currentPage = response.data.pagination.current_page;
+                    this.itemsPerPage = response.data.pagination.per_page;
+                    this.totalPages = response.data.pagination.last_page;
+                    this.total = response.data.pagination.total;
                     this.showNoDataMessage = false; // Ẩn thông báo nếu có dữ liệu
                 }
             } catch (error) {

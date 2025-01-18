@@ -9,6 +9,8 @@ import Room from "../components/Room.vue";
 import Roomate from "../components/Roomate.vue";
 import Detail from "../components/Detail.vue";
 import CreatePost from "../components/Upload/CreatePost.vue";
+import Profile from "../components/Profile.vue";
+import RoomateV2 from "../components/RoomateV2.vue";
 
 const routes = [
     {
@@ -25,7 +27,7 @@ const routes = [
     },
     {
         path: "/roommate",
-        component: Roomate,
+        component: RoomateV2,
     },
     {
         path: "/room/:id",
@@ -40,6 +42,10 @@ const routes = [
     {
         path: "/register",
         component: Register,
+    },
+    {
+        path: "/profile",
+        component: Profile,
     },
     {
         path: "/admin",
