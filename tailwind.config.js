@@ -6,7 +6,15 @@ export default {
         "./resources/**/*.js",
     ],
     theme: {
-        extend: {},
+        extend: {
+            colors: {
+                primary: "#325077",
+                secondary: "#ffcc00",
+            },
+            fontFamily: {
+                sans: ["Inter", "Arial", "sans-serif"],
+            },
+        },
     },
     plugins: [],
 };

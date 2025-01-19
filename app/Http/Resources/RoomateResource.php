@@ -24,6 +24,7 @@ class RoomateResource extends JsonResource
             "area" => $this->area,
             "status" => $this->status,
             "posted_by" => $this->posted_by,
+            "phone" => $this->phone,
             "user_id" => $this->user_id,
             "description" => $this->description,
             "images" => $this->images,

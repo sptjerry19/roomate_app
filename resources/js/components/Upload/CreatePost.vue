@@ -2,7 +2,12 @@
     <div
         class="create-post max-w-3xl mx-auto mt-10 p-6 bg-white rounded-lg shadow-lg"
     >
-        <h2 class="text-2xl font-bold mb-6">Đăng bài tìm roommate</h2>
+        <div class="flex justify-between">
+            <h2 class="text-2xl font-bold mb-6">Đăng bài tìm roommate</h2>
+            <router-link to="/">
+                <h2 class="text-4xl hover:text-red-700">X</h2>
+            </router-link>
+        </div>
 
         <form @submit.prevent="submitPost">
             <!-- Title -->

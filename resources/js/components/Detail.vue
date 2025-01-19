@@ -11,20 +11,22 @@
                 >
                     <!-- Logo and Dropdown -->
                     <div class="flex items-center space-x-3">
-                        <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            stroke-width="1.5"
-                            stroke="currentColor"
-                            class="h-8 w-8 text-blue-700"
-                        >
-                            <path
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                d="M21 7.5l-9-5.25L3 7.5m18 0l-9 5.25m9-5.25v9l-9 5.25M3 7.5l9 5.25M3 7.5v9l9 5.25m0-9v9"
-                            />
-                        </svg>
+                        <router-link to="/">
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                stroke-width="1.5"
+                                stroke="currentColor"
+                                class="h-8 w-8 text-blue-700"
+                            >
+                                <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    d="M21 7.5l-9-5.25L3 7.5m18 0l-9 5.25m9-5.25v9l-9 5.25M3 7.5l9 5.25M3 7.5v9l9 5.25m0-9v9"
+                                />
+                            </svg>
+                        </router-link>
                         <select
                             class="border border-gray-300 rounded-md py-1.5 px-3 text-sm text-gray-700 focus:border-blue-500 focus:ring focus:ring-blue-300 cursor-pointer"
                             @change="navigateToRoute($event)"
@@ -165,126 +167,201 @@
             </nav>
 
             <div class="content min-h-screen">
-                <!-- bài đăng -->
-                <div
-                    class="room-detail mt-28 md:max-w-screen-md sm:max-w-screen-sm container mx-auto p-6 bg-white rounded-lg shadow-lg"
-                >
-                    <!-- Tiêu đề phòng trọ -->
-                    <h2 class="text-3xl font-bold text-gray-800 mb-6">
-                        {{ roomDetail.title }}
-                    </h2>
+                <div class="flex justify-center mt-28">
+                    <!-- bài đăng -->
+                    <div
+                        class="room-detail md:max-w-screen-md sm:max-w-screen-sm container p-6 bg-white rounded-lg shadow-lg"
+                    >
+                        <!-- Tiêu đề phòng trọ -->
+                        <h2 class="text-3xl font-bold text-gray-800 mb-6">
+                            {{ roomDetail.title }}
+                        </h2>
 
-                    <!-- Slide ảnh -->
-                    <div class="relative mb-6">
-                        <div class="flex items-center justify-center">
-                            <!-- Hiển thị ảnh chính -->
-                            <div class="relative w-full max-w-3xl mx-auto">
-                                <img
-                                    :src="modalImages[currentImageIndex]"
-                                    :alt="
-                                        'Room Image ' + (currentImageIndex + 1)
-                                    "
-                                    class="w-full h-80 object-cover rounded-lg shadow-lg"
-                                />
-                                <!-- Nút chuyển ảnh -->
-                                <button
-                                    v-if="currentImageIndex > 0"
-                                    @click="prevImage"
-                                    class="absolute left-4 top-1/2 transform -translate-y-1/2 bg-black text-white p-3 rounded-full shadow-lg"
+                        <!-- Slide ảnh -->
+                        <div class="relative mb-6">
+                            <div class="flex items-center justify-center">
+                                <!-- Hiển thị ảnh chính -->
+                                <div class="relative w-full max-w-3xl mx-auto">
+                                    <img
+                                        :src="modalImages[currentImageIndex]"
+                                        :alt="
+                                            'Room Image ' +
+                                            (currentImageIndex + 1)
+                                        "
+                                        class="w-full h-80 object-cover rounded-lg shadow-lg"
+                                    />
+                                    <!-- Nút chuyển ảnh -->
+                                    <button
+                                        v-if="currentImageIndex > 0"
+                                        @click="prevImage"
+                                        class="absolute left-4 top-1/2 transform -translate-y-1/2 bg-black text-white p-3 rounded-full shadow-lg"
+                                    >
+                                        &lt;
+                                    </button>
+                                    <button
+                                        v-if="
+                                            currentImageIndex <
+                                            modalImages.length - 1
+                                        "
+                                        @click="nextImage"
+                                        class="absolute right-4 top-1/2 transform -translate-y-1/2 bg-black text-white p-3 rounded-full shadow-lg"
+                                    >
+                                        &gt;
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Hiển thị số ảnh hiện tại -->
+                            <div class="mt-2 text-center text-sm text-gray-600">
+                                {{ currentImageIndex + 1 }} /
+                                {{ modalImages.length }} ảnh
+                            </div>
+
+                            <!-- Hiển thị tất cả ảnh nhỏ bên dưới ảnh chính -->
+                            <div class="flex justify-start space-x-2">
+                                <div
+                                    v-for="(image, index) in modalImages"
+                                    :key="index"
+                                    class="w-20 h-20 cursor-pointer"
+                                    :class="{
+                                        'border-4 rounded-lg border-blue-500':
+                                            index === currentImageIndex,
+                                    }"
+                                    @click="selectImage(index)"
                                 >
-                                    &lt;
-                                </button>
-                                <button
-                                    v-if="
-                                        currentImageIndex <
-                                        modalImages.length - 1
-                                    "
-                                    @click="nextImage"
-                                    class="absolute right-4 top-1/2 transform -translate-y-1/2 bg-black text-white p-3 rounded-full shadow-lg"
-                                >
-                                    &gt;
-                                </button>
+                                    <img
+                                        :src="image"
+                                        :alt="'Thumbnail ' + (index + 1)"
+                                        class="w-full h-full object-cover rounded-lg"
+                                    />
+                                </div>
                             </div>
                         </div>
 
-                        <!-- Hiển thị số ảnh hiện tại -->
-                        <div class="mt-2 text-center text-sm text-gray-600">
-                            {{ currentImageIndex + 1 }} /
-                            {{ modalImages.length }} ảnh
-                        </div>
+                        <!-- Thông tin phòng trọ -->
+                        <div
+                            class="space-y-6 bg-blue-200 mt-12 px-5 py-8 rounded-xl"
+                        >
+                            <div class="flex flex-wrap gap-6">
+                                <div class="flex-1">
+                                    <p
+                                        class="text-lg font-semibold text-gray-600"
+                                    >
+                                        Vị trí:
+                                    </p>
+                                    <p class="text-gray-700">
+                                        {{ roomDetail.location }}
+                                    </p>
+                                </div>
+                                <div class="flex-1">
+                                    <p
+                                        class="text-lg font-semibold text-gray-600"
+                                    >
+                                        Diện tích:
+                                    </p>
+                                    <p class="text-gray-700">
+                                        {{ roomDetail.area }} m²
+                                    </p>
+                                </div>
+                                <div class="flex-1">
+                                    <p
+                                        class="text-lg font-semibold text-gray-600"
+                                    >
+                                        Giá:
+                                    </p>
+                                    <p class="text-gray-700">
+                                        {{ roomDetail.price }} VNĐ/tháng
+                                    </p>
+                                </div>
+                            </div>
 
-                        <!-- Hiển thị tất cả ảnh nhỏ bên dưới ảnh chính -->
-                        <div class="flex justify-start space-x-2">
-                            <div
-                                v-for="(image, index) in modalImages"
-                                :key="index"
-                                class="w-20 h-20 cursor-pointer"
-                                :class="{
-                                    'border-4 rounded-lg border-blue-500':
-                                        index === currentImageIndex,
-                                }"
-                                @click="selectImage(index)"
-                            >
-                                <img
-                                    :src="image"
-                                    :alt="'Thumbnail ' + (index + 1)"
-                                    class="w-full h-full object-cover rounded-lg"
-                                />
+                            <!-- Mô tả -->
+                            <div>
+                                <p class="text-lg font-semibold text-gray-600">
+                                    Mô tả:
+                                </p>
+                                <p class="text-gray-700">
+                                    {{ roomDetail.description }}
+                                </p>
+                            </div>
+
+                            <!-- Đăng bởi -->
+                            <div>
+                                <p class="text-lg font-semibold text-gray-600">
+                                    Đăng bởi:
+                                </p>
+                                <p class="text-gray-700">
+                                    {{
+                                        roomDetail.posted_by ||
+                                        "Chưa có thông tin"
+                                    }}
+                                </p>
                             </div>
                         </div>
                     </div>
-
-                    <!-- Thông tin phòng trọ -->
+                    <!-- Người đăng -->
                     <div
-                        class="space-y-6 bg-blue-200 mt-12 px-5 py-8 rounded-xl"
+                        class="room-detail ml-6 h-full md:max-w-sm sm:max-w-screen-sm container p-6 bg-white rounded-lg shadow-lg"
                     >
-                        <div class="flex flex-wrap gap-6">
-                            <div class="flex-1">
-                                <p class="text-lg font-semibold text-gray-600">
-                                    Vị trí:
-                                </p>
-                                <p class="text-gray-700">
-                                    {{ roomDetail.location }}
-                                </p>
+                        <h2 class="text-xl font-bold">Người đăng</h2>
+                        <div class="flex mt-6">
+                            <!-- Avatar -->
+                            <div>
+                                <img
+                                    :src="defaultAvatar"
+                                    alt="User Avatar"
+                                    class="w-24 h-24 object-cover rounded-full"
+                                />
                             </div>
-                            <div class="flex-1">
-                                <p class="text-lg font-semibold text-gray-600">
-                                    Diện tích:
-                                </p>
-                                <p class="text-gray-700">
-                                    {{ roomDetail.area }} m²
-                                </p>
-                            </div>
-                            <div class="flex-1">
-                                <p class="text-lg font-semibold text-gray-600">
-                                    Giá:
-                                </p>
-                                <p class="text-gray-700">
-                                    {{ roomDetail.price }} VNĐ/tháng
-                                </p>
-                            </div>
-                        </div>
 
-                        <!-- Mô tả -->
-                        <div>
-                            <p class="text-lg font-semibold text-gray-600">
-                                Mô tả:
-                            </p>
-                            <p class="text-gray-700">
-                                {{ roomDetail.description }}
-                            </p>
-                        </div>
+                            <!-- Thông tin người đăng -->
+                            <div class="ml-4">
+                                <h3 class="text-xl font-semibold text-gray-800">
+                                    {{ roomDetail.posted_by }}
+                                </h3>
 
-                        <!-- Đăng bởi -->
-                        <div>
-                            <p class="text-lg font-semibold text-gray-600">
-                                Đăng bởi:
-                            </p>
-                            <p class="text-gray-700">
-                                {{
-                                    roomDetail.posted_by || "Chưa có thông tin"
-                                }}
-                            </p>
+                                <!-- Số điện thoại với icon -->
+                                <div
+                                    class="flex items-center text-gray-700 mt-2"
+                                >
+                                    <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        fill="none"
+                                        viewBox="0 0 24 24"
+                                        stroke-width="1.5"
+                                        stroke="currentColor"
+                                        class="size-6"
+                                    >
+                                        <path
+                                            stroke-linecap="round"
+                                            stroke-linejoin="round"
+                                            d="M10.5 1.5H8.25A2.25 2.25 0 0 0 6 3.75v16.5a2.25 2.25 0 0 0 2.25 2.25h7.5A2.25 2.25 0 0 0 18 20.25V3.75a2.25 2.25 0 0 0-2.25-2.25H13.5m-3 0V3h3V1.5m-3 0h3m-3 18.75h3"
+                                        />
+                                    </svg>
+                                    <span>{{ roomDetail.phone }}</span>
+                                </div>
+
+                                <!-- Nút nhắn tin -->
+                                <button
+                                    class="mt-4 bg-primary text-white px-4 py-2 rounded-lg flex items-center hover:bg-primary/90 transition"
+                                >
+                                    <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        fill="none"
+                                        viewBox="0 0 24 24"
+                                        stroke-width="1.5"
+                                        stroke="currentColor"
+                                        class="size-6"
+                                    >
+                                        <path
+                                            stroke-linecap="round"
+                                            stroke-linejoin="round"
+                                            d="M7.5 8.25h9m-9 3H12m-9.75 1.51c0 1.6 1.123 2.994 2.707 3.227 1.129.166 2.27.293 3.423.379.35.026.67.21.865.501L12 21l2.755-4.133a1.14 1.14 0 0 1 .865-.501 48.172 48.172 0 0 0 3.423-.379c1.584-.233 2.707-1.626 2.707-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0 0 12 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018Z"
+                                        />
+                                    </svg>
+                                    Nhắn tin
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -329,80 +406,118 @@
                 </div>
 
                 <!-- Footer -->
-                <footer class="mt-10 py-6 bg-gray-200 text-gray-900">
+                <footer class="bg-primary text-white py-10">
                     <div
-                        class="container px-6 mx-auto space-y-6 divide-y divide-gray-400 md:space-y-12 divide-opacity-50"
+                        class="container mx-auto gap-8 px-4 flex justify-around"
                     >
-                        <div class="grid justify-center lg:justify-between">
-                            <div
-                                class="flex flex-col self-center text-sm text-center md:block lg:col-start-1 md:space-x-6"
-                            >
-                                <span>Copy rgight © 2023 by codemix team </span>
-                                <a rel="noopener noreferrer" href="#">
-                                    <span>Privacy policy</span>
-                                </a>
-                                <a rel="noopener noreferrer" href="#">
-                                    <span>Terms of service</span>
-                                </a>
+                        <!-- cột 1 + 2 -->
+                        <div class="flex justify-around max-w-6xl">
+                            <!-- Cột 1 -->
+                            <div class="">
+                                <h3
+                                    class="text-lg font-semibold text-white mb-4"
+                                >
+                                    VỀ AA+ HOME
+                                </h3>
+                                <ul class="space-y-2 text-white text-xs">
+                                    <li>
+                                        <a href="#" class="hover:text-gray-900"
+                                            >Giới thiệu</a
+                                        >
+                                    </li>
+                                    <li>
+                                        <a href="#" class="hover:text-gray-900"
+                                            >Quý chế hoạt động</a
+                                        >
+                                    </li>
+                                    <li>
+                                        <a href="#" class="hover:text-gray-900"
+                                            >Quy định sử dụng</a
+                                        >
+                                    </li>
+                                    <li>
+                                        <a href="#" class="hover:text-gray-900"
+                                            >Chính sách bảo mật</a
+                                        >
+                                    </li>
+                                    <li>
+                                        <a href="#" class="hover:text-gray-900"
+                                            >Liên hệ</a
+                                        >
+                                    </li>
+                                </ul>
                             </div>
-                            <div
-                                class="flex justify-center pt-4 space-x-4 lg:pt-0 lg:col-end-13"
-                            >
-                                <a
-                                    rel="noopener noreferrer"
-                                    href="#"
-                                    title="Email"
-                                    class="flex items-center justify-center w-10 h-10 rounded-full bg-blue-500 hover:bg-blue-600 duration-150 text-gray-50"
+
+                            <!-- Cột 2 -->
+                            <div class="pl-14">
+                                <h3
+                                    class="text-lg font-semibold text-white mb-4"
                                 >
-                                    <svg
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        viewBox="0 0 20 20"
-                                        fill="currentColor"
-                                        class="w-5 h-5"
-                                    >
-                                        <path
-                                            d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z"
-                                        ></path>
-                                        <path
-                                            d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z"
-                                        ></path>
-                                    </svg>
-                                </a>
-                                <a
-                                    rel="noopener noreferrer"
-                                    href="#"
-                                    title="Twitter"
-                                    class="flex items-center justify-center w-10 h-10 rounded-full bg-blue-500 hover:bg-blue-600 duration-150 text-gray-50"
-                                >
-                                    <svg
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        viewBox="0 0 50 50"
-                                        fill="currentColor"
-                                        class="w-5 h-5"
-                                    >
-                                        <path
-                                            d="M 50.0625 10.4375 C 48.214844 11.257813 46.234375 11.808594 44.152344 12.058594 C 46.277344 10.785156 47.910156 8.769531 48.675781 6.371094 C 46.691406 7.546875 44.484375 8.402344 42.144531 8.863281 C 40.269531 6.863281 37.597656 5.617188 34.640625 5.617188 C 28.960938 5.617188 24.355469 10.21875 24.355469 15.898438 C 24.355469 16.703125 24.449219 17.488281 24.625 18.242188 C 16.078125 17.8125 8.503906 13.71875 3.429688 7.496094 C 2.542969 9.019531 2.039063 10.785156 2.039063 12.667969 C 2.039063 16.234375 3.851563 19.382813 6.613281 21.230469 C 4.925781 21.175781 3.339844 20.710938 1.953125 19.941406 C 1.953125 19.984375 1.953125 20.027344 1.953125 20.070313 C 1.953125 25.054688 5.5 29.207031 10.199219 30.15625 C 9.339844 30.390625 8.429688 30.515625 7.492188 30.515625 C 6.828125 30.515625 6.183594 30.453125 5.554688 30.328125 C 6.867188 34.410156 10.664063 37.390625 15.160156 37.472656 C 11.644531 40.230469 7.210938 41.871094 2.390625 41.871094 C 1.558594 41.871094 0.742188 41.824219 -0.0585938 41.726563 C 4.488281 44.648438 9.894531 46.347656 15.703125 46.347656 C 34.617188 46.347656 44.960938 30.679688 44.960938 17.09375 C 44.960938 16.648438 44.949219 16.199219 44.933594 15.761719 C 46.941406 14.3125 48.683594 12.5 50.0625 10.4375 Z"
-                                        ></path>
-                                    </svg>
-                                </a>
-                                <a
-                                    rel="noopener noreferrer"
-                                    href="#"
-                                    title="GitHub"
-                                    class="flex items-center justify-center w-10 h-10 rounded-full bg-blue-500 hover:bg-blue-600 duration-150 text-gray-50"
-                                >
-                                    <svg
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        fill="currentColor"
-                                        viewBox="0 0 24 24"
-                                        class="w-5 h-5"
-                                    >
-                                        <path
-                                            d="M10.9,2.1c-4.6,0.5-8.3,4.2-8.8,8.7c-0.5,4.7,2.2,8.9,6.3,10.5C8.7,21.4,9,21.2,9,20.8v-1.6c0,0-0.4,0.1-0.9,0.1 c-1.4,0-2-1.2-2.1-1.9c-0.1-0.4-0.3-0.7-0.6-1C5.1,16.3,5,16.3,5,16.2C5,16,5.3,16,5.4,16c0.6,0,1.1,0.7,1.3,1c0.5,0.8,1.1,1,1.4,1 c0.4,0,0.7-0.1,0.9-0.2c0.1-0.7,0.4-1.4,1-1.8c-2.3-0.5-4-1.8-4-4c0-1.1,0.5-2.2,1.2-3C7.1,8.8,7,8.3,7,7.6C7,7.2,7,6.6,7.3,6 c0,0,1.4,0,2.8,1.3C10.6,7.1,11.3,7,12,7s1.4,0.1,2,0.3C15.3,6,16.8,6,16.8,6C17,6.6,17,7.2,17,7.6c0,0.8-0.1,1.2-0.2,1.4 c0.7,0.8,1.2,1.8,1.2,3c0,2.2-1.7,3.5-4,4c0.6,0.5,1,1.4,1,2.3v2.6c0,0.3,0.3,0.6,0.7,0.5c3.7-1.5,6.3-5.1,6.3-9.3 C22,6.1,16.9,1.4,10.9,2.1z"
-                                        ></path>
-                                    </svg>
-                                </a>
+                                    Dành cho khách hàng
+                                </h3>
+                                <ul class="space-y-2 text-white text-xs">
+                                    <li>
+                                        <a href="#" class="hover:text-gray-900"
+                                            >Câu hỏi thường gặp</a
+                                        >
+                                    </li>
+                                    <li>
+                                        <a href="#" class="hover:text-gray-900"
+                                            >Hướng dẫn đăng tin</a
+                                        >
+                                    </li>
+                                    <li>
+                                        <a href="#" class="hover:text-gray-900"
+                                            >Quy định đăng tin</a
+                                        >
+                                    </li>
+                                    <li>
+                                        <a href="#" class="hover:text-gray-900"
+                                            >Bảng giá dịch vụ</a
+                                        >
+                                    </li>
+                                    <li>
+                                        <a href="#" class="hover:text-gray-900"
+                                            >Hướng dẫn thanh toán</a
+                                        >
+                                    </li>
+                                    <li>
+                                        <a href="#" class="hover:text-gray-900"
+                                            >Giải quyết khiếu nại</a
+                                        >
+                                    </li>
+                                </ul>
                             </div>
+                        </div>
+
+                        <!-- Cột 3 -->
+                        <div>
+                            <h3 class="text-lg font-semibold text-white mb-4">
+                                ĐĂNG KÍ ĐỂ NHẬN ƯU ĐÃI
+                            </h3>
+                            <p class="text-white mb-4">
+                                Đăng ký để nhận ngay ưu đãi của AA++ HOME dành
+                                cho lần thuê trọ đầu tiên!
+                            </p>
+                            <form class="flex flex-col space-y-3">
+                                <input
+                                    type="email"
+                                    placeholder="EMAIL"
+                                    class="px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-gray-400 focus:outline-none"
+                                    required
+                                />
+                                <button
+                                    type="submit"
+                                    class="bg-gray-800 text-white py-2 rounded-md hover:bg-gray-900 transition"
+                                >
+                                    ĐĂNG KÝ
+                                </button>
+                            </form>
+                            <p
+                                class="mt-4 text-center text-gray-500 font-medium"
+                            >
+                                AA++ HOME
+                            </p>
                         </div>
                     </div>
                 </footer>
@@ -428,6 +543,9 @@ export default {
             roomItems: [],
             maxWidth: "100%",
             user: null,
+            showDropdown: false, // Điều khiển hiển thị menu dropdown
+            defaultAvatar:
+                "https://diaocdangmuasaigon.com/wp-content/uploads/2024/09/anh-avatar-vo-tri-7ImqGGy.jpg",
         };
     },
     mounted() {
