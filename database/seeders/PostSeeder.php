@@ -38,6 +38,10 @@ class PostSeeder extends Seeder
 
         $posts = [];
 
+        $phonePrefixes = ['03', '07', '08', '09', '05']; // Các đầu số phổ biến
+        $randomPrefix = $phonePrefixes[array_rand($phonePrefixes)]; // Chọn ngẫu nhiên đầu số
+        $randomPhone = $randomPrefix . rand(10000000, 99999999); // Tạo số điện thoại ngẫu nhiên
+
         for ($i = 0; $i < 100; $i++) {
             $district = $districts[array_rand($districts)];
             $ward = $wards[array_rand($wards)];
@@ -54,6 +58,7 @@ class PostSeeder extends Seeder
                 'area' => rand(15, 30),
                 'status' => 'available',
                 'posted_by' => $name,
+                'phone' => $randomPhone,
                 'description' => $description,
                 'images' => is_array($images) ? $images : [$images],
                 'type' => $types[array_rand($types)],
