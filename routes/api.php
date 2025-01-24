@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\FavoriteController;
 use App\Http\Controllers\RoomateController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -29,5 +30,20 @@ Route::group(['middleware' => 'api', 'prefix' => 'v1'], function () {
         Route::get('/', [RoomateController::class, 'index'])->name('roomate.view');
         Route::get('/{id}', [RoomateController::class, 'show'])->name('roomate.show');
         Route::post('/', [RoomateController::class, 'store'])->name('roomate.upload');
+        Route::delete('/', [RoomateController::class, 'destroy'])->name('roomate.delete');
+    });
+
+    Route::group(['middleware' => 'api', 'prefix' => 'favorite'], function () {
+        Route::get('/', [FavoriteController::class, 'index'])->name('favorite.view');
+        Route::post('/', [FavoriteController::class, 'store'])->name('favorite.create');
+        Route::put('/', [FavoriteController::class, 'remove'])->name('favorite.remove');
+        Route::delete('/', [FavoriteController::class, 'destroy'])->name('favorite.delete');
+    });
+
+    Route::group(['middleware' => 'api', 'prefix' => 'review'], function () {
+        Route::get('/', [RoomateController::class, 'index'])->name('review.view');
+        Route::post('/', [RoomateController::class, 'store'])->name('review.create');
+        Route::put('/', [RoomateController::class, 'update'])->name('review.update');
+        Route::delete('/', [RoomateController::class, 'destroy'])->name('review.delete');
     });
 });

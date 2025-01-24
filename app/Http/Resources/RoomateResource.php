@@ -28,6 +28,7 @@ class RoomateResource extends JsonResource
             "description" => $this->description,
             "images" => $this->images,
             "type" => $this->type,
+            "is_favorite" => $this->checkFavorite(),
             "created_at" => $this->created_at,
             "updated_at" => $this->updated_at
         ];
@@ -53,5 +54,20 @@ class RoomateResource extends JsonResource
 
         // Format price
         return number_format($floatPrice, 0, ',', '.');
+    }
+
+    protected function checkFavorite()
+    {
+        $user = auth()->user();
+
+        // Nếu không có user hoặc không có favorites, trả về false
+        if (!$user || !$this->favorites) {
+            return false;
+        }
+
+        // Kiểm tra xem user_id có nằm trong danh sách favorites không
+        return $this->favorites->contains(function ($favorite) use ($user) {
+            return $favorite->pivot->user_id === $user->id;
+        });
     }
 }

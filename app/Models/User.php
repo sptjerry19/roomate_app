@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Tymon\JWTAuth\Contracts\JWTSubject; // Thêm dòng này
 use Illuminate\Notifications\Notifiable;
@@ -40,5 +41,10 @@ class User extends Authenticatable implements JWTSubject // Thêm implements JWT
     public function getJWTCustomClaims()
     {
         return [];
+    }
+
+    public function favorites(): BelongsToMany
+    {
+        return $this->belongsToMany(Post::class, 'favorites', 'user_id', 'post_id');
     }
 }

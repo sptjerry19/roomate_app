@@ -217,13 +217,112 @@
                 </li>
             </ul>
         </div>
+
+        <!-- Favorite Rooms Section -->
+        <h2 class="text-xl font-semibold text-gray-800 border-b pb-2 mt-4">
+            Các phòng trọ đã quan tâm
+        </h2>
+        <div v-if="posts.length === 0" class="text-center text-gray-500">
+            Không tìm thấy bài đăng nào.
+        </div>
+        <div v-else>
+            <div
+                v-for="post in posts"
+                :key="post.id"
+                class="mb-6 mt-2 bg-white rounded-lg shadow-lg overflow-hidden flex"
+            >
+                <!-- Hình ảnh -->
+                <div class="w-1/3">
+                    <img
+                        class="w-full h-full object-cover"
+                        :src="post.images[0] || '/images/default-room.jpg'"
+                        alt="Room image"
+                    />
+                </div>
+                <!-- Thông tin bài đăng -->
+                <div class="w-2/3 p-4">
+                    <h2 class="text-lg font-bold text-blue-600 truncate">
+                        {{ post.title }}
+                    </h2>
+                    <p class="text-gray-500 text-sm">
+                        {{ post.location }}
+                    </p>
+                    <p class="text-gray-500 text-sm">
+                        Diện tích: {{ post.area }} m²
+                    </p>
+                    <p class="text-gray-500 text-sm">
+                        Người đăng: {{ post.posted_by }}
+                    </p>
+                    <p class="text-gray-700 mt-2">
+                        {{ post.description }}
+                    </p>
+                    <div class="flex justify-between items-center mt-4">
+                        <p class="text-lg font-bold text-red-500">
+                            {{ post.price }} VNĐ/tháng
+                        </p>
+                        <div class="flex items-center">
+                            <button
+                                @click="toggleFavorite(post)"
+                                :class="
+                                    post.is_favorite
+                                        ? 'bg-red-500 text-white'
+                                        : 'bg-gray-300 text-gray-700'
+                                "
+                                class="px-4 py-2 rounded hover:opacity-80 transition"
+                            >
+                                <span v-if="post.is_favorite"
+                                    ><svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        viewBox="0 0 24 24"
+                                        fill="currentColor"
+                                        class="size-6"
+                                    >
+                                        <path
+                                            d="m11.645 20.91-.007-.003-.022-.012a15.247 15.247 0 0 1-.383-.218 25.18 25.18 0 0 1-4.244-3.17C4.688 15.36 2.25 12.174 2.25 8.25 2.25 5.322 4.714 3 7.688 3A5.5 5.5 0 0 1 12 5.052 5.5 5.5 0 0 1 16.313 3c2.973 0 5.437 2.322 5.437 5.25 0 3.925-2.438 7.111-4.739 9.256a25.175 25.175 0 0 1-4.244 3.17 15.247 15.247 0 0 1-.383.219l-.022.012-.007.004-.003.001a.752.752 0 0 1-.704 0l-.003-.001Z"
+                                        />
+                                    </svg>
+                                </span>
+                                <span v-else
+                                    ><svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        fill="none"
+                                        viewBox="0 0 24 24"
+                                        stroke-width="1.5"
+                                        stroke="currentColor"
+                                        class="size-6"
+                                    >
+                                        <path
+                                            stroke-linecap="round"
+                                            stroke-linejoin="round"
+                                            d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z"
+                                        />
+                                    </svg>
+                                </span>
+                            </button>
+                            <router-link
+                                :to="`/room/${post.id}`"
+                                class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 ml-2"
+                            >
+                                Chi tiết
+                            </router-link>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
+
+    <loading :isLoading="loading"></loading>
 </template>
 
 <script>
+import apiClient, { defaultApiClient } from "../axios";
+import loading from "./loading.vue";
 export default {
     data() {
         return {
+            autoCloseTimeout: null,
+            loading: false,
             coverPhoto:
                 "https://i.pinimg.com/736x/b2/35/f9/b235f98eaf33557113de7f75bac0c002.jpg", // Placeholder ảnh bìa
             avatar: "https://www.redwolf.in/image/cache/catalog/stickers/jerry-face-sticker-india-600x800.jpg?m=1687857111", // Placeholder avatar
@@ -238,6 +337,7 @@ export default {
                 joined: "01/01/2025",
             },
             showDropdown: false, // Điều khiển hiển thị menu dropdown
+            posts: [],
         };
     },
     mounted() {
@@ -247,6 +347,8 @@ export default {
             this.user.name = storedUser.name;
             this.user.email = storedUser.email;
         }
+
+        this.fetchFavoriteData();
     },
     methods: {
         navigateToRoute(event) {
@@ -256,6 +358,76 @@ export default {
         toggleAvatarDropdown() {
             // Toggle hiển thị dropdown menu
             this.showDropdown = !this.showDropdown;
+        },
+        // async toggleFavorite(post) {
+        //     try {
+        //         const token = localStorage.getItem("access_token");
+        //         if (!token) {
+        //             this.showLoginModal = true; // Hiển thị modal thông báo
+        //         } else {
+        //             // Gửi yêu cầu yêu thích
+        //             this.favoriteItem();
+        //         }
+        //         const url = post.is_favorite
+        //             ? "/api/v1/favorite"
+        //             : "/api/v1/favorite";
+        //         const method = post.is_favorite ? "PUT" : "POST";
+
+        //         const response = await fetch(url, {
+        //             method,
+        //             headers: {
+        //                 "Content-Type": "application/json",
+        //                 Authorization: `Bearer ${token}`, // Nếu có token
+        //             },
+        //             body: JSON.stringify({ post_id: post.id }),
+        //         });
+
+        //         if (response.ok) {
+        //             post.is_favorite = !post.is_favorite;
+        //         } else {
+        //             console.error(
+        //                 "Failed to toggle favorite:",
+        //                 await response.text()
+        //             );
+        //         }
+        //     } catch (error) {
+        //         console.error("Error toggling favorite:", error);
+        //     }
+        // },
+        async fetchFavoriteData() {
+            this.loading = true;
+            try {
+                // Truyền tham số page và itemsPerPage vào API
+                const response = await apiClient.get("/favorite", {
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${localStorage.getItem(
+                            "access_token"
+                        )}`, // Nếu có token
+                    },
+                });
+
+                console.log(response);
+
+                // Kiểm tra nếu dữ liệu rỗng
+                if (response.data.data.length === 0) {
+                    this.posts = []; // Đặt danh sách bài đăng thành rỗng
+                    this.totalPages = 0;
+                    this.currentPage = 0;
+                    this.showNoDataMessage = true; // Biến để hiển thị thông báo "Không tìm thấy bài đăng nào"
+                } else {
+                    this.posts = response.data.data;
+                    this.currentPage = response.data.pagination.current_page;
+                    this.itemsPerPage = response.data.pagination.per_page;
+                    this.totalPages = response.data.pagination.last_page;
+                    this.total = response.data.pagination.total;
+                    this.showNoDataMessage = false; // Ẩn thông báo nếu có dữ liệu
+                }
+            } catch (error) {
+                console.error("Error fetching data", error);
+            } finally {
+                this.loading = false; // Ẩn spinner
+            }
         },
         logout() {
             // Xử lý logic đăng xuất

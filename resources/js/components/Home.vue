@@ -351,18 +351,70 @@
                                     <p class="text-lg font-bold text-red-500">
                                         {{ post.price }} VNĐ/tháng
                                     </p>
-                                    <router-link
-                                        :to="`/room/${post.id}`"
-                                        class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
-                                    >
-                                        Chi tiết
-                                    </router-link>
+                                    <div class="flex items-center">
+                                        <button
+                                            @click="toggleFavorite(post)"
+                                            :class="
+                                                post.is_favorite
+                                                    ? 'bg-red-500 text-white'
+                                                    : 'bg-gray-300 text-gray-700'
+                                            "
+                                            class="px-4 py-2 rounded hover:opacity-80 transition"
+                                        >
+                                            <span v-if="post.is_favorite"
+                                                ><svg
+                                                    xmlns="http://www.w3.org/2000/svg"
+                                                    viewBox="0 0 24 24"
+                                                    fill="currentColor"
+                                                    class="size-6"
+                                                >
+                                                    <path
+                                                        d="m11.645 20.91-.007-.003-.022-.012a15.247 15.247 0 0 1-.383-.218 25.18 25.18 0 0 1-4.244-3.17C4.688 15.36 2.25 12.174 2.25 8.25 2.25 5.322 4.714 3 7.688 3A5.5 5.5 0 0 1 12 5.052 5.5 5.5 0 0 1 16.313 3c2.973 0 5.437 2.322 5.437 5.25 0 3.925-2.438 7.111-4.739 9.256a25.175 25.175 0 0 1-4.244 3.17 15.247 15.247 0 0 1-.383.219l-.022.012-.007.004-.003.001a.752.752 0 0 1-.704 0l-.003-.001Z"
+                                                    />
+                                                </svg>
+                                            </span>
+                                            <span v-else
+                                                ><svg
+                                                    xmlns="http://www.w3.org/2000/svg"
+                                                    fill="none"
+                                                    viewBox="0 0 24 24"
+                                                    stroke-width="1.5"
+                                                    stroke="currentColor"
+                                                    class="size-6"
+                                                >
+                                                    <path
+                                                        stroke-linecap="round"
+                                                        stroke-linejoin="round"
+                                                        d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z"
+                                                    />
+                                                </svg>
+                                            </span>
+                                        </button>
+                                        <router-link
+                                            :to="`/room/${post.id}`"
+                                            class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 ml-2"
+                                        >
+                                            Chi tiết
+                                        </router-link>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </section>
             </div>
+
+            <!-- modal login -->
+            <Modal v-if="showLoginModal" @close="closeModalError">
+                <div
+                    class="flex justify-between px-4 py-4 fixed top-32 right-3 bg-red-400"
+                >
+                    <p>Vui lòng đăng nhập để sử dụng tính năng này!</p>
+                    <button class="ml-2 text-white" @click="closeModalError">
+                        X
+                    </button>
+                </div>
+            </Modal>
 
             <!-- Modal xem tất cả ảnh theo kiểu slide -->
             <div
@@ -518,6 +570,8 @@ export default {
     },
     data() {
         return {
+            showLoginModal: false,
+            autoCloseTimeout: null, // Lưu ID của timeout
             is_select: "all",
             modalVisible: false,
             modalImages: [], // Mảng ảnh sẽ hiển thị trong modal
@@ -772,6 +826,67 @@ export default {
                 this.openDropdown = null; // Đóng dropdown sau khi chọn
             }
         },
+        showModal() {
+            this.showLoginModal = true;
+
+            // Hủy timeout cũ nếu có
+            if (this.autoCloseTimeout) {
+                clearTimeout(this.autoCloseTimeout);
+            }
+
+            console.log(this.autoCloseTimeout);
+
+            // Đặt timeout để đóng modal sau 3 giây
+            this.autoCloseTimeout = setTimeout(() => {
+                this.closeModalError();
+            }, 3000);
+
+            console.log(this.autoCloseTimeout);
+        },
+        closeModalError() {
+            this.showLoginModal = false;
+
+            // Hủy timeout khi modal đóng
+            if (this.autoCloseTimeout) {
+                clearTimeout(this.autoCloseTimeout);
+                this.autoCloseTimeout = null;
+            }
+        },
+        async toggleFavorite(post) {
+            try {
+                const token = localStorage.getItem("access_token");
+                if (!token) {
+                    this.showLoginModal = true; // Hiển thị modal thông báo
+                } else {
+                    // Gửi yêu cầu yêu thích
+                    this.favoriteItem();
+                }
+                const url = post.is_favorite
+                    ? "/api/v1/favorite"
+                    : "/api/v1/favorite";
+                const method = post.is_favorite ? "PUT" : "POST";
+
+                const response = await fetch(url, {
+                    method,
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${token}`, // Nếu có token
+                    },
+                    body: JSON.stringify({ post_id: post.id }),
+                });
+
+                if (response.ok) {
+                    post.is_favorite = !post.is_favorite;
+                } else {
+                    console.error(
+                        "Failed to toggle favorite:",
+                        await response.text()
+                    );
+                }
+            } catch (error) {
+                console.error("Error toggling favorite:", error);
+            }
+        },
         async fetchRoomatesData(page = 1) {
             this.loading = true;
             try {
@@ -785,6 +900,12 @@ export default {
                         price: this.price,
                         page: page,
                         limit: this.itemsPerPage, // hoặc 'per_page' tuỳ theo API của bạn
+                    },
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${localStorage.getItem(
+                            "access_token"
+                        )}`, // Nếu có token
                     },
                 });
 
@@ -842,6 +963,8 @@ export default {
             } catch (error) {
                 console.error("Error fetching data", error);
             } finally {
+                console.log(this.posts);
+
                 this.loading = false; // Ẩn spinner
             }
         },
