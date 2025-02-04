@@ -889,9 +889,6 @@ export default {
                 const token = localStorage.getItem("access_token");
                 if (!token) {
                     this.showLoginModal = true; // Hiển thị modal thông báo
-                } else {
-                    // Gửi yêu cầu yêu thích
-                    this.favoriteItem();
                 }
                 const url = post.is_favorite
                     ? "/api/v1/favorite"
