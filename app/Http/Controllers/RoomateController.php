@@ -36,7 +36,31 @@ class RoomateController extends Controller
 
             $roomates = Post::query()
                 ->when(!is_null($area), function ($query) use ($area) {
-                    return $query->where('area', '<=', $area);
+                    switch ($area) {
+                        case 10:
+                            return $query->where('area', '<=', 10);
+                            break;
+
+                        case 20:
+                            return $query->where('area', '<=', 20)->where('area', '>=', 10);
+                            break;
+
+                        case 30:
+                            return $query->where('area', '<=', 30)->where('area', '>=', 20);
+                            break;
+
+                        case 40:
+                            return $query->where('area', '<=', 40)->where('area', '>=', 30);
+                            break;
+
+                        case 50:
+                            return $query->where('area', '>=', 50);
+                            break;
+
+                        default:
+                            return $query->where('area', '<=', $area);
+                            break;
+                    }
                 })
                 ->when(!is_null($price), function ($query) use ($price) {
                     return $query->where('price', '<', $price);

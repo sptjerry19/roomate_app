@@ -350,12 +350,11 @@
                     class="flex-1 overflow-x-hidden overflow-y-auto bg-gray-200"
                 >
                     <div class="container px-6 py-8 mx-auto">
-                        <h3 class="text-3xl font-medium text-gray-700">
-                            Products
+                        <h3 class="text-3xl font-medium text-gray-700 mb-4">
+                            Danh sách Motor
                         </h3>
 
-                        <div class="mt-8"></div>
-
+                        <!-- Bảng hiển thị danh sách motor -->
                         <div class="flex flex-col mt-8">
                             <div
                                 class="py-2 -my-2 overflow-x-auto sm:-mx-6 sm:px-6 lg:-mx-8 lg:px-8"
@@ -369,137 +368,47 @@
                                                 <th
                                                     class="px-6 py-3 text-xs font-medium leading-4 tracking-wider text-left text-gray-500 uppercase border-b border-gray-200 bg-gray-50"
                                                 >
-                                                    Name
+                                                    Tên Motor
                                                 </th>
                                                 <th
                                                     class="px-6 py-3 text-xs font-medium leading-4 tracking-wider text-left text-gray-500 uppercase border-b border-gray-200 bg-gray-50"
                                                 >
-                                                    Category
-                                                </th>
-                                                <th
-                                                    class="px-6 py-3 text-xs font-medium leading-4 tracking-wider text-left text-gray-500 uppercase border-b border-gray-200 bg-gray-50"
-                                                >
-                                                    Status
-                                                </th>
-                                                <th
-                                                    class="px-6 py-3 text-xs font-medium leading-4 tracking-wider text-left text-gray-500 uppercase border-b border-gray-200 bg-gray-50"
-                                                >
-                                                    Unit
+                                                    Ngày tạo
                                                 </th>
                                                 <th
                                                     class="px-6 py-3 border-b border-gray-200 bg-gray-50"
-                                                ></th>
+                                                >
+                                                    Chi tiết
+                                                </th>
                                             </tr>
                                         </thead>
 
                                         <tbody class="bg-white">
                                             <tr
-                                                v-for="product in products"
-                                                :key="product.id"
+                                                v-for="motor in motors"
+                                                :key="motor.id"
                                             >
                                                 <td
                                                     class="px-6 py-4 whitespace-no-wrap border-b border-gray-200"
                                                 >
-                                                    <div
-                                                        class="flex items-center"
-                                                    >
-                                                        <div
-                                                            class="flex-shrink-0 w-10 h-10"
-                                                        >
-                                                            <img
-                                                                class="w-10 h-10 rounded-full object-cover"
-                                                                :src="
-                                                                    product.image &&
-                                                                    product.image !==
-                                                                        'https://fnbapi.vietapp.vn'
-                                                                        ? product.image
-                                                                        : '/images/product.jpg'
-                                                                "
-                                                                alt=""
-                                                            />
-                                                        </div>
-
-                                                        <div class="ml-4">
-                                                            <div
-                                                                class="text-sm font-medium leading-5 text-gray-900"
-                                                            >
-                                                                {{
-                                                                    product.name
-                                                                }}
-                                                            </div>
-                                                            <div
-                                                                class="text-sm leading-5 text-gray-500"
-                                                            >
-                                                                {{
-                                                                    formatVND(
-                                                                        product.price
-                                                                    )
-                                                                }}
-                                                            </div>
-                                                        </div>
-                                                    </div>
+                                                    {{ motor.name }}
                                                 </td>
-
                                                 <td
                                                     class="px-6 py-4 whitespace-no-wrap border-b border-gray-200"
                                                 >
-                                                    <div
-                                                        class="text-sm leading-5 text-gray-900"
-                                                    >
-                                                        {{
-                                                            product.category
-                                                                ? product
-                                                                      .category
-                                                                      .name
-                                                                : "chưa cấu hình"
-                                                        }}
-                                                    </div>
-                                                    <div
-                                                        class="text-sm leading-5 text-gray-500"
-                                                    >
-                                                        {{
-                                                            product.category
-                                                                ? product
-                                                                      .category
-                                                                      .code
-                                                                : "chưa cấu hình"
-                                                        }}
-                                                    </div>
+                                                    {{ motor.created_at }}
                                                 </td>
-
                                                 <td
                                                     class="px-6 py-4 whitespace-no-wrap border-b border-gray-200"
                                                 >
-                                                    <span
-                                                        :class="{
-                                                            'text-green-800 bg-green-100':
-                                                                product.status ===
-                                                                'active',
-                                                            'text-red-800 bg-red-100':
-                                                                product.status !==
-                                                                'active',
-                                                        }"
-                                                        class="inline-flex px-2 text-xs font-semibold leading-5 text-green-800 bg-green-100 rounded-full"
-                                                        >{{
-                                                            product.status
-                                                        }}</span
+                                                    <button
+                                                        @click="
+                                                            showDetail(motor)
+                                                        "
+                                                        class="bg-indigo-600 hover:bg-indigo-800 text-white px-3 py-1 rounded"
                                                     >
-                                                </td>
-
-                                                <td
-                                                    class="px-6 py-4 text-sm leading-5 text-gray-500 whitespace-no-wrap border-b border-gray-200"
-                                                >
-                                                    {{ product.unit_name }}
-                                                </td>
-
-                                                <td
-                                                    class="px-6 py-4 text-sm font-medium leading-5 text-right whitespace-no-wrap border-b border-gray-200"
-                                                >
-                                                    <a
-                                                        href="#"
-                                                        class="text-indigo-600 hover:text-indigo-900"
-                                                        >Edit</a
-                                                    >
+                                                        Chi tiết
+                                                    </button>
                                                 </td>
                                             </tr>
                                         </tbody>
@@ -514,6 +423,30 @@
                                 </div>
                             </div>
                         </div>
+
+                        <!-- Phần hiển thị chi tiết motor với đồ thị vận tốc theo thời gian -->
+                        <div
+                            v-if="selectedMotor"
+                            class="mt-8 p-4 border rounded shadow"
+                        >
+                            <h3 class="text-2xl font-medium mb-4">
+                                Chi tiết Motor: {{ selectedMotor.name }}
+                            </h3>
+                            <canvas
+                                id="motorChart"
+                                ref="motorChart"
+                                width="600"
+                                height="400"
+                            ></canvas>
+                            <button
+                                @click="closeDetail"
+                                class="mt-4 bg-red-600 hover:bg-red-800 text-white px-3 py-1 rounded"
+                            >
+                                Đóng
+                            </button>
+                        </div>
+
+                        <loadingVue :isLoading="loading" />
                     </div>
                 </main>
             </div>
@@ -527,55 +460,112 @@
 import apiClient from "../../axios";
 import loadingVue from "../loading.vue";
 import PaginationVue from "../Pagination.vue";
-
-import { formatVND } from "../../common";
+import Chart from "chart.js/auto";
 
 export default {
-    name: "Dashboard",
+    name: "MotorList",
     components: {
         PaginationVue,
         loadingVue,
     },
     data() {
         return {
-            keyword: "",
+            motors: [],
             loading: false,
-            products: [],
-            currentPage: 1, // Trang hiện tại
-            itemsPerPage: 12, // Số sản phẩm mỗi trang
-            totalPages: 6, // Số sản phẩm mỗi trang
+            currentPage: 1,
+            itemsPerPage: 10,
+            totalPages: 1,
+            selectedMotor: null, // Motor được chọn để xem chi tiết
+            chart: null, // Instance Chart.js
         };
     },
     mounted() {
-        this.fetchRoomateData();
+        this.fetchMotorData();
     },
     methods: {
-        async fetchRoomateData(page = 1) {
+        async fetchMotorData(page = 1) {
             this.loading = true;
             try {
-                // Truyền tham số page và itemsPerPage vào API
-                const response = await apiClient.get("/product", {
+                const response = await apiClient.get("/api/v1/motor", {
                     params: {
-                        keyword: this.keyword,
                         page: page,
-                        limit: this.itemsPerPage, // hoặc 'per_page' tuỳ theo API của bạn
+                        limit: this.itemsPerPage,
                     },
                 });
-                this.products = response.data.data;
+                // Giả sử API trả về cấu trúc:
+                // { status: "success", message: "...", data: [...], pagination: { current_page, per_page, last_page, ... } }
+                this.motors = response.data.data;
                 this.currentPage = response.data.pagination.current_page;
                 this.itemsPerPage = response.data.pagination.per_page;
                 this.totalPages = response.data.pagination.last_page;
             } catch (error) {
-                console.error("Error fetching data", error);
+                console.error("Error fetching motor data", error);
             } finally {
-                this.loading = false; // Ẩn spinner
+                this.loading = false;
             }
         },
         handlePageChange(page) {
             this.currentPage = page;
-            this.fetchRoomateData(page); // Gọi lại API với trang mới
+            this.fetchMotorData(page);
         },
-        formatVND,
+        showDetail(motor) {
+            this.selectedMotor = motor;
+            // Sau khi DOM cập nhật (với $nextTick) ta vẽ đồ thị
+            this.$nextTick(() => {
+                this.renderChart();
+            });
+        },
+        closeDetail() {
+            this.selectedMotor = null;
+            if (this.chart) {
+                this.chart.destroy();
+                this.chart = null;
+            }
+        },
+        renderChart() {
+            // Hủy đồ thị cũ nếu có
+            if (this.chart) {
+                this.chart.destroy();
+            }
+            // Lấy dữ liệu từ motor được chọn
+            const labels = this.selectedMotor.data.map((item) => item.time);
+            const speeds = this.selectedMotor.data.map((item) => item.speed);
+
+            const ctx = this.$refs.motorChart.getContext("2d");
+            this.chart = new Chart(ctx, {
+                type: "line",
+                data: {
+                    labels: labels,
+                    datasets: [
+                        {
+                            label: "Vận tốc (mm/s)",
+                            data: speeds,
+                            borderColor: "rgba(75,192,192,1)",
+                            backgroundColor: "rgba(75,192,192,0.2)",
+                            fill: false,
+                            tension: 0.1,
+                        },
+                    ],
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        x: {
+                            title: {
+                                display: true,
+                                text: "Time (đơn vị)",
+                            },
+                        },
+                        y: {
+                            title: {
+                                display: true,
+                                text: "Speed (mm/s)",
+                            },
+                        },
+                    },
+                },
+            });
+        },
     },
 };
 </script>

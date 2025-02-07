@@ -361,41 +361,38 @@ export default {
             // Toggle hiển thị dropdown menu
             this.showDropdown = !this.showDropdown;
         },
-        // async toggleFavorite(post) {
-        //     try {
-        //         const token = localStorage.getItem("access_token");
-        //         if (!token) {
-        //             this.showLoginModal = true; // Hiển thị modal thông báo
-        //         } else {
-        //             // Gửi yêu cầu yêu thích
-        //             this.favoriteItem();
-        //         }
-        //         const url = post.is_favorite
-        //             ? "/api/v1/favorite"
-        //             : "/api/v1/favorite";
-        //         const method = post.is_favorite ? "PUT" : "POST";
+        async toggleFavorite(post) {
+            try {
+                const token = localStorage.getItem("access_token");
+                if (!token) {
+                    this.showLoginModal = true; // Hiển thị modal thông báo
+                }
+                const url = post.is_favorite
+                    ? "/api/v1/favorite"
+                    : "/api/v1/favorite";
+                const method = post.is_favorite ? "PUT" : "POST";
 
-        //         const response = await fetch(url, {
-        //             method,
-        //             headers: {
-        //                 "Content-Type": "application/json",
-        //                 Authorization: `Bearer ${token}`, // Nếu có token
-        //             },
-        //             body: JSON.stringify({ post_id: post.id }),
-        //         });
+                const response = await fetch(url, {
+                    method,
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${token}`, // Nếu có token
+                    },
+                    body: JSON.stringify({ post_id: post.id }),
+                });
 
-        //         if (response.ok) {
-        //             post.is_favorite = !post.is_favorite;
-        //         } else {
-        //             console.error(
-        //                 "Failed to toggle favorite:",
-        //                 await response.text()
-        //             );
-        //         }
-        //     } catch (error) {
-        //         console.error("Error toggling favorite:", error);
-        //     }
-        // },
+                if (response.ok) {
+                    post.is_favorite = !post.is_favorite;
+                } else {
+                    console.error(
+                        "Failed to toggle favorite:",
+                        await response.text()
+                    );
+                }
+            } catch (error) {
+                console.error("Error toggling favorite:", error);
+            }
+        },
         async fetchFavoriteData() {
             this.loading = true;
             try {
