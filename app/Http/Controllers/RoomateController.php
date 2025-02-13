@@ -221,6 +221,15 @@ class RoomateController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        try {
+            $roommate = Post::query()->findOrFail($id);
+
+            $roommate->delete();
+
+            return ApiResponse::success([], 'Xóa Roomate thành công!');
+        } catch (\Exception $e) {
+            Log::error($e->getMessage());
+            return ApiResponse::error('Xóa roomate thất bại!', 500);
+        }
     }
 }
