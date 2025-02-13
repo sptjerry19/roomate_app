@@ -477,16 +477,26 @@ export default {
             totalPages: 1,
             selectedMotor: null, // Motor được chọn để xem chi tiết
             chart: null, // Instance Chart.js
+            timer: null, // Timer để gọi fetchMotorData() mỗi 5 giây
         };
     },
     mounted() {
+        // Gọi lần đầu khi component được mount
         this.fetchMotorData();
+        // Cài đặt interval để gọi fetchMotorData() mỗi 5 giây
+        this.timer = setInterval(() => {
+            this.fetchMotorData(this.currentPage);
+        }, 5000);
+    },
+    beforeDestroy() {
+        // Dọn dẹp timer khi component bị huỷ (hoặc sử dụng destroyed() nếu dùng Vue 2)
+        clearInterval(this.timer);
     },
     methods: {
         async fetchMotorData(page = 1) {
             this.loading = true;
             try {
-                const response = await apiClient.get("/api/v1/motor", {
+                const response = await apiClient.get("/motor", {
                     params: {
                         page: page,
                         limit: this.itemsPerPage,
@@ -510,7 +520,7 @@ export default {
         },
         showDetail(motor) {
             this.selectedMotor = motor;
-            // Sau khi DOM cập nhật (với $nextTick) ta vẽ đồ thị
+            // Sau khi DOM cập nhật, vẽ đồ thị
             this.$nextTick(() => {
                 this.renderChart();
             });
