@@ -180,44 +180,18 @@
         <!-- User Info -->
         <div class="text-center mt-20">
             <h1 class="text-2xl font-bold text-gray-800">{{ user.name }}</h1>
-            <p class="text-gray-600">{{ user.email }}</p>
+            <p class="text-gray-600 font-bold">
+                Người theo dõi: 21 | Đang theo dõi: 32
+            </p>
+            <p class="text-gray-600 mt-4">Tuổi: 21</p>
+            <p class="text-gray-600">Quê quán: Hà Tĩnh</p>
+            <p class="text-gray-600">Nghề nghiệp: Sinh viên</p>
+            <p class="text-gray-600">
+                Nơi học tập/làm việc: Đại học Kiến trúc Hà Nội
+            </p>
+            <!-- <p class="text-gray-600">{{ user.email }}</p>
             <p class="text-gray-600">{{ user.phone }}</p>
-            <p class="text-gray-600">{{ user.address }}</p>
-        </div>
-
-        <!-- About Section -->
-        <div class="mt-8 p-4 bg-white rounded-lg shadow">
-            <h2 class="text-xl font-semibold text-gray-800 border-b pb-2">
-                About
-            </h2>
-            <p class="mt-4 text-gray-600">{{ user.about }}</p>
-        </div>
-
-        <!-- Additional Info Section -->
-        <div class="mt-8 p-4 bg-white rounded-lg shadow">
-            <h2 class="text-xl font-semibold text-gray-800 border-b pb-2">
-                Additional Information
-            </h2>
-            <ul class="mt-4 space-y-2">
-                <li class="flex items-center">
-                    <span class="font-semibold text-gray-800 w-32"
-                        >Date of Birth:</span
-                    >
-                    <span class="text-gray-600">{{ user.dob }}</span>
-                </li>
-                <li class="flex items-center">
-                    <span class="font-semibold text-gray-800 w-32"
-                        >Gender:</span
-                    >
-                    <span class="text-gray-600">{{ user.gender }}</span>
-                </li>
-                <li class="flex items-center">
-                    <span class="font-semibold text-gray-800 w-32"
-                        >Member Since:</span
-                    >
-                    <span class="text-gray-600">{{ user.joined }}</span>
-                </li>
-            </ul>
+            <p class="text-gray-600">{{ user.address }}</p> -->
         </div>
 
         <!-- Favorite Rooms Section -->
@@ -326,8 +300,8 @@ export default {
             autoCloseTimeout: null,
             loading: false,
             coverPhoto:
-                "https://i.pinimg.com/736x/b2/35/f9/b235f98eaf33557113de7f75bac0c002.jpg", // Placeholder ảnh bìa
-            avatar: "https://www.redwolf.in/image/cache/catalog/stickers/jerry-face-sticker-india-600x800.jpg?m=1687857111", // Placeholder avatar
+                "https://i.pinimg.com/736x/22/42/4c/22424c471b2dff09a1a0805b55e584de.jpg", // Placeholder ảnh bìa
+            avatar: "https://s3-alpha-sig.figma.com/img/0d28/405a/bac8b5ce229195ce2f214e6c8be0c35f?Expires=1740355200&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=FdGXl3-IohZkjbsoXrPNGGfNu37gBTtj-NNTGl2iPaTPyPJWXChe2UZzTSOcAMqb2Hv8V8FLqEjLs2BBd7B5TYwWWUv0q8nVjC916LKwRkKbOvDeY~X71cLr5dITeaj~~aaRg3khMToIelydHriA4X5NnpN1LnQy8TSVRidbn3tScrXn4Ui1hw4JIz4tdB4uc4lDlRII8T4ienBO8-3tcOz9BoFDG50b82PlQsC-fSzbiJ5NOJNdaKjUKxXi3LK1~ha82u5u6YU5Wa2Gqgv~fNpNhraqfTRIJ-CZ3qsDirPcx9Q2vj0G6MjWiHvBGKV8JXrR5Oxu0nazH8jzdrQdrA__", // Placeholder avatar
             user: {
                 name: "Nguyen Van A",
                 email: "nguyenvana@example.com",

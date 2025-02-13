@@ -240,37 +240,27 @@
 
                         <!-- Thông tin phòng trọ -->
                         <div
-                            class="space-y-6 bg-blue-200 mt-12 px-5 py-8 rounded-xl"
+                            class="space-y-6 bg-gray-200 mt-12 px-5 py-8 rounded-xl"
                         >
                             <div class="flex flex-wrap gap-6">
                                 <div class="flex-1">
-                                    <p
-                                        class="text-lg font-semibold text-gray-600"
-                                    >
-                                        Vị trí:
-                                    </p>
-                                    <p class="text-gray-700">
-                                        {{ roomDetail.location }}
+                                    <p class="text-gray-700 font-bold text-xl">
+                                        {{ roomDetail.title }}
                                     </p>
                                 </div>
+                            </div>
+                            <div class="flex flex-wrap gap-6">
                                 <div class="flex-1">
-                                    <p
-                                        class="text-lg font-semibold text-gray-600"
-                                    >
-                                        Diện tích:
-                                    </p>
                                     <p class="text-gray-700">
+                                        {{ roomDetail.price }} VNĐ/tháng -
                                         {{ roomDetail.area }} m²
                                     </p>
                                 </div>
+                            </div>
+                            <div class="flex flex-wrap gap-6">
                                 <div class="flex-1">
-                                    <p
-                                        class="text-lg font-semibold text-gray-600"
-                                    >
-                                        Giá:
-                                    </p>
                                     <p class="text-gray-700">
-                                        {{ roomDetail.price }} VNĐ/tháng
+                                        {{ roomDetail.location }}
                                     </p>
                                 </div>
                             </div>
@@ -278,7 +268,7 @@
                             <!-- Mô tả -->
                             <div>
                                 <p class="text-lg font-semibold text-gray-600">
-                                    Mô tả:
+                                    Thông tin phòng trọ:
                                 </p>
                                 <p class="text-gray-700">
                                     {{ roomDetail.description }}
@@ -286,7 +276,7 @@
                             </div>
 
                             <!-- Đăng bởi -->
-                            <div>
+                            <!-- <div>
                                 <p class="text-lg font-semibold text-gray-600">
                                     Đăng bởi:
                                 </p>
@@ -296,7 +286,7 @@
                                         "Chưa có thông tin"
                                     }}
                                 </p>
-                            </div>
+                            </div> -->
                         </div>
                     </div>
                     <!-- Người đăng -->
@@ -367,7 +357,7 @@
                 </div>
 
                 <!-- Tin đăng cùng khu vực -->
-                <div class="equal-area mt-20">
+                <!-- <div class="equal-area mt-20">
                     <h2 class="text-center text-4xl font-bold size-20 w-full">
                         Tin đăng cùng khu vực
                     </h2>
@@ -403,7 +393,7 @@
                             </div>
                         </div>
                     </div>
-                </div>
+                </div> -->
 
                 <!-- Footer -->
                 <footer class="bg-primary text-white py-10">
@@ -545,7 +535,7 @@ export default {
             user: null,
             showDropdown: false, // Điều khiển hiển thị menu dropdown
             defaultAvatar:
-                "https://diaocdangmuasaigon.com/wp-content/uploads/2024/09/anh-avatar-vo-tri-7ImqGGy.jpg",
+                "https://bizweb.dktcdn.net/100/443/348/articles/nau-vang-4823-1.jpg?v=1691119900993",
         };
     },
     mounted() {

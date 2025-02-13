@@ -445,15 +445,11 @@
                                 Đóng
                             </button>
                         </div>
-
-                        <loadingVue :isLoading="loading" />
                     </div>
                 </main>
             </div>
         </div>
     </div>
-
-    <loadingVue :isLoading="loading"></loadingVue>
 </template>
 
 <script>
