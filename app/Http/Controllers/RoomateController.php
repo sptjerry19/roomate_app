@@ -162,7 +162,58 @@ class RoomateController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        try {
+            // Xác thực dữ liệu
+            $params = $request->validated();
+
+            // Lấy danh sách ảnh base64 từ yêu cầu
+            $base64Images = $params['images'];
+
+            // Upload ảnh base64
+            $images = Common::uploadbase64Image($base64Images, '/room', true);
+
+            // Biến chứa URL ảnh sau khi upload
+            $uploadedImages = [];
+            foreach ($images as $image) {
+                // Xử lý và thêm URL ảnh đã upload vào mảng $uploadedImages
+                $uploadedImages[] = Common::responseImage($image); // Giả sử responseImage trả về URL của ảnh
+            }
+
+            // Xem dữ liệu đã upload
+            Log::info('Uploaded Images:', $uploadedImages);
+
+            // Dữ liệu bài đăng
+            $data = [
+                'title' => $params['title'],
+                'location' => $params['location'],
+                'district' => $params['district'],
+                'ward' => $params['ward'],
+                'price' => $params['price'],
+                'area' => $params['area'],
+                'posted_by' => $params['posted_by'],
+                'phone' => $params['phone'],
+                'description' => $params['description'],
+                'images' => $uploadedImages, // Lưu ảnh đã upload
+                'type' => $params['type'],
+                'status' => 'available',
+            ];
+
+            // Log dữ liệu để kiểm tra
+            Log::info('Roommate data:', $data);
+
+            // Tạo bài đăng
+            $roomate = Post::query()->findOrFail($id);
+            $roomate->update($data);
+
+            // Trả về kết quả thành công
+            return ApiResponse::success(new RoomateResource($roomate), 'Tạo Roomate thành công!');
+        } catch (\Exception $e) {
+            // Ghi lại lỗi vào log
+            Log::error('Error creating roommate post: ' . $e->getMessage());
+
+            // Trả về lỗi
+            return ApiResponse::error('Tạo Roomate thất bại!', 500);
+        }
     }
 
     /**

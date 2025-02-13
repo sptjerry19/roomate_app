@@ -31,6 +31,7 @@ Route::group(['middleware' => 'api', 'prefix' => 'v1'], function () {
         Route::get('/', [RoomateController::class, 'index'])->name('roomate.view');
         Route::get('/{id}', [RoomateController::class, 'show'])->name('roomate.show');
         Route::post('/', [RoomateController::class, 'store'])->name('roomate.upload');
+        Route::post('/{id}', [RoomateController::class, 'update'])->name('roomate.update');
         Route::delete('/', [RoomateController::class, 'destroy'])->name('roomate.delete');
     });
 
