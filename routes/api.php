@@ -29,10 +29,11 @@ Route::group(['middleware' => 'api', 'prefix' => 'v1'], function () {
 
     Route::group(['middleware' => 'api', 'prefix' => 'roomate'], function () {
         Route::get('/', [RoomateController::class, 'index'])->name('roomate.view');
-        Route::get('/{id}', [RoomateController::class, 'show'])->name('roomate.show');
+        Route::get('/manage', [RoomateController::class, 'indexManage'])->name('roomate.indexManage');
         Route::post('/', [RoomateController::class, 'store'])->name('roomate.upload');
-        Route::post('/{id}', [RoomateController::class, 'update'])->name('roomate.update');
-        Route::delete('/', [RoomateController::class, 'destroy'])->name('roomate.delete');
+        Route::get('/{id}', [RoomateController::class, 'show'])->name('roomate.show');
+        Route::put('/manage/{id}', [RoomateController::class, 'update'])->name('roomate.update');
+        Route::delete('/manage/{id}', [RoomateController::class, 'destroy'])->name('roomate.delete');
     });
 
     Route::group(['middleware' => 'api', 'prefix' => 'favorite'], function () {

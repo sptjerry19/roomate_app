@@ -84,6 +84,76 @@ class RoomateController extends Controller
         }
     }
 
+    public function indexManage(Request $request)
+    {
+        $params = $request->validate([
+            'keyword' => 'nullable|string',
+            'area' => 'nullable|string',
+            'price' => 'nullable|integer',
+            'district' => 'nullable|string',
+            'type' => 'nullable|string',
+        ]);
+
+        try {
+            $keyword = $params['keyword'] ?? null;
+            $area = $params['area'] ?? null;
+            $price = $params['price'] ?? null;
+            $district = $params['district'] ?? null;
+            $type = $params['type'] ?? null;
+            $limit = $request->input('limit', 10);
+            $userId = auth()->user()->id ?? null;
+
+            $roomates = Post::query()
+                ->when(!is_null($area), function ($query) use ($area) {
+                    switch ($area) {
+                        case 10:
+                            return $query->where('area', '<=', 10);
+                            break;
+
+                        case 20:
+                            return $query->where('area', '<=', 20)->where('area', '>=', 10);
+                            break;
+
+                        case 30:
+                            return $query->where('area', '<=', 30)->where('area', '>=', 20);
+                            break;
+
+                        case 40:
+                            return $query->where('area', '<=', 40)->where('area', '>=', 30);
+                            break;
+
+                        case 50:
+                            return $query->where('area', '>=', 50);
+                            break;
+
+                        default:
+                            return $query->where('area', '<=', $area);
+                            break;
+                    }
+                })
+                ->when(!is_null($price), function ($query) use ($price) {
+                    return $query->where('price', '<', $price);
+                })
+                ->when(!is_null($district), function ($query) use ($district) {
+                    return $query->where('district', 'like', '%' . $district . '%');
+                })
+                ->when(!is_null($keyword), function ($query) use ($keyword) {
+                    return $query->where('title', 'like', '%' . $keyword . '%');
+                })
+                ->when(!is_null($type), function ($query) use ($type) {
+                    return $query->where('type', $type);
+                })
+                ->where('user_id', $userId) // Lấy bài đăng của người đăng hiện tại
+                ->orderByDesc('created_at')
+                ->paginate($limit);
+
+            return ApiResponse::success(new RoomateCollection($roomates), 'Lấy danh sách Roomate thành công!');
+        } catch (\Exception $e) {
+            Log::error($e->getMessage());
+            return ApiResponse::error('Lấy danh sách roomate thất bại!', 500);
+        }
+    }
+
     /**
      * Store a newly created resource in storage.
      */
@@ -122,6 +192,7 @@ class RoomateController extends Controller
                 'description' => $params['description'],
                 'images' => $uploadedImages, // Lưu ảnh đã upload
                 'type' => $params['type'],
+                'user_id' => auth()->user()->id ?? null, // Lưu ID người đăng
                 'status' => 'available',
             ];
 
@@ -160,7 +231,7 @@ class RoomateController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(PostRequest $request, string $id)
     {
         try {
             // Xác thực dữ liệu
@@ -195,6 +266,7 @@ class RoomateController extends Controller
                 'description' => $params['description'],
                 'images' => $uploadedImages, // Lưu ảnh đã upload
                 'type' => $params['type'],
+                'user_id' => auth()->user()->id ?? null, // Lưu ID người đăng
                 'status' => 'available',
             ];
 
