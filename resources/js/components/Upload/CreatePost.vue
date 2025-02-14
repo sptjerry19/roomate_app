@@ -431,15 +431,29 @@ export default {
         },
         async submitPost() {
             try {
+                // Lấy token từ localStorage
+                const token = localStorage.getItem("access_token");
+                if (!token) {
+                    alert("Bạn cần đăng nhập trước khi đăng bài!");
+                    return;
+                }
+
+                // Chuẩn bị dữ liệu gửi lên API
                 const dataToSend = {
-                    ...this.post, // Sao chép tất cả dữ liệu từ this.post
-                    district: this.selectedDistrict, // Thêm district
-                    ward: this.selectedWard, // Thêm ward
+                    ...this.post,
+                    district: this.selectedDistrict,
+                    ward: this.selectedWard,
                 };
 
-                const response = await apiClient.post("/roomate", dataToSend); // Gửi dữ liệu đã sửa
+                // Gửi request với token trong header
+                const response = await apiClient.post("/roomate", dataToSend, {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                });
+
                 alert("Đăng bài thành công!");
-                this.$router.push(`/room/${response.data.id}`); // Điều hướng đến trang chi tiết sau khi đăng thành công
+                this.$router.push(`/room/${response.data.id}`);
             } catch (error) {
                 console.error("Lỗi khi đăng bài:", error);
                 alert("Đăng bài thất bại. Vui lòng thử lại.");

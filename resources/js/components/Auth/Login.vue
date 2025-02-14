@@ -78,7 +78,7 @@
                         <!-- Email Input -->
                         <div class="mb-6">
                             <label for="email" class="block text-gray-600 mb-2"
-                                >Email/Số điện thoại</label
+                                >Email</label
                             >
                             <input
                                 type="text"

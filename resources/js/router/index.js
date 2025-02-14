@@ -11,6 +11,7 @@ import Detail from "../components/Detail.vue";
 import CreatePost from "../components/Upload/CreatePost.vue";
 import Profile from "../components/Profile.vue";
 import RoomateV2 from "../components/RoomateV2.vue";
+import RoommateManagement from "../components/Admin/RoommateManagement.vue";
 
 const routes = [
     {
@@ -50,6 +51,10 @@ const routes = [
     {
         path: "/admin",
         component: Dashboard,
+    },
+    {
+        path: "/manage",
+        component: RoommateManagement,
     },
     {
         path: "/collection",

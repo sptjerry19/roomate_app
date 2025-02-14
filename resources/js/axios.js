@@ -2,8 +2,8 @@ import axios from "axios";
 
 // Tạo một axios instance
 const apiClient = axios.create({
-    baseURL: "http://aahome.click/api/v1", // Thay thế bằng URL API của bạn
-    // baseURL: "http://127.0.0.1:8000", // Thay thế bằng URL API của bạn
+    // baseURL: "http://aahome.click/api/v1", // Thay thế bằng URL API của bạn
+    baseURL: "http://127.0.0.1:8000/api/v1", // Thay thế bằng URL API của bạn
     headers: {
         "Content-Type": "application/json",
     },
@@ -25,8 +25,8 @@ apiClient.interceptors.request.use(
 
 // Tương tự cho axiosInstance
 const axiosInstance = axios.create({
-    baseURL: "http://aahome.click/api/v1", // Thay thế bằng URL API của bạn
-    // baseURL: "http://127.0.0.1:8000", // Thay thế bằng URL API của bạn
+    // baseURL: "http://aahome.click/api/v1", // Thay thế bằng URL API của bạn
+    baseURL: "http://127.0.0.1:8000/api/v1", // Thay thế bằng URL API của bạn
     headers: {
         "Content-Type": "application/json",
     },
