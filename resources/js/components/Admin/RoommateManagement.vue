@@ -2,6 +2,12 @@
     <div class="p-6">
         <h1 class="text-2xl font-bold mb-4">Quản lý bài đăng tìm bạn ở ghép</h1>
 
+        <router-link to="/">
+            <button class="bg-blue-500 text-white px-4 py-2 rounded mr-3">
+                Trang trủ
+            </button>
+        </router-link>
+
         <!-- Nút thêm mới -->
         <button
             @click="openModal()"
@@ -137,13 +143,25 @@
                 </form>
             </div>
         </div>
+
+        <!-- Component phân trang -->
+        <Pagination
+            class="mt-4"
+            :total-pages="totalPages"
+            :current-page="currentPage"
+            @page-changed="handlePageChange"
+        />
     </div>
 </template>
 
 <script>
 import axios from "axios";
+import Pagination from "../Pagination.vue";
 
 export default {
+    components: {
+        Pagination,
+    },
     data() {
         return {
             posts: [], // Danh sách bài đăng
@@ -164,6 +182,11 @@ export default {
                 status: "available",
             },
             token: localStorage.getItem("access_token"),
+
+            currentPage: 1, // Trang hiện tại
+            itemsPerPage: 12, // Số sản phẩm mỗi trang
+            totalPages: 6, // Số sản phẩm mỗi trang
+            total: 0, // tổng trang
         };
     },
     methods: {
@@ -178,6 +201,10 @@ export default {
                 });
 
                 this.posts = response.data.data;
+                this.currentPage = response.data.pagination.current_page;
+                this.itemsPerPage = response.data.pagination.per_page;
+                this.totalPages = response.data.pagination.last_page;
+                this.total = response.data.pagination.total;
                 console.log("Danh sách bài đăng:", this.posts);
             } catch (error) {
                 console.error("Lỗi khi tải bài đăng:", error);
