@@ -4,7 +4,7 @@
 
         <router-link to="/">
             <button class="bg-blue-500 text-white px-4 py-2 rounded mr-3">
-                Trang trủ
+                Trang chủ
             </button>
         </router-link>
 
