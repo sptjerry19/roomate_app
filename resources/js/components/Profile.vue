@@ -180,15 +180,25 @@
             <p class="text-gray-600 font-bold">
                 Người theo dõi: 21 | Đang theo dõi: 32
             </p>
-            <p class="text-gray-600 mt-4">Tuổi: 21</p>
-            <p class="text-gray-600">Quê quán: Hà Tĩnh</p>
-            <p class="text-gray-600">Nghề nghiệp: Sinh viên</p>
+            <p class="text-gray-600 mt-4">Tuổi: {{ user.age }}</p>
+            <p class="text-gray-600">Quê quán: {{ user.hometown }}</p>
+            <p class="text-gray-600">Nghề nghiệp: {{ user.job }}</p>
             <p class="text-gray-600">
-                Nơi học tập/làm việc: Đại học Kiến trúc Hà Nội
+                Nơi học tập/làm việc: {{ user.workplace }}
             </p>
-            <!-- <p class="text-gray-600">{{ user.email }}</p>
-            <p class="text-gray-600">{{ user.phone }}</p>
-            <p class="text-gray-600">{{ user.address }}</p> -->
+            <!-- <p class="text-gray-600">{{ user.email }}</p> -->
+            <button
+                class="text-gray-600 rounded-md border border-gray-300 px-4 py-2 mt-4 font-bold"
+            >
+                {{ user.phone }}
+            </button>
+            <!-- <p class="text-gray-600">{{ user.address }}</p> -->
+            <button
+                @click="openEditModal"
+                class="mt-4 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 ml-5"
+            >
+                Chỉnh sửa thông tin
+            </button>
         </div>
 
         <!-- Favorite Rooms Section -->
@@ -285,6 +295,67 @@
         </div>
     </div>
 
+    <!-- Modal -->
+    <div
+        v-if="isEditModalOpen"
+        class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50"
+    >
+        <div class="bg-white p-6 rounded-lg shadow-lg w-96">
+            <h2 class="text-xl font-bold mb-4">Chỉnh sửa thông tin</h2>
+
+            <label class="block mb-2">Tên:</label>
+            <input
+                v-model="editedUser.name"
+                class="w-full border px-3 py-2 rounded mb-4"
+            />
+
+            <label class="block mb-2">Tuổi:</label>
+            <input
+                type="number"
+                v-model="editedUser.age"
+                class="w-full border px-3 py-2 rounded mb-4"
+            />
+            <label class="block mb-2">Số điện thoại:</label>
+            <input
+                v-model="editedUser.phone"
+                class="w-full border px-3 py-2 rounded mb-4"
+            />
+
+            <label class="block mb-2">Quê quán:</label>
+            <input
+                v-model="editedUser.hometown"
+                class="w-full border px-3 py-2 rounded mb-4"
+            />
+
+            <label class="block mb-2">Nghề nghiệp:</label>
+            <input
+                v-model="editedUser.job"
+                class="w-full border px-3 py-2 rounded mb-4"
+            />
+
+            <label class="block mb-2">Nơi học tập/làm việc:</label>
+            <input
+                v-model="editedUser.workplace"
+                class="w-full border px-3 py-2 rounded mb-4"
+            />
+
+            <div class="flex justify-end space-x-2">
+                <button
+                    @click="closeEditModal"
+                    class="px-4 py-2 bg-gray-300 rounded-lg"
+                >
+                    Hủy
+                </button>
+                <button
+                    @click="updateUserInfo"
+                    class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+                >
+                    Lưu
+                </button>
+            </div>
+        </div>
+    </div>
+
     <loading :isLoading="loading"></loading>
 </template>
 
@@ -300,15 +371,15 @@ export default {
                 "https://i.pinimg.com/736x/22/42/4c/22424c471b2dff09a1a0805b55e584de.jpg", // Placeholder ảnh bìa
             avatar: "https://s3-alpha-sig.figma.com/img/0d28/405a/bac8b5ce229195ce2f214e6c8be0c35f?Expires=1740355200&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=FdGXl3-IohZkjbsoXrPNGGfNu37gBTtj-NNTGl2iPaTPyPJWXChe2UZzTSOcAMqb2Hv8V8FLqEjLs2BBd7B5TYwWWUv0q8nVjC916LKwRkKbOvDeY~X71cLr5dITeaj~~aaRg3khMToIelydHriA4X5NnpN1LnQy8TSVRidbn3tScrXn4Ui1hw4JIz4tdB4uc4lDlRII8T4ienBO8-3tcOz9BoFDG50b82PlQsC-fSzbiJ5NOJNdaKjUKxXi3LK1~ha82u5u6YU5Wa2Gqgv~fNpNhraqfTRIJ-CZ3qsDirPcx9Q2vj0G6MjWiHvBGKV8JXrR5Oxu0nazH8jzdrQdrA__", // Placeholder avatar
             user: {
-                name: "Nguyen Van A",
-                email: "nguyenvana@example.com",
-                phone: "+84 123 456 789",
-                address: "123 Pham Van Dong, Hanoi, Vietnam",
-                about: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus imperdiet, nulla et dictum interdum, nisi lorem egestas odio, vitae scelerisque enim ligula venenatis dolor.",
-                dob: "01/01/2003",
-                gender: "Male",
-                joined: "01/01/2025",
+                name: "Nguyễn Văn A",
+                age: 21,
+                phone: "0123456789",
+                hometown: "Hà Tĩnh",
+                job: "Sinh viên",
+                workplace: "Đại học Kiến trúc Hà Nội",
             },
+            editedUser: {},
+            isEditModalOpen: false,
             showDropdown: false, // Điều khiển hiển thị menu dropdown
             posts: [],
         };
@@ -319,6 +390,10 @@ export default {
         if (storedUser && storedUser.name && storedUser.email) {
             this.user.name = storedUser.name;
             this.user.email = storedUser.email;
+            this.user.phone = storedUser.phone;
+            this.user.hometown = storedUser.hometown;
+            this.user.job = storedUser.job;
+            this.user.workplace = storedUser.workplace;
         }
 
         this.fetchFavoriteData();
@@ -331,6 +406,46 @@ export default {
         toggleAvatarDropdown() {
             // Toggle hiển thị dropdown menu
             this.showDropdown = !this.showDropdown;
+        },
+        // edit user
+        openEditModal() {
+            this.editedUser = { ...this.user }; // Sao chép dữ liệu gốc
+            this.isEditModalOpen = true;
+        },
+        closeEditModal() {
+            this.isEditModalOpen = false;
+        },
+        async updateUserInfo() {
+            try {
+                const token = localStorage.getItem("access_token"); // Lấy token từ localStorage
+
+                const response = await fetch("/api/v1/update", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${token}`, // Thêm token vào header
+                    },
+                    body: JSON.stringify(this.editedUser),
+                });
+
+                if (!response.ok) throw new Error("Cập nhật thất bại");
+
+                const updatedUser = await response.json();
+
+                // Lưu thông tin mới vào localStorage
+                localStorage.setItem("user", JSON.stringify(updatedUser.user));
+
+                // Cập nhật giao diện
+                this.user = updatedUser;
+                this.isEditModalOpen = false;
+                window.location.reload();
+
+                // Thông báo cập nhật thành công
+                alert("Cập nhật thông tin thành công!");
+            } catch (error) {
+                console.error("Lỗi cập nhật:", error);
+                alert("Cập nhật thất bại! Vui lòng thử lại.");
+            }
         },
         async toggleFavorite(post) {
             try {

@@ -199,6 +199,9 @@ import apiClient from "../../axios";
 
 export default {
     data() {
+        const user = localStorage.getItem("user")
+            ? JSON.parse(localStorage.getItem("user"))
+            : null;
         return {
             post: {
                 title: "",
@@ -208,8 +211,8 @@ export default {
                 price: 0,
                 area: "",
                 status: "available",
-                posted_by: "",
-                phone: "",
+                posted_by: user ? user.name : "",
+                phone: user ? user.phone : "",
                 description: "",
                 images: [],
                 type: "roommate",

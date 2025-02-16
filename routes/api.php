@@ -23,9 +23,10 @@ use Illuminate\Support\Facades\Route;
 // });
 
 Route::group(['middleware' => 'api', 'prefix' => 'v1'], function () {
-    Route::post('/login', [AuthController::class, 'login']);
-    Route::post('/register', [AuthController::class, 'register']);
-    Route::post('/logout', [AuthController::class, 'logout']);
+    Route::post('/login', [AuthController::class, 'login'])->name('login');
+    Route::post('/register', [AuthController::class, 'register'])->name('register');
+    Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+    Route::post('/update', [AuthController::class, 'update']);
 
     Route::group(['middleware' => 'api', 'prefix' => 'roomate'], function () {
         Route::get('/', [RoomateController::class, 'index'])->name('roomate.view');

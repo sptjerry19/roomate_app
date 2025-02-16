@@ -48,7 +48,7 @@
             </nav>
             <div class="flex justify-center items-center mx-auto min-h-screen">
                 <!-- Left Side -->
-                <div class="bg-blue-900 p-8 rounded-lg shadow-lg max-w-lg">
+                <div class="bg-primary p-8 rounded-lg shadow-lg max-w-lg">
                     <h2 class="text-3xl font-bold mb-4">AA++ HOME!</h2>
                     <p class="mb-8">
                         "Nơi kết nối bạn với không gian sống lý tưởng và những
@@ -142,7 +142,7 @@
             </div>
         </div>
         <!-- footer -->
-        <footer class="bg-blue-900 text-white p-8 mt-16">
+        <footer class="bg-primary text-white p-8 mt-16">
             <div class="flex justify-between">
                 <div>
                     <h3 class="font-bold mb-4">VỀ AA++ HOME</h3>

@@ -128,4 +128,34 @@ class AuthController extends Controller
 
         return response()->json(['message' => 'Successfully logged out']);
     }
+
+    public function update(Request $request)
+    {
+        $user = Auth::user();
+
+        if (!$user) {
+            return response()->json(['message' => 'User not found'], 404);
+        }
+
+        // Validate dữ liệu đầu vào
+        $validatedData = $request->validate([
+            'name' => 'nullable|string|max:255',
+            'phone' => 'nullable|string|max:15',
+            'age' => 'nullable|integer|min:1|max:150',
+            'hometown' => 'nullable|string|max:255',
+            'job' => 'nullable|string|max:255',
+            'workplace' => 'nullable|string|max:255',
+        ]);
+
+        // Cập nhật thông tin user
+        $user->update($validatedData);
+
+        // Đăng xuất người dùng
+        Auth::logout();
+
+        return response()->json([
+            'message' => 'Thông tin đã được cập nhật và đăng xuất thành công!',
+            'user' => $user
+        ]);
+    }
 }

@@ -95,57 +95,43 @@ class RoomateController extends Controller
         ]);
 
         try {
-            $keyword = $params['keyword'] ?? null;
-            $area = $params['area'] ?? null;
-            $price = $params['price'] ?? null;
-            $district = $params['district'] ?? null;
-            $type = $params['type'] ?? null;
+            $user = auth()->user();
+            if (!$user) {
+                return ApiResponse::error('Người dùng chưa đăng nhập hoặc không hợp lệ!', 401);
+            }
+
+            $userId = $user->id;
             $limit = $request->input('limit', 10);
-            $userId = auth()->user()->id ?? null;
 
             $roomates = Post::query()
-                ->when(!is_null($area), function ($query) use ($area) {
+                ->when($params['area'] ?? null, function ($query, $area) {
                     switch ($area) {
                         case 10:
                             return $query->where('area', '<=', 10);
-                            break;
-
                         case 20:
-                            return $query->where('area', '<=', 20)->where('area', '>=', 10);
-                            break;
-
+                            return $query->whereBetween('area', [10, 20]);
                         case 30:
-                            return $query->where('area', '<=', 30)->where('area', '>=', 20);
-                            break;
-
+                            return $query->whereBetween('area', [20, 30]);
                         case 40:
-                            return $query->where('area', '<=', 40)->where('area', '>=', 30);
-                            break;
-
+                            return $query->whereBetween('area', [30, 40]);
                         case 50:
                             return $query->where('area', '>=', 50);
-                            break;
-
                         default:
                             return $query->where('area', '<=', $area);
-                            break;
                     }
                 })
-                ->when(!is_null($price), function ($query) use ($price) {
-                    return $query->where('price', '<', $price);
-                })
-                ->when(!is_null($district), function ($query) use ($district) {
-                    return $query->where('district', 'like', '%' . $district . '%');
-                })
-                ->when(!is_null($keyword), function ($query) use ($keyword) {
-                    return $query->where('title', 'like', '%' . $keyword . '%');
-                })
-                ->when(!is_null($type), function ($query) use ($type) {
-                    return $query->where('type', $type);
-                })
-                ->where('user_id', $userId) // Lấy bài đăng của người đăng hiện tại
+                ->when($params['price'] ?? null, fn($query, $price) => $query->where('price', '<', $price))
+                ->when($params['district'] ?? null, fn($query, $district) => $query->where('district', 'like', "%$district%"))
+                ->when($params['keyword'] ?? null, fn($query, $keyword) => $query->where('title', 'like', "%$keyword%"))
+                ->when($params['type'] ?? null, fn($query, $type) => $query->where('type', $type))
+                ->where('user_id', $userId)
                 ->orderByDesc('created_at')
                 ->paginate($limit);
+
+            // Kiểm tra nếu không có dữ liệu
+            if ($roomates->isEmpty()) {
+                return ApiResponse::success([], 'Không có bài đăng nào.');
+            }
 
             return ApiResponse::success(new RoomateCollection($roomates), 'Lấy danh sách Roomate thành công!');
         } catch (\Exception $e) {
