@@ -29,6 +29,7 @@ class RoomateResource extends JsonResource
             "description" => $this->description,
             "images" => $this->images,
             "type" => $this->type,
+            "advertisement_type" => $this->advertisement_type,
             "is_favorite" => $this->checkFavorite(),
             "created_at" => $this->created_at,
             "updated_at" => $this->updated_at

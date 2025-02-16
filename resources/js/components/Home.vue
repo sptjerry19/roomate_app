@@ -309,92 +309,105 @@
                         Không tìm thấy bài đăng nào.
                     </div>
                     <div v-else>
-                        <div
-                            v-for="post in posts"
-                            :key="post.id"
-                            class="mb-6 mt-2 bg-white rounded-lg shadow-lg overflow-hidden flex"
-                        >
-                            <!-- Hình ảnh -->
-                            <div class="w-1/3">
-                                <img
-                                    class="w-full h-full object-cover"
-                                    :src="
-                                        post.images[0] ||
-                                        '/images/default-room.jpg'
+                        <div v-for="post in posts" :key="post.id">
+                            <!-- Pop-up bài đăng -->
+                            <div
+                                class="border-2 rounded-md bg-slate-400 p-3"
+                                v-if="post.advertisement_type === 'pop_up'"
+                            >
+                                <button @click="openPopup(post)">
+                                    Xem bài đăng nổi bật
+                                </button>
+                                <PopupComponent
+                                    v-if="
+                                        selectedPost &&
+                                        selectedPost.id === post.id
                                     "
-                                    alt="Room image"
+                                    :post="selectedPost"
+                                    @close="selectedPost = null"
                                 />
                             </div>
-                            <!-- Thông tin bài đăng -->
-                            <div class="w-2/3 p-4">
-                                <h2
-                                    class="text-lg font-bold text-blue-600 truncate"
-                                >
+
+                            <!-- Banner bài đăng -->
+                            <div
+                                v-else-if="post.advertisement_type === 'banner'"
+                                class="w-full bg-yellow-100 p-4 rounded-lg shadow-md mb-6"
+                            >
+                                <h2 class="text-xl font-bold text-blue-600">
                                     {{ post.title }}
                                 </h2>
-                                <p class="text-gray-500 text-sm">
-                                    {{ post.location }}
-                                </p>
-                                <p class="text-gray-500 text-sm">
-                                    Diện tích: {{ post.area }} m²
-                                </p>
-                                <p class="text-gray-500 text-sm">
-                                    Người đăng: {{ post.posted_by }}
-                                </p>
-                                <p class="text-gray-700 mt-2">
+                                <p class="text-gray-500">
                                     {{ post.description }}
                                 </p>
-                                <div
-                                    class="flex justify-between items-center mt-4"
-                                >
-                                    <p class="text-lg font-bold text-red-500">
-                                        {{ post.price }} VNĐ/tháng
+                            </div>
+
+                            <!-- Premium và Common bài đăng -->
+                            <div
+                                :class="[
+                                    'mb-6 mt-2 bg-white rounded-lg shadow-lg overflow-hidden flex',
+                                    post.advertisement_type === 'premium'
+                                        ? 'border-8 border-blue-500'
+                                        : '',
+                                ]"
+                            >
+                                <div class="w-1/3">
+                                    <img
+                                        class="w-full h-full object-cover"
+                                        :src="
+                                            post.images[0] ||
+                                            '/images/default-room.jpg'
+                                        "
+                                        alt="Room image"
+                                    />
+                                </div>
+                                <div class="w-2/3 p-4">
+                                    <h2
+                                        class="text-lg font-bold text-blue-600 truncate"
+                                    >
+                                        {{ post.title }}
+                                    </h2>
+                                    <p class="text-gray-500 text-sm">
+                                        {{ post.location }}
                                     </p>
-                                    <div class="flex items-center">
-                                        <button
-                                            @click="toggleFavorite(post)"
-                                            :class="
-                                                post.is_favorite
-                                                    ? 'bg-red-500 text-white'
-                                                    : 'bg-gray-300 text-gray-700'
-                                            "
-                                            class="px-4 py-2 rounded hover:opacity-80 transition"
+                                    <p class="text-gray-500 text-sm">
+                                        Diện tích: {{ post.area }} m²
+                                    </p>
+                                    <p class="text-gray-500 text-sm">
+                                        Người đăng: {{ post.posted_by }}
+                                    </p>
+                                    <p class="text-gray-700 mt-2">
+                                        {{ post.description }}
+                                    </p>
+                                    <div
+                                        class="flex justify-between items-center mt-4"
+                                    >
+                                        <p
+                                            class="text-lg font-bold text-red-500"
                                         >
-                                            <span v-if="post.is_favorite"
-                                                ><svg
-                                                    xmlns="http://www.w3.org/2000/svg"
-                                                    viewBox="0 0 24 24"
-                                                    fill="currentColor"
-                                                    class="size-6"
+                                            {{ post.price }} VNĐ/tháng
+                                        </p>
+                                        <div class="flex items-center">
+                                            <button
+                                                @click="toggleFavorite(post)"
+                                                :class="
+                                                    post.is_favorite
+                                                        ? 'bg-red-500 text-white'
+                                                        : 'bg-gray-300 text-gray-700'
+                                                "
+                                                class="px-4 py-2 rounded hover:opacity-80 transition"
+                                            >
+                                                <span v-if="post.is_favorite"
+                                                    >❤️</span
                                                 >
-                                                    <path
-                                                        d="m11.645 20.91-.007-.003-.022-.012a15.247 15.247 0 0 1-.383-.218 25.18 25.18 0 0 1-4.244-3.17C4.688 15.36 2.25 12.174 2.25 8.25 2.25 5.322 4.714 3 7.688 3A5.5 5.5 0 0 1 12 5.052 5.5 5.5 0 0 1 16.313 3c2.973 0 5.437 2.322 5.437 5.25 0 3.925-2.438 7.111-4.739 9.256a25.175 25.175 0 0 1-4.244 3.17 15.247 15.247 0 0 1-.383.219l-.022.012-.007.004-.003.001a.752.752 0 0 1-.704 0l-.003-.001Z"
-                                                    />
-                                                </svg>
-                                            </span>
-                                            <span v-else
-                                                ><svg
-                                                    xmlns="http://www.w3.org/2000/svg"
-                                                    fill="none"
-                                                    viewBox="0 0 24 24"
-                                                    stroke-width="1.5"
-                                                    stroke="currentColor"
-                                                    class="size-6"
-                                                >
-                                                    <path
-                                                        stroke-linecap="round"
-                                                        stroke-linejoin="round"
-                                                        d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z"
-                                                    />
-                                                </svg>
-                                            </span>
-                                        </button>
-                                        <router-link
-                                            :to="`/room/${post.id}`"
-                                            class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 ml-2"
-                                        >
-                                            Chi tiết
-                                        </router-link>
+                                                <span v-else>🤍</span>
+                                            </button>
+                                            <router-link
+                                                :to="`/room/${post.id}`"
+                                                class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 ml-2"
+                                            >
+                                                Chi tiết
+                                            </router-link>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -599,6 +612,7 @@ export default {
     },
     data() {
         return {
+            selectedPost: null,
             showLoginModal: false,
             autoCloseTimeout: null, // Lưu ID của timeout
             is_select: "all",
@@ -1050,6 +1064,9 @@ export default {
         handlePageChange(page) {
             this.currentPage = page;
             this.fetchRoomatesData(page); // Gọi lại API với trang mới
+        },
+        openPopup(post) {
+            this.selectedPost = post;
         },
     },
 };

@@ -35,6 +35,7 @@ class PostRequest extends FormRequest
             'images' => 'required|array|min:1',
             'images.*' => 'required|string', // Xác thực base64
             'type' => 'required|in:roommate,room',
+            'advertisement_type' => 'required|in:pop_up,banner,premium,common',
         ];
     }
 
@@ -61,6 +62,7 @@ class PostRequest extends FormRequest
             'images.*.regex' => 'Hình ảnh phải được mã hóa dưới dạng base64 hợp lệ.',
             'type.required' => 'Loại bài đăng là bắt buộc.',
             'type.in' => 'Loại bài đăng không hợp lệ.',
+            'advertisement_type.in' => 'Loại quảng cáo bài đăng không hợp lệ.',
         ];
     }
 }

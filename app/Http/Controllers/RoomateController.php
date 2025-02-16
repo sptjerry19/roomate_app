@@ -178,6 +178,7 @@ class RoomateController extends Controller
                 'description' => $params['description'],
                 'images' => $uploadedImages, // Lưu ảnh đã upload
                 'type' => $params['type'],
+                'advertisement_type' => $params['advertisement_type'],
                 'user_id' => auth()->user()->id ?? null, // Lưu ID người đăng
                 'status' => 'available',
             ];

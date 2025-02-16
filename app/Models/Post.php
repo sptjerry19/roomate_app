@@ -25,6 +25,7 @@ class Post extends Model
         'description',
         'images',
         'type',
+        'advertisement_type',
     ];
 
     // Nếu bạn muốn lấy images dưới dạng mảng thay vì chuỗi JSON

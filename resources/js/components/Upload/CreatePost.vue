@@ -180,6 +180,20 @@
                     <option value="room">Cho thuê phòng</option>
                 </select>
             </div>
+            <div class="mb-4">
+                <label class="block text-sm font-medium mb-2"
+                    >Loại quảng cáo</label
+                >
+                <select
+                    v-model="post.advertisement_type"
+                    class="w-full p-2 border rounded"
+                >
+                    <option value="common">Đẩy tin thông thường</option>
+                    <option value="premium">Đẩy tin premium</option>
+                    <option value="banner">Quảng cáo banner</option>
+                    <option value="pop_up">Quảng cáo pop-up</option>
+                </select>
+            </div>
 
             <!-- Submit button -->
             <div class="text-right">
@@ -216,6 +230,7 @@ export default {
                 description: "",
                 images: [],
                 type: "roommate",
+                advertisement_type: "common",
             },
 
             districts: [

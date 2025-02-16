@@ -267,7 +267,7 @@
                                 <p class="text-lg font-semibold text-gray-600">
                                     Thông tin phòng trọ:
                                 </p>
-                                <p class="text-gray-700">
+                                <p class="text-gray-700 break-words">
                                     {{ roomDetail.description }}
                                 </p>
                             </div>
