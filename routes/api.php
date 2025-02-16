@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\FavoriteController;
 use App\Http\Controllers\MotorController;
+use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\RoomateController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -56,5 +57,10 @@ Route::group(['middleware' => 'api', 'prefix' => 'v1'], function () {
         Route::post('/', [MotorController::class, 'store'])->name('motor.create');
         Route::put('/', [MotorController::class, 'update'])->name('motor.update');
         Route::delete('/', [MotorController::class, 'destroy'])->name('motor.delete');
+    });
+
+    Route::group(['middleware' => 'auth:api', 'prefix' => 'notifications'], function () {
+        Route::get('/', [NotificationController::class, 'index']);
+        Route::patch('/{notification}/read', [NotificationController::class, 'markAsRead']);
     });
 });

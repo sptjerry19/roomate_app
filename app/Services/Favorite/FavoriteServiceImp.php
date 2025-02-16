@@ -3,6 +3,7 @@
 namespace App\Services\Favorite;
 
 use App\Helpers\Common;
+use App\Models\Notification;
 use App\Repositories\Favorite\FavoriteRepository;
 use App\Services\Base\BaseServiceImp;
 use App\Services\Favorite\FavoriteService;
@@ -39,6 +40,13 @@ class FavoriteServiceImp extends BaseServiceImp implements FavoriteService
 
             // Thêm post_id và user_id vào bảng favorites
             $user->favorites()->attach($roomId);
+
+            // Tạo thông báo
+            Notification::create([
+                'user_id' => $user->id, // Người đăng bài sẽ nhận thông báo
+                'post_id' => $roomId,
+                'title' => "Thêm thành công bài đăng vào danh sách quan tâm",
+            ]);
 
             return true;
         } catch (\Exception $e) {
