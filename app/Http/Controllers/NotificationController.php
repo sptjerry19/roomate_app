@@ -14,6 +14,10 @@ class NotificationController extends Controller
             ->orderBy('created_at', 'desc')
             ->get();
 
+        foreach ($notifications as $notification) {
+            $notification->status == '0' ? $notification->status = true : $notification->status = false;
+        }
+
         return ApiResponse::success($notifications, 'Lấy thông báo thành công!');
         // return response()->json($notifications);
     }
