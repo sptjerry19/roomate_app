@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\ApiResponse;
 use App\Services\Comment\CommentService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class CommentController extends Controller
 {
@@ -21,6 +23,13 @@ class CommentController extends Controller
             'limit' => 'nullable|integer',
         ]);
 
-        $comments = $this->commentService->listCommentByPost($params);
+        try {
+            $comments = $this->commentService->listCommentByPost($params);
+
+            return ApiResponse::success($comments, __('Lấy danh sách comment thành công!'));
+        } catch (\Exception $e) {
+            Log::error($e->getMessage());
+            return ApiResponse::error(__('Lấy danh sách comment thất bại!'), 500);
+        }
     }
 }

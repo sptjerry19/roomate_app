@@ -11,4 +11,11 @@ class CommentRepositoryEloquent extends BaseRepository implements CommentReposit
     {
         return Comment::class;
     }
+
+    public function listCommentByPost(array $attribute): mixed
+    {
+        return $this->select()
+            ->where('post_id', $attribute['post_id'])
+            ->get();
+    }
 }

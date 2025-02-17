@@ -13,9 +13,9 @@ use Throwable;
 
 class CommentServiceImp extends BaseServiceImp implements CommentService
 {
-    public function __construct(CommentRepository $CommentRepository)
+    public function __construct(CommentRepository $commentRepository)
     {
-        $this->repository = $CommentRepository;
+        $this->repository = $commentRepository;
     }
 
     public function listCommentByPost(array $attribute): mixed
@@ -31,7 +31,12 @@ class CommentServiceImp extends BaseServiceImp implements CommentService
     public function addComment(array $attribute): mixed
     {
         try {
-            $comments = $this->repository->listCommentByPost($attribute);
+            $data = [
+                'user_id' => auth()->user()->id,
+                'post_id' => $attribute['post_id'],
+                'content' => $attribute['content'],
+            ];
+            $comments = parent::create($data);
             return $comments;
         } catch (Exception $e) {
             Log::error($e->getMessage());
