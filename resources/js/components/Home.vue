@@ -530,27 +530,37 @@
                             </h3>
                             <ul class="space-y-2 text-white text-xs">
                                 <li>
-                                    <a href="#" class="hover:text-gray-900"
+                                    <a
+                                        href="/regulations"
+                                        class="hover:text-gray-900"
                                         >Giới thiệu</a
                                     >
                                 </li>
                                 <li>
-                                    <a href="#" class="hover:text-gray-900"
+                                    <a
+                                        href="/regulations"
+                                        class="hover:text-gray-900"
                                         >Quý chế hoạt động</a
                                     >
                                 </li>
                                 <li>
-                                    <a href="#" class="hover:text-gray-900"
+                                    <a
+                                        href="/regulations"
+                                        class="hover:text-gray-900"
                                         >Quy định sử dụng</a
                                     >
                                 </li>
                                 <li>
-                                    <a href="#" class="hover:text-gray-900"
+                                    <a
+                                        href="/regulations"
+                                        class="hover:text-gray-900"
                                         >Chính sách bảo mật</a
                                     >
                                 </li>
                                 <li>
-                                    <a href="#" class="hover:text-gray-900"
+                                    <a
+                                        href="/regulations"
+                                        class="hover:text-gray-900"
                                         >Liên hệ</a
                                     >
                                 </li>
@@ -564,32 +574,44 @@
                             </h3>
                             <ul class="space-y-2 text-white text-xs">
                                 <li>
-                                    <a href="#" class="hover:text-gray-900"
+                                    <a
+                                        href="/regulations"
+                                        class="hover:text-gray-900"
                                         >Câu hỏi thường gặp</a
                                     >
                                 </li>
                                 <li>
-                                    <a href="#" class="hover:text-gray-900"
+                                    <a
+                                        href="/regulations"
+                                        class="hover:text-gray-900"
                                         >Hướng dẫn đăng tin</a
                                     >
                                 </li>
                                 <li>
-                                    <a href="#" class="hover:text-gray-900"
+                                    <a
+                                        href="/regulations"
+                                        class="hover:text-gray-900"
                                         >Quy định đăng tin</a
                                     >
                                 </li>
                                 <li>
-                                    <a href="#" class="hover:text-gray-900"
+                                    <a
+                                        href="/regulations"
+                                        class="hover:text-gray-900"
                                         >Bảng giá dịch vụ</a
                                     >
                                 </li>
                                 <li>
-                                    <a href="#" class="hover:text-gray-900"
+                                    <a
+                                        href="/regulations"
+                                        class="hover:text-gray-900"
                                         >Hướng dẫn thanh toán</a
                                     >
                                 </li>
                                 <li>
-                                    <a href="#" class="hover:text-gray-900"
+                                    <a
+                                        href="/regulations"
+                                        class="hover:text-gray-900"
                                         >Giải quyết khiếu nại</a
                                     >
                                 </li>
