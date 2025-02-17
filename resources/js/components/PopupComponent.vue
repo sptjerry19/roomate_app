@@ -2,7 +2,7 @@
     <div class="popup-overlay" @click.self="$emit('close')">
         <div class="popup-content">
             <h2>{{ post.title }}</h2>
-            <p>{{ post.description }}</p>
+            <p class="break-words">{{ post.description }}</p>
             <button @click="$emit('close')">Đóng</button>
         </div>
     </div>

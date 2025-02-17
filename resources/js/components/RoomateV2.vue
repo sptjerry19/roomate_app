@@ -297,7 +297,7 @@
                                 <p class="text-gray-500 text-sm">
                                     Người đăng: {{ post.posted_by }}
                                 </p>
-                                <p class="text-gray-700 mt-2">
+                                <p class="text-gray-700 mt-2 break-words">
                                     {{ post.description }}
                                 </p>
                                 <div

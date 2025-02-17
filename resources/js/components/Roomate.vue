@@ -289,7 +289,9 @@
                                     <p class="mt-1 text-sm text-slate-400">
                                         Người đăng: {{ post.posted_by }}
                                     </p>
-                                    <p class="mt-1 text-sm text-slate-400">
+                                    <p
+                                        class="mt-1 text-sm text-slate-400 break-words"
+                                    >
                                         {{ post.description }}
                                     </p>
 

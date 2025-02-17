@@ -107,27 +107,60 @@
                         </div>
 
                         <!-- Notification Icon -->
-                        <button class="relative">
-                            <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                fill="none"
-                                viewBox="0 0 24 24"
-                                stroke-width="1.5"
-                                stroke="currentColor"
-                                class="h-6 w-6 text-blue-700"
+                        <div class="relative">
+                            <!-- Notification Button -->
+                            <button
+                                @mouseover="showDropdownNotification = true"
+                                @mouseleave="hideDropdown"
+                                class="relative"
                             >
-                                <path
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                    d="M15.75 9.75V8.25a6 6 0 00-12 0v1.5a5.25 5.25 0 0010.5 0zM10.5 21.75a1.5 1.5 0 001.5-1.5H9a1.5 1.5 0 001.5 1.5z"
-                                />
-                            </svg>
-                            <span
-                                class="absolute -top-1 -right-1 flex h-3 w-3 items-center justify-center rounded-full bg-red-500 text-[10px] text-white"
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    stroke-width="1.5"
+                                    stroke="currentColor"
+                                    class="h-6 w-6 text-blue-700"
+                                >
+                                    <path
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        d="M15.75 9.75V8.25a6 6 0 00-12 0v1.5a5.25 5.25 0 0010.5 0zM10.5 21.75a1.5 1.5 0 001.5-1.5H9a1.5 1.5 0 001.5 1.5z"
+                                    />
+                                </svg>
+                                <span
+                                    v-if="unreadCount > 0"
+                                    class="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-red-500 text-[10px] text-white"
+                                >
+                                    {{ unreadCount }}
+                                </span>
+                            </button>
+
+                            <!-- Notification Dropdown -->
+                            <div
+                                v-if="showDropdownNotification"
+                                class="absolute right-0 mt-2 w-64 bg-white shadow-lg rounded-md border"
+                                @mouseover="showDropdownNotification = true"
+                                @mouseleave="hideDropdown"
                             >
-                                3
-                            </span>
-                        </button>
+                                <div v-if="notifications.length > 0">
+                                    <div
+                                        v-for="notification in notifications"
+                                        :key="notification.id"
+                                        class="p-3 border-b cursor-pointer hover:bg-gray-100"
+                                        :class="{
+                                            'font-bold': !notification.status,
+                                        }"
+                                        @click="markAsRead(notification)"
+                                    >
+                                        <h2>{{ notification.title }}</h2>
+                                    </div>
+                                </div>
+                                <p v-else class="p-3 text-gray-500 text-center">
+                                    Không có thông báo nào
+                                </p>
+                            </div>
+                        </div>
 
                         <!-- Post Button -->
                         <router-link to="/post">
@@ -533,7 +566,15 @@ export default {
             showDropdown: false, // Điều khiển hiển thị menu dropdown
             defaultAvatar:
                 "https://bizweb.dktcdn.net/100/443/348/articles/nau-vang-4823-1.jpg?v=1691119900993",
+
+            notifications: [],
+            showDropdownNotification: false,
         };
+    },
+    computed: {
+        unreadCount() {
+            return this.notifications.filter((n) => 0).length;
+        },
     },
     mounted() {
         const storedUser = localStorage.getItem("user");
@@ -543,6 +584,8 @@ export default {
         this.fetchRoomDetail();
         this.setMaxWidth(); // Gọi hàm thiết lập maxWidth khi load trang
         window.addEventListener("resize", this.setMaxWidth); // Lắng nghe sự kiện resize
+
+        this.fetchNotifications();
     },
     beforeDestroy() {
         window.removeEventListener("resize", this.setMaxWidth);
@@ -655,6 +698,56 @@ export default {
             } finally {
                 this.loading = false; // Ẩn spinner
             }
+        },
+        async fetchNotifications() {
+            console.log(localStorage.getItem("access_token"));
+
+            console.log("Gọi API lấy thông báo...");
+            try {
+                const token = localStorage.getItem("access_token");
+                if (!token) {
+                    console.error("Token không tồn tại!");
+                    return;
+                }
+
+                const res = await apiClient.get("/notifications", {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                });
+
+                console.log(res.data.data);
+                this.notifications = res.data.data;
+                console.log("Dữ liệu thông báo:", this.notifications);
+            } catch (error) {
+                console.error("Lỗi khi lấy thông báo:", error);
+            }
+        },
+
+        async markAsRead(notification) {
+            if (!notification.status) {
+                try {
+                    const token = localStorage.getItem("access_token"); // Lấy token từ localStorage
+                    await apiClient.patch(
+                        `/notifications/${notification.id}/read`,
+                        {},
+                        {
+                            headers: {
+                                Authorization: `Bearer ${token}`,
+                            },
+                        }
+                    );
+                    notification.status = true;
+                } catch (error) {
+                    console.error("Lỗi khi đánh dấu thông báo:", error);
+                }
+            }
+        },
+
+        hideDropdown() {
+            setTimeout(() => {
+                this.showDropdownNotification = false;
+            }, 300);
         },
     },
 };
