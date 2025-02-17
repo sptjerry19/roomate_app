@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CommentController;
 use App\Http\Controllers\FavoriteController;
 use App\Http\Controllers\MotorController;
 use App\Http\Controllers\NotificationController;
@@ -62,5 +63,12 @@ Route::group(['middleware' => 'api', 'prefix' => 'v1'], function () {
     Route::group(['middleware' => 'auth:api', 'prefix' => 'notifications'], function () {
         Route::get('/', [NotificationController::class, 'index']);
         Route::patch('/{notification}/read', [NotificationController::class, 'markAsRead']);
+    });
+
+    Route::group(['middleware' => 'api', 'prefix' => 'comments'], function () {
+        Route::get('/', [CommentController::class, 'listCommentByPost'])->name('comment.list');
+        Route::middleware('auth:api')->post('/', [CommentController::class, 'store'])->name('comment.create');
+        Route::middleware('auth:api')->put('/{id}', [CommentController::class, 'update'])->name('comment.update');
+        Route::middleware('auth:api')->delete('/{id}', [CommentController::class, 'destroy'])->name('comment.destroy');
     });
 });

@@ -15,7 +15,7 @@ class NotificationController extends Controller
             ->get();
 
         foreach ($notifications as $notification) {
-            $notification->status == '0' ? $notification->status = true : $notification->status = false;
+            $notification->status == '0' ? $notification->status = false : $notification->status = true;
         }
 
         return ApiResponse::success($notifications, 'Lấy thông báo thành công!');
