@@ -12,6 +12,7 @@ import CreatePost from "../components/Upload/CreatePost.vue";
 import Profile from "../components/Profile.vue";
 import RoomateV2 from "../components/RoomateV2.vue";
 import RoommateManagement from "../components/Admin/RoommateManagement.vue";
+import Regulations from "../components/Regulations.vue";
 
 const routes = [
     {
@@ -63,6 +64,10 @@ const routes = [
     {
         path: "/image-upload",
         component: UploadImages,
+    },
+    {
+        path: "/regulations",
+        component: Regulations,
     },
 ];
 

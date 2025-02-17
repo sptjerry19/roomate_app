@@ -154,92 +154,133 @@
                 </div>
             </div>
         </div>
-        <footer class="bg-primary text-white p-8 mt-16">
-            <div class="flex justify-between">
-                <div>
-                    <h3 class="font-bold mb-4">VỀ AA++ HOME</h3>
-                    <ul>
-                        <li class="mb-2">
-                            <a class="hover:underline" href="#"> Giới thiệu </a>
-                        </li>
-                        <li class="mb-2">
-                            <a class="hover:underline" href="#">
-                                Quy chế hoạt động
-                            </a>
-                        </li>
-                        <li class="mb-2">
-                            <a class="hover:underline" href="#">
-                                Quy định sử dụng
-                            </a>
-                        </li>
-                        <li class="mb-2">
-                            <a class="hover:underline" href="#">
-                                Chính sách bảo mật
-                            </a>
-                        </li>
-                        <li class="mb-2">
-                            <a class="hover:underline" href="#"> Liên hệ </a>
-                        </li>
-                    </ul>
+        <footer class="bg-primary text-white py-10">
+            <div class="container mx-auto gap-8 px-4 flex justify-around">
+                <!-- cột 1 + 2 -->
+                <div class="flex justify-around max-w-6xl">
+                    <!-- Cột 1 -->
+                    <div class="">
+                        <h3 class="text-lg font-semibold text-white mb-4">
+                            VỀ AA+ HOME
+                        </h3>
+                        <ul class="space-y-2 text-white text-xs">
+                            <li>
+                                <a
+                                    href="/regulations"
+                                    class="hover:text-gray-900"
+                                    >Giới thiệu</a
+                                >
+                            </li>
+                            <li>
+                                <a
+                                    href="/regulations"
+                                    class="hover:text-gray-900"
+                                    >Quý chế hoạt động</a
+                                >
+                            </li>
+                            <li>
+                                <a
+                                    href="/regulations"
+                                    class="hover:text-gray-900"
+                                    >Quy định sử dụng</a
+                                >
+                            </li>
+                            <li>
+                                <a
+                                    href="/regulations"
+                                    class="hover:text-gray-900"
+                                    >Chính sách bảo mật</a
+                                >
+                            </li>
+                            <li>
+                                <a
+                                    href="/regulations"
+                                    class="hover:text-gray-900"
+                                    >Liên hệ</a
+                                >
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- Cột 2 -->
+                    <div class="pl-14">
+                        <h3 class="text-lg font-semibold text-white mb-4">
+                            Dành cho khách hàng
+                        </h3>
+                        <ul class="space-y-2 text-white text-xs">
+                            <li>
+                                <a
+                                    href="/regulations"
+                                    class="hover:text-gray-900"
+                                    >Câu hỏi thường gặp</a
+                                >
+                            </li>
+                            <li>
+                                <a
+                                    href="/regulations"
+                                    class="hover:text-gray-900"
+                                    >Hướng dẫn đăng tin</a
+                                >
+                            </li>
+                            <li>
+                                <a
+                                    href="/regulations"
+                                    class="hover:text-gray-900"
+                                    >Quy định đăng tin</a
+                                >
+                            </li>
+                            <li>
+                                <a
+                                    href="/regulations"
+                                    class="hover:text-gray-900"
+                                    >Bảng giá dịch vụ</a
+                                >
+                            </li>
+                            <li>
+                                <a
+                                    href="/regulations"
+                                    class="hover:text-gray-900"
+                                    >Hướng dẫn thanh toán</a
+                                >
+                            </li>
+                            <li>
+                                <a
+                                    href="/regulations"
+                                    class="hover:text-gray-900"
+                                    >Giải quyết khiếu nại</a
+                                >
+                            </li>
+                        </ul>
+                    </div>
                 </div>
+
+                <!-- Cột 3 -->
                 <div>
-                    <h3 class="font-bold mb-4">DÀNH CHO KHÁCH HÀNG</h3>
-                    <ul>
-                        <li class="mb-2">
-                            <a class="hover:underline" href="#">
-                                Câu hỏi thường gặp
-                            </a>
-                        </li>
-                        <li class="mb-2">
-                            <a class="hover:underline" href="#">
-                                Hướng dẫn đăng tin
-                            </a>
-                        </li>
-                        <li class="mb-2">
-                            <a class="hover:underline" href="#">
-                                Quy định đăng tin
-                            </a>
-                        </li>
-                        <li class="mb-2">
-                            <a class="hover:underline" href="#">
-                                Hướng dẫn sử dụng
-                            </a>
-                        </li>
-                        <li class="mb-2">
-                            <a class="hover:underline" href="#">
-                                Hướng dẫn thanh toán
-                            </a>
-                        </li>
-                        <li class="mb-2">
-                            <a class="hover:underline" href="#">
-                                Giải quyết khiếu nại
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-                <div>
-                    <h3 class="font-bold mb-4">ĐĂNG KÍ ĐỂ NHẬN ƯU ĐÃI</h3>
-                    <p class="mb-4">
+                    <h3 class="text-lg font-semibold text-white mb-4">
+                        ĐĂNG KÍ ĐỂ NHẬN ƯU ĐÃI
+                    </h3>
+                    <p class="text-white mb-4">
                         Đăng ký để nhận ngay ưu đãi của AA++ HOME dành cho lần
                         thuê trọ đầu tiên!
                     </p>
-                    <form>
+                    <form class="flex flex-col space-y-3">
                         <input
-                            class="w-full p-2 border border-gray-300 rounded mb-2"
-                            placeholder="EMAIL"
                             type="email"
+                            placeholder="EMAIL"
+                            class="px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-gray-400 focus:outline-none"
+                            required
                         />
                         <button
-                            class="w-full bg-blue-800 text-white p-2 rounded"
                             type="submit"
+                            class="bg-gray-800 text-white py-2 rounded-md hover:bg-gray-900 transition"
                         >
                             ĐĂNG KÝ
                         </button>
                     </form>
+                    <p class="mt-4 text-center text-gray-500 font-medium">
+                        AA++ HOME
+                    </p>
                 </div>
-            </div>
-            <div class="text-center mt-8">
-                <p>AA++ HOME</p>
             </div>
         </footer>
     </div>
