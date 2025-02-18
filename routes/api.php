@@ -67,8 +67,8 @@ Route::group(['middleware' => 'api', 'prefix' => 'v1'], function () {
 
     Route::group(['middleware' => 'api', 'prefix' => 'comments'], function () {
         Route::get('/', [CommentController::class, 'listCommentByPost'])->name('comment.list');
-        Route::middleware('auth:api')->post('/', [CommentController::class, 'store'])->name('comment.create');
-        Route::middleware('auth:api')->put('/{id}', [CommentController::class, 'update'])->name('comment.update');
-        Route::middleware('auth:api')->delete('/{id}', [CommentController::class, 'destroy'])->name('comment.destroy');
+        Route::middleware('auth:api')->post('/', [CommentController::class, 'createComment'])->name('comment.createComment');
+        Route::middleware('auth:api')->put('/{id}', [CommentController::class, 'updateComment'])->name('comment.updateComment');
+        Route::middleware('auth:api')->delete('/{id}', [CommentController::class, 'deleteComment'])->name('comment.deleteComment');
     });
 });

@@ -9,19 +9,20 @@ use App\Services\Base\BaseServiceImp;
 use App\Services\Comment\CommentService;
 use Exception;
 use Illuminate\Support\Facades\Log;
-use Throwable;
 
 class CommentServiceImp extends BaseServiceImp implements CommentService
 {
+    protected $commentRepository;
+
     public function __construct(CommentRepository $commentRepository)
     {
-        $this->repository = $commentRepository;
+        $this->commentRepository = $commentRepository;
     }
 
     public function listCommentByPost(array $attribute): mixed
     {
         try {
-            $comments = $this->repository->listCommentByPost($attribute);
+            $comments = $this->commentRepository->listCommentByPost($attribute);
             return $comments;
         } catch (Exception $e) {
             Log::error($e->getMessage());
