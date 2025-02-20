@@ -26,6 +26,7 @@
                             <option value="/">Trang chủ</option>
                             <option value="/room">Phòng Trọ</option>
                             <option value="/roommate">Roommate</option>
+                            <option value="/advertisement">Quảng cáo</option>
                         </select>
                     </div>
 
@@ -428,7 +429,7 @@
                                             </p>
                                         </div>
                                     </div>
-                                    <p class="mt-2 text-gray-800">
+                                    <p class="mt-2 text-gray-800 break-all">
                                         {{ comment.content }}
                                     </p>
                                 </div>

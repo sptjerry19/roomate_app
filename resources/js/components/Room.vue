@@ -25,6 +25,7 @@
                             <option value="/room">Phòng Trọ</option>
                             <option value="/">Trang chủ</option>
                             <option value="/roommate">Roommate</option>
+                            <option value="/advertisement">Quảng cáo</option>
                         </select>
                     </div>
 

@@ -25,6 +25,7 @@
                             <option value="/">Trang chủ</option>
                             <option value="/room">Phòng Trọ</option>
                             <option value="/roommate">Roommate</option>
+                            <option value="/advertisement">Quảng cáo</option>
                         </select>
                     </div>
 
@@ -242,6 +243,69 @@
                 </div>
             </nav>
 
+            <!-- Banner -->
+            <div class="container mt-24 bg-primary w-full mx-auto py-8">
+                <h1 class="text-center text-2xl font-bold mb-8">
+                    Phòng trọ nổi bật
+                </h1>
+
+                <swiper
+                    :slides-per-view="1"
+                    :space-between="10"
+                    :breakpoints="{
+                        640: { slidesPerView: 2, spaceBetween: 20 },
+                        768: { slidesPerView: 3, spaceBetween: 30 },
+                        1024: { slidesPerView: 4, spaceBetween: 40 },
+                    }"
+                    :navigation="true"
+                    :pagination="{ clickable: true }"
+                    class="swiper-container"
+                >
+                    <swiper-slide v-for="room in banners" :key="room.id">
+                        <div
+                            class="relative bg-white rounded-lg shadow-lg overflow-hidden w-80"
+                        >
+                            <img
+                                :src="
+                                    room.images[0] ||
+                                    'https://via.placeholder.com/320x180'
+                                "
+                                alt="Hình ảnh phòng trọ"
+                                class="w-full h-64 object-cover"
+                            />
+                            <div
+                                class="absolute inset-0 bg-black bg-opacity-50 p-4 flex flex-col justify-end text-white"
+                            >
+                                <h2 class="font-bold text-lg">
+                                    {{ room.title }}
+                                </h2>
+                                <p class="text-sm">{{ room.location }}</p>
+                                <div class="flex items-center mt-2">
+                                    <button
+                                        @click="toggleFavorite(room)"
+                                        :class="
+                                            room.is_favorite
+                                                ? 'bg-red-500 text-white'
+                                                : 'bg-gray-300 text-gray-700'
+                                        "
+                                        class="px-4 py-2 rounded hover:opacity-80 transition"
+                                    >
+                                        <span v-if="room.is_favorite">❤️</span>
+                                        <span v-else>🤍</span>
+                                    </button>
+                                    <router-link
+                                        :to="`/room/${room.id}`"
+                                        class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 ml-2"
+                                    >
+                                        Chi tiết
+                                    </router-link>
+                                </div>
+                            </div>
+                        </div>
+                    </swiper-slide>
+                </swiper>
+            </div>
+
             <!-- Danh sách bài đăng -->
             <div class="container mx-auto mt-28 flex">
                 <!-- Bộ lọc bên trái -->
@@ -369,7 +433,7 @@
                                 <h2 class="text-xl font-bold text-blue-600">
                                     {{ post.title }}
                                 </h2>
-                                <p class="text-gray-500">
+                                <p class="text-gray-500 break-words">
                                     {{ post.description }}
                                 </p>
                             </div>
@@ -377,10 +441,10 @@
                             <!-- Premium và Common bài đăng -->
                             <div
                                 :class="[
-                                    'mb-6 mt-2 bg-white rounded-lg shadow-lg overflow-hidden flex',
+                                    'mb-6 mt-2 rounded-lg shadow-lg overflow-hidden flex',
                                     post.advertisement_type === 'premium'
-                                        ? 'border-8 border-blue-500'
-                                        : '',
+                                        ? 'border-8 border-blue-200 bg-blue-200'
+                                        : 'bg-white',
                                 ]"
                             >
                                 <div class="w-1/3">
@@ -408,7 +472,7 @@
                                     <p class="text-gray-500 text-sm">
                                         Người đăng: {{ post.posted_by }}
                                     </p>
-                                    <p class="text-gray-700 mt-2">
+                                    <p class="text-gray-700 mt-2 break-words">
                                         {{ post.description }}
                                     </p>
                                     <div
@@ -655,6 +719,11 @@
 </template>
 
 <script>
+import { Swiper, SwiperSlide } from "swiper/vue";
+import "swiper/css";
+import "swiper/css/navigation";
+import "swiper/css/pagination";
+import { Navigation, Pagination as SwiperPagination } from "swiper/modules";
 import apiClient, { defaultApiClient } from "../axios";
 import Pagination from "./Pagination.vue";
 import loading from "./loading.vue";
@@ -664,6 +733,16 @@ export default {
     components: {
         Pagination,
         loading,
+        Swiper,
+        SwiperSlide,
+    },
+    props: {
+        banners: Array,
+    },
+    setup() {
+        return {
+            modules: [Navigation, SwiperPagination],
+        };
     },
     data() {
         return {
@@ -836,6 +915,8 @@ export default {
                 },
             ],
 
+            banners: [],
+
             notifications: [],
             showDropdownNotification: false,
 
@@ -856,6 +937,7 @@ export default {
     },
     mounted() {
         this.fetchRoomatesData();
+        this.fetchRoomatesDataBanner();
 
         // Kiểm tra và lấy user từ localStorage khi component được mount
         const storedUser = localStorage.getItem("user");
@@ -1003,6 +1085,7 @@ export default {
                         area: this.area,
                         district: this.district,
                         type: this.type,
+                        advertisement_type: this.advertisement_type,
                         price: this.price,
                         page: page,
                         limit: this.itemsPerPage, // hoặc 'per_page' tuỳ theo API của bạn
@@ -1027,6 +1110,36 @@ export default {
                     this.itemsPerPage = response.data.pagination.per_page;
                     this.totalPages = response.data.pagination.last_page;
                     this.total = response.data.pagination.total;
+                    this.showNoDataMessage = false; // Ẩn thông báo nếu có dữ liệu
+                }
+            } catch (error) {
+                console.error("Error fetching data", error);
+            } finally {
+                this.loading = false; // Ẩn spinner
+            }
+        },
+
+        async fetchRoomatesDataBanner(page = 1) {
+            this.loading = true;
+            try {
+                // Truyền tham số page và itemsPerPage vào API
+                const response = await apiClient.get(
+                    "/roomate?advertisement_type=banner&limit=100",
+                    {
+                        headers: {
+                            "Content-Type": "application/json",
+                            Authorization: `Bearer ${localStorage.getItem(
+                                "access_token"
+                            )}`, // Nếu có token
+                        },
+                    }
+                );
+
+                // Kiểm tra nếu dữ liệu rỗng
+                if (response.data.data.length === 0) {
+                    this.banners = []; // Đặt danh sách bài đăng thành rỗng
+                } else {
+                    this.banners = response.data.data;
                     this.showNoDataMessage = false; // Ẩn thông báo nếu có dữ liệu
                 }
             } catch (error) {
@@ -1187,3 +1300,9 @@ export default {
     },
 };
 </script>
+
+<style>
+.swiper-container {
+    padding: 10px;
+}
+</style>

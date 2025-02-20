@@ -24,6 +24,7 @@ class RoomateController extends Controller
             'price' => 'nullable|integer',
             'district' => 'nullable|string',
             'type' => 'nullable|string',
+            'advertisement_type' => 'nullable|string',
         ]);
 
         try {
@@ -32,6 +33,7 @@ class RoomateController extends Controller
             $price = $params['price'] ?? null;
             $district = $params['district'] ?? null;
             $type = $params['type'] ?? null;
+            $advertisementType = $params['advertisement_type'] ?? null;
             $limit = $request->input('limit', 10);
 
             $roomates = Post::query()
@@ -73,6 +75,9 @@ class RoomateController extends Controller
                 })
                 ->when(!is_null($type), function ($query) use ($type) {
                     return $query->where('type', $type);
+                })
+                ->when(!is_null($advertisementType), function ($query) use ($advertisementType) {
+                    return $query->where('advertisement_type', $advertisementType);
                 })
                 ->orderByDesc('created_at')
                 ->paginate($limit);
