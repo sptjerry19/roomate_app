@@ -86,7 +86,7 @@ class RoomateResource extends JsonResource
 
         // Kiểm tra xem user_id có nằm trong danh sách favorites không
         return $this->favorites->contains(function ($favorite) use ($user) {
-            return $favorite->pivot->user_id === $user->id;
+            return $favorite->pivot->user_id == $user->id;
         });
     }
 }

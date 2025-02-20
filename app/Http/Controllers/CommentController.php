@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Helpers\ApiResponse;
 use App\Models\Comment;
+use App\Models\Notification;
+use App\Models\Post;
 use App\Services\Comment\CommentService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -49,6 +51,14 @@ class CommentController extends Controller
             ];
 
             $comments = Comment::create($data);
+            $post = Post::query()->find($params['post_id']);
+            // Tạo thông báo
+            Notification::create([
+                'user_id' => $post->user_id, // Người đăng bài sẽ nhận thông báo
+                'post_id' => $post->id,
+                'title' => "Có comment mới trên bài viết " . $post->id . " của bạn",
+            ]);
+
             if (!$comments) {
                 return ApiResponse::error(__('Tạo comment thất bại!'), 500);
             }
