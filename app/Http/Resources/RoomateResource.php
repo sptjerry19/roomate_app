@@ -34,7 +34,8 @@ class RoomateResource extends JsonResource
             "comment" => $this->getCommentByPostId($this->id),
             "is_favorite" => $this->checkFavorite(),
             "created_at" => $this->created_at,
-            "updated_at" => $this->updated_at
+            "updated_at" => $this->updated_at,
+            "user" => $this->user
         ];
     }
 

@@ -329,7 +329,9 @@
                             <!-- Avatar -->
                             <div>
                                 <img
-                                    :src="defaultAvatar"
+                                    :src="
+                                        roomDetail.user.avatar || defaultAvatar
+                                    "
                                     alt="User Avatar"
                                     class="w-24 h-24 object-cover rounded-full"
                                 />
@@ -412,7 +414,10 @@
                                 >
                                     <div class="flex items-center">
                                         <img
-                                            :src="defaultAvatar"
+                                            :src="
+                                                comment.user.avatar ||
+                                                defaultAvatar
+                                            "
                                             alt="User Avatar"
                                             class="w-12 h-12 object-cover rounded-full"
                                         />

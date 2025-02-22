@@ -29,6 +29,7 @@ Route::group(['middleware' => 'api', 'prefix' => 'v1'], function () {
     Route::post('/register', [AuthController::class, 'register'])->name('register');
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
     Route::post('/update', [AuthController::class, 'update']);
+    Route::put('/update-avatar', [AuthController::class, 'updateAvatar'])->name('updateAvatar');;
 
     Route::group(['middleware' => 'api', 'prefix' => 'roomate'], function () {
         Route::get('/', [RoomateController::class, 'index'])->name('roomate.view');

@@ -188,50 +188,96 @@
         </div>
     </nav>
     <div class="container mt-14 mx-auto py-8">
-        <!-- Cover Photo -->
-        <div class="relative h-64 bg-gray-200">
-            <img
-                :src="coverPhoto"
-                alt="Cover Photo"
-                class="absolute inset-0 w-full h-full object-cover"
-            />
-            <!-- Avatar -->
-            <div
-                class="absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-1/2"
-            >
-                <img
-                    :src="avatar"
-                    alt="User Avatar"
-                    class="w-32 h-32 rounded-full border-4 border-white shadow-md object-cover"
-                />
-            </div>
-        </div>
+        <div>
+            <div class="container mt-14 mx-auto py-8">
+                <!-- Cover Photo -->
+                <div class="relative h-64 bg-gray-200">
+                    <img
+                        :src="coverPhoto"
+                        alt="Cover Photo"
+                        class="absolute inset-0 w-full h-full object-cover"
+                    />
+                    <!-- Avatar -->
+                    <div
+                        class="absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-1/2"
+                    >
+                        <img
+                            :src="avatar"
+                            alt="User Avatar"
+                            class="w-32 h-32 rounded-full border-4 border-white shadow-md object-cover"
+                        />
+                        <button
+                            @click="openEditAvatarModal"
+                            class="absolute bottom-0 right-0 bg-white rounded-full p-2 shadow-md"
+                        >
+                            🖍
+                        </button>
+                    </div>
+                </div>
 
-        <!-- User Info -->
-        <div class="text-center mt-20">
-            <h1 class="text-2xl font-bold text-gray-800">{{ user.name }}</h1>
-            <p class="text-gray-600 font-bold">
-                Người theo dõi: 21 | Đang theo dõi: 32
-            </p>
-            <p class="text-gray-600 mt-4">Tuổi: {{ user.age }}</p>
-            <p class="text-gray-600">Quê quán: {{ user.hometown }}</p>
-            <p class="text-gray-600">Nghề nghiệp: {{ user.job }}</p>
-            <p class="text-gray-600">
-                Nơi học tập/làm việc: {{ user.workplace }}
-            </p>
-            <!-- <p class="text-gray-600">{{ user.email }}</p> -->
-            <button
-                class="text-gray-600 rounded-md border border-gray-300 px-4 py-2 mt-4 font-bold"
+                <!-- User Info -->
+                <div class="text-center mt-20">
+                    <h1 class="text-2xl font-bold text-gray-800">
+                        {{ user.name }}
+                    </h1>
+                    <p class="text-gray-600 font-bold">
+                        Người theo dõi: 21 | Đang theo dõi: 32
+                    </p>
+                    <p class="text-gray-600 mt-4">Tuổi: {{ user.age }}</p>
+                    <p class="text-gray-600">Quê quán: {{ user.hometown }}</p>
+                    <p class="text-gray-600">Nghề nghiệp: {{ user.job }}</p>
+                    <p class="text-gray-600">
+                        Nơi học tập/làm việc: {{ user.workplace }}
+                    </p>
+                    <button
+                        class="text-gray-600 rounded-md border border-gray-300 px-4 py-2 mt-4 font-bold"
+                    >
+                        {{ user.phone }}
+                    </button>
+                    <button
+                        @click="openEditModal"
+                        class="mt-4 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 ml-5"
+                    >
+                        Chỉnh sửa thông tin
+                    </button>
+                </div>
+            </div>
+
+            <!-- Modal chỉnh sửa avatar -->
+            <div
+                v-if="editModalOpen"
+                class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50"
             >
-                {{ user.phone }}
-            </button>
-            <!-- <p class="text-gray-600">{{ user.address }}</p> -->
-            <button
-                @click="openEditModal"
-                class="mt-4 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 ml-5"
-            >
-                Chỉnh sửa thông tin
-            </button>
+                <div class="bg-white p-6 rounded-lg shadow-lg w-80">
+                    <h3 class="text-xl font-semibold mb-4">Chỉnh sửa Avatar</h3>
+                    <input
+                        type="file"
+                        accept="image/*"
+                        @change="handleAvatarSelected"
+                    />
+                    <div v-if="newAvatarBase64" class="mt-4">
+                        <img
+                            :src="newAvatarBase64"
+                            alt="New Avatar Preview"
+                            class="w-32 h-32 rounded-full object-cover mx-auto"
+                        />
+                    </div>
+                    <div class="mt-4 flex justify-end">
+                        <button
+                            @click="editModalOpen = false"
+                            class="px-4 py-2 bg-gray-300 rounded-md mr-2"
+                        >
+                            Hủy
+                        </button>
+                        <button
+                            @click="updateAvatar"
+                            class="px-4 py-2 bg-blue-600 text-white rounded-md"
+                        >
+                            Cập nhật
+                        </button>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <!-- Favorite Rooms Section -->
@@ -286,34 +332,8 @@
                                 "
                                 class="px-4 py-2 rounded hover:opacity-80 transition"
                             >
-                                <span v-if="post.is_favorite"
-                                    ><svg
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        viewBox="0 0 24 24"
-                                        fill="currentColor"
-                                        class="size-6"
-                                    >
-                                        <path
-                                            d="m11.645 20.91-.007-.003-.022-.012a15.247 15.247 0 0 1-.383-.218 25.18 25.18 0 0 1-4.244-3.17C4.688 15.36 2.25 12.174 2.25 8.25 2.25 5.322 4.714 3 7.688 3A5.5 5.5 0 0 1 12 5.052 5.5 5.5 0 0 1 16.313 3c2.973 0 5.437 2.322 5.437 5.25 0 3.925-2.438 7.111-4.739 9.256a25.175 25.175 0 0 1-4.244 3.17 15.247 15.247 0 0 1-.383.219l-.022.012-.007.004-.003.001a.752.752 0 0 1-.704 0l-.003-.001Z"
-                                        />
-                                    </svg>
-                                </span>
-                                <span v-else
-                                    ><svg
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        fill="none"
-                                        viewBox="0 0 24 24"
-                                        stroke-width="1.5"
-                                        stroke="currentColor"
-                                        class="size-6"
-                                    >
-                                        <path
-                                            stroke-linecap="round"
-                                            stroke-linejoin="round"
-                                            d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z"
-                                        />
-                                    </svg>
-                                </span>
+                                <span v-if="post.is_favorite">❤️</span>
+                                <span v-else>🤍</span>
                             </button>
                             <router-link
                                 :to="`/room/${post.id}`"
@@ -412,6 +432,10 @@ export default {
                 workplace: "Đại học Kiến trúc Hà Nội",
             },
             editedUser: {},
+
+            editModalOpen: false,
+            newAvatarBase64: "",
+
             isEditModalOpen: false,
             showDropdown: false, // Điều khiển hiển thị menu dropdown
             posts: [],
@@ -429,6 +453,8 @@ export default {
         // Lấy dữ liệu từ localStorage
         const storedUser = JSON.parse(localStorage.getItem("user"));
         if (storedUser && storedUser.name && storedUser.email) {
+            this.avatar = storedUser.avatar;
+            this.user.avatar = storedUser.avatar;
             this.user.name = storedUser.name;
             this.user.email = storedUser.email;
             this.user.phone = storedUser.phone;
@@ -488,6 +514,42 @@ export default {
                 console.error("Lỗi cập nhật:", error);
                 alert("Cập nhật thất bại! Vui lòng thử lại.");
             }
+        },
+        openEditAvatarModal() {
+            this.editModalOpen = true;
+        },
+        handleAvatarSelected(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                this.newAvatarBase64 = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        },
+        updateAvatar() {
+            if (!this.newAvatarBase64) {
+                alert("Vui lòng chọn một hình ảnh.");
+                return;
+            }
+            const token = localStorage.getItem("access_token"); // Lấy token từ localStorage
+
+            // Sử dụng phương thức PUT và thêm token vào header
+            apiClient
+                .put(
+                    "/update-avatar",
+                    { avatar: this.newAvatarBase64 },
+                    { headers: { Authorization: `Bearer ${token}` } }
+                )
+                .then((response) => {
+                    this.avatar = this.newAvatarBase64;
+                    this.editModalOpen = false;
+                    alert("Cập nhật avatar thành công!");
+                })
+                .catch((error) => {
+                    console.error("Error updating avatar:", error);
+                    alert("Cập nhật avatar thất bại.");
+                });
         },
         async toggleFavorite(post) {
             try {
