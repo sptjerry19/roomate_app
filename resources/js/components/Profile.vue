@@ -187,7 +187,7 @@
             </div>
         </div>
     </nav>
-    <div class="container mt-14 mx-auto py-8">
+    <div class="container mx-auto py-8">
         <div>
             <div class="container mt-14 mx-auto py-8">
                 <!-- Cover Photo -->
