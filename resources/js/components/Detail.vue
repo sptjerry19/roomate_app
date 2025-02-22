@@ -26,6 +26,7 @@
                             <option value="/">Trang chủ</option>
                             <option value="/room">Phòng Trọ</option>
                             <option value="/roommate">Roommate</option>
+                            <option value="/advertisement">Quảng cáo</option>
                         </select>
                     </div>
 
@@ -363,6 +364,7 @@
 
                                 <!-- Nút nhắn tin -->
                                 <button
+                                    @click="toggleCommentBox"
                                     class="mt-4 bg-primary text-white px-4 py-2 rounded-lg flex items-center hover:bg-primary/90 transition"
                                 >
                                     <svg
@@ -381,7 +383,60 @@
                                     </svg>
                                     Nhắn tin
                                 </button>
+
+                                <!-- Box nhập comment -->
+                                <div v-if="showCommentBox" class="mt-4">
+                                    <textarea
+                                        v-model="commentContent"
+                                        placeholder="Nhập bình luận..."
+                                        class="w-full p-2 border rounded-lg"
+                                    ></textarea>
+                                    <button
+                                        @click="submitComment"
+                                        class="mt-2 bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 transition"
+                                    >
+                                        Gửi bình luận
+                                    </button>
+                                </div>
                             </div>
+                        </div>
+
+                        <!-- Danh sách bình luận -->
+                        <div class="mt-6">
+                            <h2 class="text-xl font-bold">Bình luận</h2>
+                            <div v-if="roomDetail.comment.length > 0">
+                                <div
+                                    v-for="comment in roomDetail.comment"
+                                    :key="comment.id"
+                                    class="mt-4 p-4 border rounded-lg bg-gray-100"
+                                >
+                                    <div class="flex items-center">
+                                        <img
+                                            :src="defaultAvatar"
+                                            alt="User Avatar"
+                                            class="w-12 h-12 object-cover rounded-full"
+                                        />
+                                        <div class="ml-3">
+                                            <h3 class="font-semibold">
+                                                {{ comment.user.name }}
+                                            </h3>
+                                            <p class="text-gray-600 text-sm">
+                                                {{
+                                                    new Date(
+                                                        comment.created_at
+                                                    ).toLocaleString()
+                                                }}
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <p class="mt-2 text-gray-800 break-all">
+                                        {{ comment.content }}
+                                    </p>
+                                </div>
+                            </div>
+                            <p v-else class="text-gray-500 mt-2">
+                                Chưa có bình luận nào.
+                            </p>
                         </div>
                     </div>
                 </div>
@@ -569,6 +624,9 @@ export default {
 
             notifications: [],
             showDropdownNotification: false,
+
+            showCommentBox: false,
+            commentContent: "",
         };
     },
     computed: {
@@ -748,6 +806,46 @@ export default {
             setTimeout(() => {
                 this.showDropdownNotification = false;
             }, 300);
+        },
+
+        toggleCommentBox() {
+            this.showCommentBox = !this.showCommentBox;
+        },
+        async submitComment() {
+            if (!this.commentContent.trim()) {
+                alert("Vui lòng nhập nội dung bình luận!");
+                return;
+            }
+
+            try {
+                const response = await apiClient.post(
+                    "/comments",
+                    {
+                        post_id: this.roomDetail.id,
+                        content: this.commentContent,
+                    },
+                    {
+                        headers: {
+                            Authorization: `Bearer ${localStorage.getItem(
+                                "access_token"
+                            )}`,
+                            "Content-Type": "application/json",
+                        },
+                    }
+                );
+
+                if (response.status === 200) {
+                    alert("Bình luận đã được gửi thành công!");
+                    this.commentContent = "";
+                    this.showCommentBox = false;
+                    this.fetchRoomDetail();
+                } else {
+                    alert("Đã xảy ra lỗi khi gửi bình luận!");
+                }
+            } catch (error) {
+                console.error("Lỗi khi gửi bình luận:", error);
+                alert("Không thể gửi bình luận. Vui lòng thử lại!");
+            }
         },
     },
 };

@@ -21,6 +21,7 @@ class User extends Authenticatable implements JWTSubject // Thêm implements JWT
         'hometown',
         'job',
         'workplace',
+        'role',
     ];
 
     protected $hidden = [

@@ -122,6 +122,30 @@
                                 autocomplete="off"
                             />
                         </div>
+                        <!-- Role Selection -->
+                        <div class="mb-4">
+                            <label class="block text-gray-600">Vai trò</label>
+                            <div class="flex space-x-4">
+                                <label class="flex items-center space-x-2">
+                                    <input
+                                        type="radio"
+                                        v-model="role"
+                                        value="owner"
+                                        class="form-radio text-blue-500"
+                                    />
+                                    <span>Chủ sở hữu</span>
+                                </label>
+                                <label class="flex items-center space-x-2">
+                                    <input
+                                        type="radio"
+                                        v-model="role"
+                                        value="lessee"
+                                        class="form-radio text-blue-500"
+                                    />
+                                    <span>Người thuê</span>
+                                </label>
+                            </div>
+                        </div>
                         <!-- Terms and Conditions Checkbox -->
                         <div class="mb-4 flex items-center">
                             <input
@@ -297,6 +321,7 @@ export default {
             password: "",
             passwordConfirm: "",
             acceptTerms: false,
+            role: "owner",
         };
     },
     methods: {
@@ -314,6 +339,7 @@ export default {
                     email: this.emailOrPhone,
                     password: this.password,
                     password_confirmation: this.passwordConfirm,
+                    role: this.role,
                 });
 
                 console.log("Đăng ký thành công:", response.data.data);

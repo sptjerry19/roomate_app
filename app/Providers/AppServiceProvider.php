@@ -2,10 +2,14 @@
 
 namespace App\Providers;
 
+use App\Repositories\Comment\CommentRepository;
+use App\Repositories\Comment\CommentRepositoryEloquent;
 use App\Repositories\Favorite\FavoriteRepository;
 use App\Repositories\Favorite\FavoriteRepositoryEloquent;
 use App\Repositories\User\UserRepository;
 use App\Repositories\User\UserRepositoryEloquent;
+use App\Services\Comment\CommentService;
+use App\Services\Comment\CommentServiceImp;
 use App\Services\Favorite\FavoriteService;
 use App\Services\Favorite\FavoriteServiceImp;
 use App\Services\User\UserService;
@@ -23,11 +27,13 @@ class AppServiceProvider extends ServiceProvider
         // service provider
         $this->app->bind(UserService::class, UserServiceImp::class);
         $this->app->bind(FavoriteService::class, FavoriteServiceImp::class);
+        $this->app->bind(CommentService::class, CommentServiceImp::class);
 
 
         // repository service
         $this->app->bind(UserRepository::class, UserRepositoryEloquent::class);
         $this->app->bind(FavoriteRepository::class, FavoriteRepositoryEloquent::class);
+        $this->app->bind(CommentRepository::class, CommentRepositoryEloquent::class);
     }
 
     /**

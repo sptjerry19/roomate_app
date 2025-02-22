@@ -14,6 +14,7 @@ import RoomateV2 from "../components/RoomateV2.vue";
 import RoommateManagement from "../components/Admin/RoommateManagement.vue";
 import Regulations from "../components/Regulations.vue";
 import DashboardControl from "../components/Admin/DashboardControl.vue";
+import Advertisement from "../components/Advertisement.vue";
 
 const routes = [
     {
@@ -73,6 +74,10 @@ const routes = [
     {
         path: "/regulations",
         component: Regulations,
+    },
+    {
+        path: "/advertisement",
+        component: Advertisement,
     },
 ];
 

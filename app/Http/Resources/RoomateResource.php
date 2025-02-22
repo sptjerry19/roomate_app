@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Models\Comment;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -30,10 +31,26 @@ class RoomateResource extends JsonResource
             "images" => $this->images,
             "type" => $this->type,
             "advertisement_type" => $this->advertisement_type,
+            "comment" => $this->getCommentByPostId($this->id),
             "is_favorite" => $this->checkFavorite(),
             "created_at" => $this->created_at,
             "updated_at" => $this->updated_at
         ];
+    }
+
+    public function getCommentByPostId($postId)
+    {
+        $comments = Comment::query()->where('post_id', $postId)->get();
+        return $comments->map(function ($comment) {
+            return [
+                'id' => $comment->id,
+                'user' => $comment->user,
+                'post_id' => $comment->post_id,
+                'content' => $comment->content,
+                'created_at' => $comment->created_at,
+                'updated_at' => $comment->updated_at
+            ];
+        });
     }
 
     public function formatPrice($price)
@@ -69,7 +86,7 @@ class RoomateResource extends JsonResource
 
         // Kiểm tra xem user_id có nằm trong danh sách favorites không
         return $this->favorites->contains(function ($favorite) use ($user) {
-            return $favorite->pivot->user_id === $user->id;
+            return $favorite->pivot->user_id == $user->id;
         });
     }
 }
