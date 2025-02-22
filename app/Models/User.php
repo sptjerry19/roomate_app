@@ -14,6 +14,8 @@ class User extends Authenticatable implements JWTSubject // Thêm implements JWT
 
     protected $fillable = [
         'name',
+        'avatar',
+        'background',
         'email',
         'password',
         'phone',

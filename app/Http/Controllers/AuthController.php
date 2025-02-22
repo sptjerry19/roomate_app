@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Helpers\ApiResponse;
+use App\Helpers\Common;
 use App\Helpers\UploadImage;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Users\UpdateRequest;
@@ -151,6 +152,33 @@ class AuthController extends Controller
 
         // Cập nhật thông tin user
         $user->update($validatedData);
+
+        // Đăng xuất người dùng
+        Auth::logout();
+
+        return response()->json([
+            'message' => 'Thông tin đã được cập nhật và đăng xuất thành công!',
+            'user' => $user
+        ]);
+    }
+
+    public function updateAvatar(Request $request)
+    {
+        $user = Auth::user();
+
+        if (!$user) {
+            return response()->json(['message' => 'User not found'], 404);
+        }
+
+        // Validate dữ liệu đầu vào
+        $validatedData = $request->validate([
+            'avatar' => 'required|string',
+        ]);
+
+        $avatar = Common::uploadbase64Image($validatedData['avatar'], '/avatar');
+
+        // Cập nhật thông tin user
+        $user->update(['avatar' => Common::responseImage($avatar)]);
 
         // Đăng xuất người dùng
         Auth::logout();
