@@ -25,17 +25,17 @@
                             >Trang chủ</router-link
                         >
                         <router-link
-                            to="/room"
+                            to="/about"
                             class="hover:underline px-6 py-1"
                             >Về chúng tôi</router-link
                         >
                         <router-link
-                            to="/roommate"
+                            to="/room"
                             class="hover:underline px-6 py-1"
                             >Phòng trọ</router-link
                         >
                         <router-link
-                            to="/roommate"
+                            to="/about"
                             class="hover:underline px-6 py-1"
                             >Liên hệ</router-link
                         >
@@ -189,9 +189,7 @@
                         </h3>
                         <ul class="space-y-2 text-white text-xs">
                             <li>
-                                <a
-                                    href="/regulations"
-                                    class="hover:text-gray-900"
+                                <a href="/about" class="hover:text-gray-900"
                                     >Giới thiệu</a
                                 >
                             </li>

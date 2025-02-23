@@ -330,7 +330,9 @@
                             <div>
                                 <img
                                     :src="
-                                        roomDetail.user.avatar || defaultAvatar
+                                        roomDetail.user
+                                            ? roomDetail.user.avatar
+                                            : defaultAvatar
                                     "
                                     alt="User Avatar"
                                     class="w-24 h-24 object-cover rounded-full"
@@ -501,27 +503,37 @@
                                 </h3>
                                 <ul class="space-y-2 text-white text-xs">
                                     <li>
-                                        <a href="#" class="hover:text-gray-900"
+                                        <a
+                                            href="/about"
+                                            class="hover:text-gray-900"
                                             >Giới thiệu</a
                                         >
                                     </li>
                                     <li>
-                                        <a href="#" class="hover:text-gray-900"
+                                        <a
+                                            href="/regulations"
+                                            class="hover:text-gray-900"
                                             >Quý chế hoạt động</a
                                         >
                                     </li>
                                     <li>
-                                        <a href="#" class="hover:text-gray-900"
+                                        <a
+                                            href="/regulations"
+                                            class="hover:text-gray-900"
                                             >Quy định sử dụng</a
                                         >
                                     </li>
                                     <li>
-                                        <a href="#" class="hover:text-gray-900"
+                                        <a
+                                            href="/regulations"
+                                            class="hover:text-gray-900"
                                             >Chính sách bảo mật</a
                                         >
                                     </li>
                                     <li>
-                                        <a href="#" class="hover:text-gray-900"
+                                        <a
+                                            href="/regulations"
+                                            class="hover:text-gray-900"
                                             >Liên hệ</a
                                         >
                                     </li>

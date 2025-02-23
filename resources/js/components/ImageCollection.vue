@@ -307,9 +307,7 @@
                             </h3>
                             <ul class="space-y-2 text-white text-xs">
                                 <li>
-                                    <a
-                                        href="/regulations"
-                                        class="hover:text-gray-900"
+                                    <a href="/about" class="hover:text-gray-900"
                                         >Giới thiệu</a
                                     >
                                 </li>
