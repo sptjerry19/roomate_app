@@ -60,7 +60,7 @@
                         alt="Illustration of a cozy room with bunk beds, a desk, and a sofa"
                         class="rounded-lg"
                         height="300"
-                        src="https://s3-alpha-sig.figma.com/img/b459/39ce/bc91d5ac44c2727eb62fdf70619133f7?Expires=1740355200&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=GORA84r4JRuW60Ant~cUnSBen70lFyPerPF83XmAwZEAtvkp-WojkkwJ~3N11RhrA917Xw9lLb8akjGn0BAx4~cuN~ZW8Ly~k5UTxCgX9HqCdh3ZA~0-MwOVuC9B3HXYiayFIR~3WkSH8RnOs~dRM5iu8nOZj4PRyHJCIWepWW0oHrR3IHTbEmqXiLxvqA4j~SWEgp5nqJ7FRkWydFRSGM897p2du~4un-K1TJ~xqJX3IP5VwpLrsSkqAfKCZFjJbW44-Bu7fCKkRYBo4xCcOz3b66LgeYPyOb~aanGJUbwy8h6krI~D8YgF4JPOm7Y1yWSSDZwtFgIgF9pMNwN99Q__"
+                        src="https://aahome.click/storage/aahome.png"
                         width="400"
                     />
                 </div>
@@ -321,7 +321,7 @@ export default {
 
 <style scoped>
 .background {
-    background-image: url("https://s3-alpha-sig.figma.com/img/b459/39ce/bc91d5ac44c2727eb62fdf70619133f7?Expires=1740355200&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=GORA84r4JRuW60Ant~cUnSBen70lFyPerPF83XmAwZEAtvkp-WojkkwJ~3N11RhrA917Xw9lLb8akjGn0BAx4~cuN~ZW8Ly~k5UTxCgX9HqCdh3ZA~0-MwOVuC9B3HXYiayFIR~3WkSH8RnOs~dRM5iu8nOZj4PRyHJCIWepWW0oHrR3IHTbEmqXiLxvqA4j~SWEgp5nqJ7FRkWydFRSGM897p2du~4un-K1TJ~xqJX3IP5VwpLrsSkqAfKCZFjJbW44-Bu7fCKkRYBo4xCcOz3b66LgeYPyOb~aanGJUbwy8h6krI~D8YgF4JPOm7Y1yWSSDZwtFgIgF9pMNwN99Q__"); /* Thay bằng đường dẫn đến ảnh nền */
+    background-image: url("https://aahome.click/storage/aahome.png"); /* Thay bằng đường dẫn đến ảnh nền */
     background-size: cover; /* Phủ toàn bộ màn hình */
     background-position: center; /* Canh giữa ảnh */
     background-repeat: no-repeat; /* Không lặp lại ảnh */
