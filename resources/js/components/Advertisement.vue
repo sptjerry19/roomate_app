@@ -11,7 +11,7 @@
                         <img
                             src="https://aahome.click/storage/logo.png"
                             alt="Logo"
-                            class="h-8 w-8 object-contain"
+                            class="h-11 object-contain"
                         />
                     </router-link>
                     <select
