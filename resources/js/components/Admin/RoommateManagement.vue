@@ -31,7 +31,9 @@
                 <tr v-for="post in posts" :key="post.id" class="text-center">
                     <td class="border p-2">{{ post.title }}</td>
                     <td class="border p-2">{{ post.location }}</td>
-                    <td class="border p-2">{{ post.price }} VND</td>
+                    <td class="border p-2">
+                        {{ formatPrice(post.price) }} VND
+                    </td>
                     <td class="border p-2">{{ post.area }} m²</td>
                     <td class="border p-2">
                         <button
@@ -119,11 +121,10 @@
                         class="border p-2 w-full mb-2"
                         required
                     />
-                    <textarea
-                        v-model="formData.description"
-                        placeholder="Mô tả"
-                        class="border p-2 w-full mb-2"
-                    ></textarea>
+                    <QuillEditor
+                        v-model:content="formData.description"
+                        content-type="html"
+                    />
 
                     <div class="flex justify-end space-x-2">
                         <button
@@ -157,10 +158,12 @@
 <script>
 import axios from "axios";
 import Pagination from "../Pagination.vue";
+import { QuillEditor } from "@vueup/vue-quill";
 
 export default {
     components: {
         Pagination,
+        QuillEditor,
     },
     data() {
         return {
@@ -190,6 +193,9 @@ export default {
         };
     },
     methods: {
+        formatPrice(price) {
+            return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+        },
         // Lấy danh sách bài đăng
         async fetchPosts() {
             try {
@@ -216,6 +222,10 @@ export default {
             if (post) {
                 this.editMode = true;
                 this.formData = { ...post };
+                this.formData.price = parseFloat(
+                    post.price?.replace(/\./g, "") || 0
+                );
+                this.formData.description = post.description ?? "";
             } else {
                 this.editMode = false;
                 this.formData = {
@@ -235,7 +245,6 @@ export default {
             }
             this.showModal = true;
         },
-
         // Đóng modal
         closeModal() {
             this.showModal = false;
@@ -263,6 +272,8 @@ export default {
         async updatePost() {
             try {
                 const token = localStorage.getItem("access_token");
+
+                console.log("Form data gửi đi:", this.formData);
 
                 await axios.put(
                     `/api/v1/roomate/manage/${this.formData.id}`,

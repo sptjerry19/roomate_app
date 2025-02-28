@@ -135,13 +135,11 @@
             <!-- Description -->
             <div class="mb-4">
                 <label class="block text-sm font-medium mb-2">Mô tả</label>
-                <textarea
-                    v-model="post.description"
-                    class="w-full p-2 border rounded"
-                    placeholder="Nhập mô tả chi tiết về phòng"
-                    rows="4"
-                    required
-                ></textarea>
+                <QuillEditor
+                    v-model:content="post.description"
+                    content-type="html"
+                    class="w-full border rounded"
+                />
             </div>
 
             <!-- Images -->
@@ -209,9 +207,14 @@
 </template>
 
 <script>
+import { QuillEditor } from "@vueup/vue-quill";
 import apiClient from "../../axios";
+import "@vueup/vue-quill/dist/vue-quill.snow.css";
 
 export default {
+    components: {
+        QuillEditor,
+    },
     data() {
         const user = localStorage.getItem("user")
             ? JSON.parse(localStorage.getItem("user"))
@@ -400,6 +403,14 @@ export default {
             filteredWards: [],
         };
     },
+    watch: {
+        selectedDistrict(newVal) {
+            this.post.district = newVal;
+        },
+        selectedWard(newVal) {
+            this.post.ward = newVal;
+        },
+    },
     computed: {
         // Hiển thị giá đã được định dạng với 'VNĐ'
         formattedPrice: {
@@ -417,6 +428,13 @@ export default {
                 );
                 this.post.price = isNaN(numericValue) ? 0 : numericValue;
             },
+        },
+
+        filteredWards() {
+            const district = this.wards.find(
+                (d) => d.districtName === this.selectedDistrict
+            );
+            return district ? district.wards : [];
         },
     },
     methods: {
