@@ -10,7 +10,7 @@
                     <!-- Logo và tên trang -->
                     <div class="flex items-center">
                         <img
-                            src="https://s3-alpha-sig.figma.com/img/94aa/de1b/7c2686b66c34627c8e323577a00ecd80?Expires=1740355200&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=Ex3TtLJcraaGGZJf0Y7z8znbGyYjk5v~jsAocqgG4S6yb9XTHaoeW7vwIQrtxeJfTrbtYSYLeDmxPx7S1EtUkysukNdYrYKCREcKsHI8ExlpdcK2OGYKSf3IcXWN3wYXEIn5anDZeWBRnwjttsdhUk5jTSrP7Iv55dRROUCR4D4ttmgEmNXWXzHolaetcxGHSLSjet1prJG61EK0mux6O5AM1s3CLMLxc~EgOV-iGhOiGZGjGzEoQh~sCXgs~e6uAK~dem-48WN9YhwRRaxLKkv23M5QaoVYCL92mrKu9eZGwdkq5hT44H4pR1IYUNEvf~XiKSDqBjCDPxlmevxnGQ__"
+                            src="https://aahome.click/storage/logo.png"
                             alt="Logo"
                             class="h-8 w-8 object-contain"
                         />
@@ -25,17 +25,17 @@
                             >Trang chủ</router-link
                         >
                         <router-link
-                            to="/room"
+                            to="/about"
                             class="hover:underline px-6 py-1"
                             >Về chúng tôi</router-link
                         >
                         <router-link
-                            to="/roommate"
+                            to="/room"
                             class="hover:underline px-6 py-1"
                             >Phòng trọ</router-link
                         >
                         <router-link
-                            to="/roommate"
+                            to="/about"
                             class="hover:underline px-6 py-1"
                             >Liên hệ</router-link
                         >
@@ -46,9 +46,13 @@
                     </div>
                 </div>
             </nav>
-            <div class="flex justify-center items-center mx-auto min-h-screen">
-                <!-- Left Side -->
-                <div class="bg-primary p-8 rounded-lg shadow-lg max-w-lg">
+            <div
+                class="flex flex-col md:flex-row justify-center items-center mx-auto min-h-screen p-4"
+            >
+                <!-- Left Side - Ẩn khi màn hình nhỏ -->
+                <div
+                    class="hidden md:block bg-primary p-8 rounded-lg shadow-lg max-w-lg"
+                >
                     <h2 class="text-3xl font-bold mb-4">AA++ HOME!</h2>
                     <p class="mb-8">
                         "Nơi kết nối bạn với không gian sống lý tưởng và những
@@ -60,17 +64,17 @@
                         alt="Illustration of a cozy room with bunk beds, a desk, and a sofa"
                         class="rounded-lg"
                         height="300"
-                        src="https://s3-alpha-sig.figma.com/img/b459/39ce/bc91d5ac44c2727eb62fdf70619133f7?Expires=1740355200&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=GORA84r4JRuW60Ant~cUnSBen70lFyPerPF83XmAwZEAtvkp-WojkkwJ~3N11RhrA917Xw9lLb8akjGn0BAx4~cuN~ZW8Ly~k5UTxCgX9HqCdh3ZA~0-MwOVuC9B3HXYiayFIR~3WkSH8RnOs~dRM5iu8nOZj4PRyHJCIWepWW0oHrR3IHTbEmqXiLxvqA4j~SWEgp5nqJ7FRkWydFRSGM897p2du~4un-K1TJ~xqJX3IP5VwpLrsSkqAfKCZFjJbW44-Bu7fCKkRYBo4xCcOz3b66LgeYPyOb~aanGJUbwy8h6krI~D8YgF4JPOm7Y1yWSSDZwtFgIgF9pMNwN99Q__"
+                        src="https://aahome.click/storage/aahome.png"
                         width="400"
                     />
                 </div>
 
+                <!-- Right Side - Form đăng ký -->
                 <div
-                    class="bg-white text-black p-8 rounded-lg shadow-lg ml-8 max-w-md"
+                    class="bg-white text-black p-8 rounded-lg shadow-lg w-full md:ml-8 md:max-w-md mt-96 md:mt-0"
                 >
                     <h1 class="text-2xl font-semibold mb-4">Đăng ký</h1>
                     <form @submit.prevent="handleSignup">
-                        <!-- Name Input -->
                         <div class="mb-4">
                             <label class="block text-gray-600">Tên</label>
                             <input
@@ -79,22 +83,35 @@
                                 v-model="name"
                                 class="w-full border border-gray-300 rounded-md py-2 px-3 focus:outline-none focus:border-blue-500"
                                 autocomplete="off"
+                                required
                             />
                         </div>
-                        <!-- Email or Phone Input -->
+
                         <div class="mb-4">
-                            <label class="block text-gray-600"
-                                >Email hoặc số điện thoại</label
-                            >
+                            <label class="block text-gray-600">Email</label>
                             <input
                                 type="text"
                                 id="email_or_phone"
                                 v-model="emailOrPhone"
                                 class="w-full border border-gray-300 rounded-md py-2 px-3 focus:outline-none focus:border-blue-500"
                                 autocomplete="off"
+                                required
                             />
                         </div>
-                        <!-- Password Input -->
+
+                        <div class="mb-4">
+                            <label class="block text-gray-600"
+                                >Số điện thoại</label
+                            >
+                            <input
+                                type="text"
+                                id="phone"
+                                v-model="Phone"
+                                class="w-full border border-gray-300 rounded-md py-2 px-3 focus:outline-none focus:border-blue-500"
+                                autocomplete="off"
+                            />
+                        </div>
+
                         <div class="mb-4">
                             <label for="password" class="block text-gray-600"
                                 >Mật khẩu</label
@@ -105,9 +122,10 @@
                                 v-model="password"
                                 class="w-full border border-gray-300 rounded-md py-2 px-3 focus:outline-none focus:border-blue-500"
                                 autocomplete="off"
+                                required
                             />
                         </div>
-                        <!-- Confirm Password Input -->
+
                         <div class="mb-4">
                             <label
                                 for="password_confirm"
@@ -120,9 +138,10 @@
                                 v-model="passwordConfirm"
                                 class="w-full border border-gray-300 rounded-md py-2 px-3 focus:outline-none focus:border-blue-500"
                                 autocomplete="off"
+                                required
                             />
                         </div>
-                        <!-- Role Selection -->
+
                         <div class="mb-4">
                             <label class="block text-gray-600">Vai trò</label>
                             <div class="flex space-x-4">
@@ -146,7 +165,7 @@
                                 </label>
                             </div>
                         </div>
-                        <!-- Terms and Conditions Checkbox -->
+
                         <div class="mb-4 flex items-center">
                             <input
                                 type="checkbox"
@@ -154,11 +173,11 @@
                                 v-model="acceptTerms"
                                 class="text-blue-500"
                             />
-                            <label for="terms" class="text-gray-600 ml-2"
-                                >Tôi chấp nhận các Điều khoản và Điều kiện
+                            <label for="terms" class="text-gray-600 ml-2">
+                                Tôi chấp nhận các Điều khoản và Điều kiện
                             </label>
                         </div>
-                        <!-- Sign Up Button -->
+
                         <button
                             type="submit"
                             class="bg-blue-500 hover:bg-blue-600 text-white font-semibold rounded-md py-2 px-4 w-full"
@@ -166,7 +185,7 @@
                             Đăng ký
                         </button>
                     </form>
-                    <!-- Sign up Link -->
+
                     <div class="mt-6 text-blue-500 text-center">
                         <p>
                             Đã có tài khoản?
@@ -178,7 +197,7 @@
                 </div>
             </div>
         </div>
-        <footer class="bg-primary text-white py-10">
+        <footer class="bg-primary text-white py-10 mt-96 md:mt-0">
             <div class="container mx-auto gap-8 px-4 flex justify-around">
                 <!-- cột 1 + 2 -->
                 <div class="flex justify-around max-w-6xl">
@@ -189,9 +208,7 @@
                         </h3>
                         <ul class="space-y-2 text-white text-xs">
                             <li>
-                                <a
-                                    href="/regulations"
-                                    class="hover:text-gray-900"
+                                <a href="/about" class="hover:text-gray-900"
                                     >Giới thiệu</a
                                 >
                             </li>
@@ -318,6 +335,7 @@ export default {
         return {
             name: "",
             emailOrPhone: "",
+            Phone: "",
             password: "",
             passwordConfirm: "",
             acceptTerms: false,
@@ -383,7 +401,7 @@ export default {
 
 <style scoped>
 .background {
-    background-image: url("https://s3-alpha-sig.figma.com/img/f88d/14fd/fd957412170343cd5d4c14d1db083c5e?Expires=1737936000&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=lp3zvz9m104TmrX53oho2bOO4KqALtK~eifWhPh~uwIalkjobM-W6MA81nxFgWtLsnOxYJPg8OZM18Owk2vDBldH5g6v6qZAwIgEwS3oBWJSBNxdjYxw~-2wMr4QYzvTyrwCRJyZuTLJxFPHi7W74OkrGWmDLsJXPi-w6lwe4TjvG~dFEUra09KtLlOiXn62O6YIdToavY7UTeJ9p~81JUI4FY5dSfafbsLLHB2FBdpZCPnCFpR6~9r0mM1LCwc4qZQyaMw9JTEflxd0mXHyI3PksqpydmofBhNV1vAM7TaX51Ru7nN7Kj02Ne-IG8HNlWjDqhhzFb7HZ7zLdYYI4A__"); /* Thay bằng đường dẫn đến ảnh nền */
+    background-image: url("https://aahome.click/storage/aahome.png"); /* Thay bằng đường dẫn đến ảnh nền */
     background-size: cover; /* Phủ toàn bộ màn hình */
     background-position: center; /* Canh giữa ảnh */
     background-repeat: no-repeat; /* Không lặp lại ảnh */

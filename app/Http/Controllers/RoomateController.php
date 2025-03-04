@@ -9,7 +9,10 @@ use App\Http\Resources\RoomateCollection;
 use App\Http\Resources\RoomateResource;
 use App\Models\Post;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+
+use function PHPUnit\Framework\isEmpty;
 
 class RoomateController extends Controller
 {
@@ -202,6 +205,40 @@ class RoomateController extends Controller
 
             // Trả về lỗi
             return ApiResponse::error('Tạo Roomate thất bại!', 500);
+        }
+    }
+
+    public function registerAdvertiserment(Request $request)
+    {
+        // Lấy dữ liệu từ request
+        $params = $request->validate([
+            'name' => 'required|string',
+            'phone' => 'required|string',
+            'email' => 'required|email',
+            'type' => 'required|in:pop_up,banner,premium,common'
+        ]);
+
+        try {
+            DB::beginTransaction();
+
+            $userId = auth()->user()->id;
+
+            $posts = Post::query()->where('user_id', $userId)->get();
+
+            if (!isEmpty($posts)) {
+                return ApiResponse::error('Bạn chưa đăng bài đăng nào!', 400);
+            }
+
+            foreach ($posts as $post) {
+                $post->update(['advertisement_type' => $params['type']]);
+            }
+
+            DB::commit();
+            return ApiResponse::success([], 'Đăng ký gói quảng cáo thành công!');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            Log::error('Error creating roommate post: ' . $e->getMessage());
+            return ApiResponse::error('Đăng ký gói quảng cáo thất bại!', 500);
         }
     }
 

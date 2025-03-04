@@ -242,7 +242,7 @@
                 <!-- Pricing Table -->
                 <div class="bg-white rounded-lg shadow-lg p-6 mb-8">
                     <h1 class="text-center text-2xl font-bold mb-4">
-                        Bảng giá tin đăng
+                        Bảng giá dịch vụ
                     </h1>
                     <div class="overflow-x-auto">
                         <table
@@ -363,23 +363,21 @@
                         </table>
                     </div>
                 </div>
+
                 <!-- Illustration Section -->
                 <div class="bg-white rounded-lg shadow-lg p-6">
                     <h2 class="text-center text-2xl font-bold mb-8">
                         Minh họa tin đăng
                     </h2>
+
                     <!-- Quảng cáo pop-up -->
                     <div class="mb-8">
                         <h3 class="text-xl font-bold mb-2">Quảng cáo pop-up</h3>
-                        <div class="flex items-center mb-4">
-                            <div class="text-yellow-500">
-                                <i>⭐</i>
-                                <i>⭐</i>
-                                <i>⭐</i>
-                                <i>⭐</i>
-                                <i>⭐</i>
-                            </div>
-                        </div>
+                        <i>⭐</i>
+                        <i>⭐</i>
+                        <i>⭐</i>
+                        <i>⭐</i>
+                        <i>⭐</i>
                         <ul class="list-disc pl-5 mb-4">
                             <li>
                                 Hiển thị ngay khi người dùng truy cập trang chủ
@@ -394,6 +392,7 @@
                             </li>
                         </ul>
                         <button
+                            @click="openModalAdvertisement('pop_up')"
                             class="bg-blue-500 text-white px-4 py-2 rounded"
                         >
                             Mua ngay
@@ -403,22 +402,19 @@
                                 alt="Laptop displaying a pop-up advertisement"
                                 class="w-full max-w-md mx-auto"
                                 height="400"
-                                src="https://s3-alpha-sig.figma.com/img/3112/d10b/84cb9b38cce9bfc437da07b5d4c15d1d?Expires=1740960000&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=tXM2oLbbc~TVBQD3cW~YfbJbPPeGdExx0H8b8fjcLsI-Fz1v3~jdWXFBU2CYcBJCNGwDlSSw8XRCxFlIQsRdLPslxfH1dCDv~jXZhOIs3U5Lxx89WVCll1RMZcRb9Wjmf~iAXy81Kqi1zwrpNy2JX0UfA9tjQskSzIcQbCVmEHLI8NlAswgM8BxfE~w-hgUdxwZsL0-PsOuDs72CrSMxNW14YLIwtCa2QmkxkEP1ewrR4VCMAee0uA1cd5Rak1So5RJUCwDC1AEz41KSNmqzlF5fbxyzxBMmkSuQRpKxUrjUd-AFNrUZr4WSJYtdXP53qe81j-TEASXtZS63xUx~YA__"
+                                src="https://aahome.click/storage/popup.png"
                                 width="600"
                             />
                         </div>
                     </div>
+
                     <!-- Quảng cáo banner -->
                     <div class="mb-8">
                         <h3 class="text-xl font-bold mb-2">Quảng cáo banner</h3>
-                        <div class="flex items-center mb-4">
-                            <div class="text-yellow-500">
-                                <i>⭐</i>
-                                <i>⭐</i>
-                                <i>⭐</i>
-                                <i>⭐</i>
-                            </div>
-                        </div>
+                        <i>⭐</i>
+                        <i>⭐</i>
+                        <i>⭐</i>
+                        <i>⭐</i>
                         <ul class="list-disc pl-5 mb-4">
                             <li>
                                 Hiển thị ở các vị trí cố định trên trang chủ,
@@ -433,6 +429,7 @@
                             </li>
                         </ul>
                         <button
+                            @click="openModalAdvertisement('banner')"
                             class="bg-blue-500 text-white px-4 py-2 rounded"
                         >
                             Mua ngay
@@ -442,21 +439,18 @@
                                 alt="Laptop displaying a banner advertisement"
                                 class="w-full max-w-md mx-auto"
                                 height="400"
-                                src="https://s3-alpha-sig.figma.com/img/e634/e6bf/a3915899116ace5464854815a597917c?Expires=1740960000&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=cgblSk~Q2hHT8Z1R~TR6hOsOsI2nBbI4MQ3tW5PZ4XUBZW6cN3e~ku5~aXh3LowW-ZE0zowVf0YJoRlANPh00gUF9~9F2e0907GyBGStv7SbqtIzT4ZLpivANhP2TBrZkzRA47sDoKy691KWUrnY1mcUbkA8hcwrFrevzD5hEFJsAP6EZL9bQbHLmAlzEYgBCzVeeuRF6lot37CC6PoQd8aOULNxFTaYYx7GVGz-hTSjKvrJtuJCKaoV1gDlmriTSn7YkdTZewQtVw5wd9nDogk3a99KmdpYrftglvDxtarDIvIBwlwPX9u4sJXAi-T-US~wYIctuQ2BYu1JY~Lj7A__"
+                                src="https://aahome.click/storage/banner.png"
                                 width="600"
                             />
                         </div>
                     </div>
+
                     <!-- Đẩy tin premium -->
                     <div class="mb-8">
                         <h3 class="text-xl font-bold mb-2">Đẩy tin premium</h3>
-                        <div class="flex items-center mb-4">
-                            <div class="text-yellow-500">
-                                <i>⭐</i>
-                                <i>⭐</i>
-                                <i>⭐</i>
-                            </div>
-                        </div>
+                        <i>⭐</i>
+                        <i>⭐</i>
+                        <i>⭐</i>
                         <ul class="list-disc pl-5 mb-4">
                             <li>
                                 Đưa tin đăng lên đầu danh sách trong mục tin
@@ -473,6 +467,7 @@
                             </li>
                         </ul>
                         <button
+                            @click="openModalAdvertisement('premium')"
                             class="bg-blue-500 text-white px-4 py-2 rounded"
                         >
                             Mua ngay
@@ -482,22 +477,19 @@
                                 alt="Laptop displaying a premium boosted post"
                                 class="w-full max-w-md mx-auto"
                                 height="400"
-                                src="https://s3-alpha-sig.figma.com/img/10fe/6d03/1b76fd2bc68cea8de2d8a6f2f77356a2?Expires=1740960000&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=VBtzBbOrTqM6tcSQIGzA5~oClk-LRQSIf-GKCvqQZKH4U-BIcj6IKjq5HTgTm5CSpU845WXkfOnKyEWnINtekWbxTE7BWkyYvbUtYg5q9TlWKW-Uli0uONNveHO7rb59lzwDlz81Zs1taVoNT4e3jZqPwzvDmy13t3GHkqLESGDduFHUfz-4y8vGinYcbGpcyurfp9US2XpJAAGsLrMDfMxf5zynQwkpQnUFHRPeJhs33EbN4FobL9t-lGfVMOrBfgAA9ZKx72qS1stE6Zg60VCWvyQ0VuOsZH~ztO4MFyAwWmoMc2ik~F1hNcW2r93vUf6npe1bz6gcBmbEYRntFA__"
+                                src="https://aahome.click/storage/premium.png"
                                 width="600"
                             />
                         </div>
                     </div>
+
                     <!-- Đẩy tin thông thường -->
                     <div class="mb-8">
                         <h3 class="text-xl font-bold mb-2">
                             Đẩy tin thông thường
                         </h3>
-                        <div class="flex items-center mb-4">
-                            <div class="text-yellow-500">
-                                <i>⭐</i>
-                                <i>⭐</i>
-                            </div>
-                        </div>
+                        <i>⭐</i>
+                        <i>⭐</i>
                         <ul class="list-disc pl-5 mb-4">
                             <li>
                                 Giúp tin đăng xuất hiện trong danh sách "Tin nổi
@@ -513,6 +505,7 @@
                             </li>
                         </ul>
                         <button
+                            @click="openModalAdvertisement('common')"
                             class="bg-blue-500 text-white px-4 py-2 rounded"
                         >
                             Mua ngay
@@ -522,12 +515,113 @@
                                 alt="Laptop displaying a regular boosted post"
                                 class="w-full max-w-md mx-auto"
                                 height="400"
-                                src="https://s3-alpha-sig.figma.com/img/01b6/b8fe/bb9f99092fd9bbd1b107284144c7da9b?Expires=1740960000&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=goZ4d166gVZ~yePiscRHu19LenfepeC15Zt~PnYlX7VCM0gJR67Mf3Ol8FqCN63eJpHbWw1MdnN9f~N4UnGWIFIucHN8kFvLWNq8SyxPsuLTVpnQTIZTLaCZebXKvvLHXEj1RnHNCJDA4Rk0~6rduVpM31KDOhwyR8BSqP0wXOyMKUrQY8Mr2FXwULwmG~kb7USixj83gjDSabbQ~kWBlYkApwah1FQofo7eqvqukmk0OrgYdjkfZXQTzP16ziGPM1zUwIsckTUz6t-E7HaSK7mZtGqVxKRWieZtjUMlv5yJDONYdwqOQ0bW-h-iupOR2DHxZUzfLoj-bvvFU8Amnw__"
+                                src="https://aahome.click/storage/common.png"
                                 width="600"
                             />
                         </div>
                     </div>
                 </div>
+            </div>
+        </div>
+
+        <!-- Modal Thanh Toán -->
+        <div
+            v-if="showModalAds"
+            class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50"
+        >
+            <!-- new -->
+            <div class="bg-white rounded-lg shadow-lg p-8 w-full max-w-4xl">
+                <form @submit.prevent="submitAdvertisement">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <div class="flex items-center mb-6">
+                                <i class="fas fa-shopping-bag text-3xl mr-3">
+                                </i>
+                                <h1 class="text-2xl font-bold">
+                                    Thanh toán gói đăng tin
+                                </h1>
+                            </div>
+                            <div>
+                                <h2 class="text-lg font-semibold mb-4">
+                                    Thông tin thanh toán
+                                </h2>
+                                <form class="space-y-4">
+                                    <input
+                                        class="w-full p-3 border border-gray-300 rounded"
+                                        placeholder="Họ và tên"
+                                        type="text"
+                                        v-model="form.name"
+                                        required
+                                    />
+                                    <input
+                                        class="w-full p-3 border border-gray-300 rounded"
+                                        placeholder="Email"
+                                        type="email"
+                                        v-model="form.email"
+                                        required
+                                    />
+                                    <input
+                                        class="w-full p-3 border border-gray-300 rounded"
+                                        placeholder="Số điện thoại"
+                                        type="tel"
+                                        v-model="form.phone"
+                                        required
+                                    />
+                                    <div>
+                                        <label
+                                            class="block mb-2"
+                                            for="payment-method"
+                                        >
+                                            Phương thức thanh toán
+                                        </label>
+                                        <select
+                                            class="w-full p-3 border border-gray-300 rounded"
+                                            id="payment-method"
+                                        >
+                                            <option>Online banking</option>
+                                        </select>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="text-center ml-8 w-full">
+                            <h2 class="text-lg font-semibold mb-4">
+                                Gói đăng tin {{ form.type }}
+                            </h2>
+                            <img
+                                alt="Laptop displaying a website with multiple listings"
+                                class="mx-auto mb-4"
+                                height="200"
+                                src="https://img.vietqr.io/image/MB-011911142003-compact.png"
+                                width="300"
+                            />
+                            <div class="border-t border-gray-300 pt-4">
+                                <div class="flex justify-between items-center">
+                                    <span class="text-lg font-semibold">
+                                        Tổng
+                                    </span>
+                                    <span class="text-lg font-semibold">
+                                        300.000đ
+                                    </span>
+                                </div>
+                                <div class="flex items-center justify-end">
+                                    <button
+                                        type="button"
+                                        @click="closeModalAdvertisement"
+                                        class="mt-4 bg-slate-600 text-white px-6 py-3 rounded"
+                                    >
+                                        Hủy
+                                    </button>
+                                    <button
+                                        class="mt-4 ml-1 bg-blue-600 text-white px-6 py-3 rounded"
+                                    >
+                                        Hoàn tất đơn hàng
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
             </div>
         </div>
         <!-- Footer -->
@@ -542,9 +636,7 @@
                         </h3>
                         <ul class="space-y-2 text-white text-xs">
                             <li>
-                                <a
-                                    href="/regulations"
-                                    class="hover:text-gray-900"
+                                <a href="/about" class="hover:text-gray-900"
                                     >Giới thiệu</a
                                 >
                             </li>
@@ -701,6 +793,14 @@ export default {
             user: null,
             showNoDataMessage: false,
 
+            showModalAds: false,
+            form: {
+                name: "",
+                phone: "",
+                email: "",
+                type: "",
+            },
+
             currentPage: 1, // Trang hiện tại
             itemsPerPage: 12, // Số sản phẩm mỗi trang
             totalPages: 6, // Số sản phẩm mỗi trang
@@ -717,6 +817,9 @@ export default {
         const storedUser = localStorage.getItem("user");
         if (storedUser) {
             this.user = JSON.parse(storedUser);
+            this.form.name = this.user.name;
+            this.form.email = this.user.email;
+            this.form.phone = this.user.phone;
         }
 
         this.fetchNotifications();
@@ -860,6 +963,39 @@ export default {
             setTimeout(() => {
                 this.showDropdownNotification = false;
             }, 300);
+        },
+
+        openModalAdvertisement(adType) {
+            // Thiết lập type theo nút bấm và mở modal
+            this.form.type = adType;
+            this.showModalAds = true;
+        },
+        closeModalAdvertisement() {
+            this.showModalAds = false;
+        },
+        async submitAdvertisement() {
+            try {
+                const response = await apiClient.post(
+                    "/roomate/advertiserment",
+                    this.form,
+                    {
+                        headers: {
+                            Authorization: `Bearer ${localStorage.getItem(
+                                "access_token"
+                            )}`,
+                            "Content-Type": "application/json",
+                        },
+                    }
+                );
+                alert("Đăng ký gói quảng cáo thành công!");
+                this.closeModalAdvertisement();
+            } catch (error) {
+                console.error(
+                    "Error registering advertisement",
+                    error.response.data.message
+                );
+                alert(error.response.data.message);
+            }
         },
     },
 };

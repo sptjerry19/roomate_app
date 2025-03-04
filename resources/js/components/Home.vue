@@ -315,7 +315,16 @@
                         <div
                             v-for="(filter, index) in filters"
                             :key="index"
-                            class="relative border border-gray-300 rounded-md p-3 text-sm text-gray-700"
+                            @click="toggleDropdownLeft(index)"
+                            class="relative border border-gray-300 rounded-md p-3 text-sm text-gray-700 transition-all duration-300"
+                            :style="{
+                                marginBottom: openDropdownLeft.includes(index)
+                                    ? dropdownHeights[index] + 'px'
+                                    : '0px',
+                                // marginLeft: openDropdownLeft.includes(index)
+                                //     ? maxDropdownWidth + 'px'
+                                //     : '0px',
+                            }"
                         >
                             <!-- Tiêu đề bộ lọc -->
                             <div class="font-bold mb-2 flex items-center">
@@ -324,27 +333,45 @@
                                     class="text-blue-500 mr-2"
                                 ></span>
                                 <span>{{ filter.label }}</span>
+                                <span class="material-icons"
+                                    >arrow_drop_down</span
+                                >
                             </div>
 
-                            <!-- Danh sách các tùy chọn -->
-                            <div class="space-y-2">
+                            <!-- Dropdown -->
+                            <transition name="dropdown-fade">
                                 <div
-                                    v-for="(item, i) in filter.data"
-                                    :key="i"
-                                    class="flex items-center cursor-pointer hover:bg-orange-100 p-2 rounded-md"
-                                    @click="selectFilter(item, filter.type)"
+                                    v-if="
+                                        allFiltersOpen ||
+                                        openDropdownLeft.includes(index)
+                                    "
+                                    class="absolute top-full left-0 right-0 mt-2 bg-white border border-gray-300 rounded-lg shadow-lg z-10 p-2 w-auto"
+                                    ref="dropdowns"
+                                    :data-index="index"
                                 >
-                                    <!-- Checkbox hoặc dấu hiệu tùy chỉnh -->
-                                    <input
-                                        type="radio"
-                                        :name="filter.type"
-                                        :value="item.name"
-                                        v-model="selectedFilters[filter.type]"
-                                        class="mr-2"
-                                    />
-                                    <span>{{ item.name }}</span>
+                                    <div class="space-y-2">
+                                        <div
+                                            v-for="(item, i) in filter.data"
+                                            :key="i"
+                                            class="flex items-center cursor-pointer hover:bg-orange-100 p-2 rounded-md"
+                                            @click="
+                                                selectFilter(item, filter.type)
+                                            "
+                                        >
+                                            <input
+                                                type="radio"
+                                                :name="filter.type"
+                                                :value="item.name"
+                                                v-model="
+                                                    selectedFilters[filter.type]
+                                                "
+                                                class="mr-2"
+                                            />
+                                            <span>{{ item.name }}</span>
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
+                            </transition>
                         </div>
                     </div>
                 </aside>
@@ -596,9 +623,7 @@
                             </h3>
                             <ul class="space-y-2 text-white text-xs">
                                 <li>
-                                    <a
-                                        href="/regulations"
-                                        class="hover:text-gray-900"
+                                    <a href="/about" class="hover:text-gray-900"
                                         >Giới thiệu</a
                                     >
                                 </li>
@@ -917,6 +942,13 @@ export default {
                 },
             ],
 
+            openDropdownLeft: [], // Lưu trạng thái mở từng dropdown
+            allFiltersOpen: false, // Mở tất cả dropdown
+            selectedFilters: {}, // Lưu filter đã chọn
+            dropdownHeights: [], // Lưu chiều cao dropdown
+            dropdownWidths: [], // Lưu chiều rộng dropdown
+            maxDropdownWidth: 0, // Chiều rộng lớn nhất của dropdown
+
             banners: [],
 
             notifications: [],
@@ -948,8 +980,44 @@ export default {
         }
 
         this.fetchNotifications();
+
+        this.calculateDropdownSizes();
+        window.addEventListener("resize", this.calculateDropdownSizes);
+    },
+    beforeUnmount() {
+        window.removeEventListener("resize", this.calculateDropdownSizes);
     },
     methods: {
+        toggleDropdownLeft(index) {
+            if (this.allFiltersOpen) return;
+
+            const i = this.openDropdownLeft.indexOf(index);
+            if (i > -1) {
+                this.openDropdownLeft.splice(i, 1);
+            } else {
+                this.openDropdownLeft.push(index);
+                setTimeout(() => this.calculateDropdownSizes(), 100); // Đợi Vue cập nhật DOM
+            }
+        },
+        toggleAllFilters() {
+            this.allFiltersOpen = !this.allFiltersOpen;
+            this.openDropdownLeft = this.allFiltersOpen
+                ? this.filters.map((_, i) => i)
+                : [];
+            this.$nextTick(() => this.calculateDropdownSizes());
+        },
+        calculateDropdownSizes() {
+            this.$nextTick(() => {
+                if (!this.$refs.dropdowns) return; // Tránh lỗi nếu dropdowns chưa sẵn sàng
+                this.dropdownHeights = this.$refs.dropdowns.map(
+                    (el) => el?.offsetHeight || 0
+                );
+                this.dropdownWidths = this.$refs.dropdowns.map(
+                    (el) => el?.offsetWidth || 0
+                );
+                this.maxDropdownWidth = Math.max(...this.dropdownWidths, 0);
+            });
+        },
         navigateToRoute(event) {
             const selectedRoute = event.target.value;
             this.$router.push(selectedRoute);
