@@ -62,16 +62,14 @@
                     </p>
                     <img
                         alt="Illustration of a cozy room with bunk beds, a desk, and a sofa"
-                        class="rounded-lg"
-                        height="300"
+                        class="rounded-lg w-full"
                         src="https://aahome.click/storage/aahome.png"
-                        width="400"
                     />
                 </div>
 
                 <!-- Right Side -->
                 <div
-                    class="bg-white text-black p-8 rounded-lg shadow-lg max-w-md"
+                    class="bg-white text-black p-8 rounded-lg shadow-lg max-w-md w-96"
                 >
                     <h2
                         class="text-3xl font-bold text-gray-700 text-center mb-8"
@@ -88,7 +86,7 @@
                                 id="email"
                                 v-model="email"
                                 class="w-full border border-gray-300 rounded-md py-3 px-4 focus:outline-none focus:border-blue-500"
-                                placeholder="Nhập email hoặc số điện thoại"
+                                placeholder="Nhập email"
                             />
                         </div>
 
@@ -127,7 +125,7 @@
                         </p>
                     </div>
 
-                    <div class="mt-4 flex justify-center space-x-4">
+                    <!-- <div class="mt-4 flex justify-center space-x-4">
                         <button
                             class="flex items-center justify-center px-6 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 transition"
                         >
@@ -138,7 +136,7 @@
                         >
                             Đăng nhập bằng Facebook
                         </button>
-                    </div>
+                    </div> -->
                 </div>
             </div>
         </div>
