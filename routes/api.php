@@ -48,11 +48,11 @@ Route::group(['middleware' => 'api', 'prefix' => 'v1'], function () {
         Route::delete('/', [FavoriteController::class, 'destroy'])->name('favorite.delete');
     });
 
-    Route::group(['middleware' => 'api', 'prefix' => 'review'], function () {
+    Route::group(['middleware' => ['api', 'role_or_permission:admin|manage posts'], 'prefix' => 'review'], function () {
         Route::get('/', [RoomateController::class, 'index'])->name('review.view');
         Route::post('/', [RoomateController::class, 'store'])->name('review.create');
-        Route::put('/', [RoomateController::class, 'update'])->name('review.update');
-        Route::delete('/', [RoomateController::class, 'destroy'])->name('review.delete');
+        Route::put('/{id}', [RoomateController::class, 'update'])->name('review.update'); // cập nhật 1 review theo id
+        Route::delete('/{id}', [RoomateController::class, 'destroy'])->name('review.delete'); // xóa 1 review theo id
     });
 
     Route::group(['middleware' => 'api', 'prefix' => 'motor'], function () {
