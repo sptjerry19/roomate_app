@@ -372,13 +372,15 @@
 
                     <!-- Quảng cáo pop-up -->
                     <div class="mb-8">
-                        <h3 class="text-xl font-bold mb-2">Quảng cáo pop-up</h3>
+                        <h3 class="text-2xl font-bold mb-2">
+                            Quảng cáo pop-up
+                        </h3>
                         <i>⭐</i>
                         <i>⭐</i>
                         <i>⭐</i>
                         <i>⭐</i>
                         <i>⭐</i>
-                        <ul class="list-disc pl-5 mb-4">
+                        <ul class="list-disc pl-5 mb-4 text-xl">
                             <li>
                                 Hiển thị ngay khi người dùng truy cập trang chủ
                                 hoặc danh sách tin đăng.
@@ -400,7 +402,7 @@
                         <div class="mt-4">
                             <img
                                 alt="Laptop displaying a pop-up advertisement"
-                                class="w-full max-w-md mx-auto"
+                                class="w-full max-w-lg mx-auto"
                                 height="400"
                                 src="https://aahome.click/storage/popup.png"
                                 width="600"
@@ -410,12 +412,14 @@
 
                     <!-- Quảng cáo banner -->
                     <div class="mb-8">
-                        <h3 class="text-xl font-bold mb-2">Quảng cáo banner</h3>
+                        <h3 class="text-2xl font-bold mb-2">
+                            Quảng cáo banner
+                        </h3>
                         <i>⭐</i>
                         <i>⭐</i>
                         <i>⭐</i>
                         <i>⭐</i>
-                        <ul class="list-disc pl-5 mb-4">
+                        <ul class="list-disc pl-5 mb-4 text-xl">
                             <li>
                                 Hiển thị ở các vị trí cố định trên trang chủ,
                                 trang danh sách tin đăng, và các bài viết.
@@ -437,7 +441,7 @@
                         <div class="mt-4">
                             <img
                                 alt="Laptop displaying a banner advertisement"
-                                class="w-full max-w-md mx-auto"
+                                class="w-full max-w-lg mx-auto"
                                 height="400"
                                 src="https://aahome.click/storage/banner.png"
                                 width="600"
@@ -447,11 +451,11 @@
 
                     <!-- Đẩy tin premium -->
                     <div class="mb-8">
-                        <h3 class="text-xl font-bold mb-2">Đẩy tin premium</h3>
+                        <h3 class="text-2xl font-bold mb-2">Đẩy tin premium</h3>
                         <i>⭐</i>
                         <i>⭐</i>
                         <i>⭐</i>
-                        <ul class="list-disc pl-5 mb-4">
+                        <ul class="list-disc pl-5 mb-4 text-xl">
                             <li>
                                 Đưa tin đăng lên đầu danh sách trong mục tin
                                 liên quan.
@@ -475,7 +479,7 @@
                         <div class="mt-4">
                             <img
                                 alt="Laptop displaying a premium boosted post"
-                                class="w-full max-w-md mx-auto"
+                                class="w-full max-w-lg mx-auto"
                                 height="400"
                                 src="https://aahome.click/storage/premium.png"
                                 width="600"
@@ -485,12 +489,12 @@
 
                     <!-- Đẩy tin thông thường -->
                     <div class="mb-8">
-                        <h3 class="text-xl font-bold mb-2">
+                        <h3 class="text-2xl font-bold mb-2">
                             Đẩy tin thông thường
                         </h3>
                         <i>⭐</i>
                         <i>⭐</i>
-                        <ul class="list-disc pl-5 mb-4">
+                        <ul class="list-disc pl-5 mb-4 text-xl">
                             <li>
                                 Giúp tin đăng xuất hiện trong danh sách "Tin nổi
                                 bật" trong 3 ngày.
@@ -513,10 +517,8 @@
                         <div class="mt-4">
                             <img
                                 alt="Laptop displaying a regular boosted post"
-                                class="w-full max-w-md mx-auto"
-                                height="400"
+                                class="w-full max-w-lg mx-auto"
                                 src="https://aahome.click/storage/common.png"
-                                width="600"
                             />
                         </div>
                     </div>
@@ -592,7 +594,7 @@
                                 alt="Laptop displaying a website with multiple listings"
                                 class="mx-auto mb-4"
                                 height="200"
-                                src="https://img.vietqr.io/image/MB-011911142003-compact.png"
+                                src="https://img.vietqr.io/image/vietcombank-1017046068-compact.jpg"
                                 width="300"
                             />
                             <div class="border-t border-gray-300 pt-4">

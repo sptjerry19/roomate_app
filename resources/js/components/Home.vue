@@ -245,7 +245,9 @@
 
             <!-- Banner -->
             <div class="container mt-24 bg-primary w-full mx-auto py-8">
-                <h1 class="text-center text-2xl font-bold mb-8">
+                <h1
+                    class="text-center text-4xl font-bold mb-8 text-white uppercase"
+                >
                     Phòng trọ nổi bật
                 </h1>
 
