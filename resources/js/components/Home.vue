@@ -13,9 +13,9 @@
                     <div class="flex items-center space-x-3">
                         <router-link to="/">
                             <img
-                                src="https://s3-alpha-sig.figma.com/img/94aa/de1b/7c2686b66c34627c8e323577a00ecd80?Expires=1740355200&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=Ex3TtLJcraaGGZJf0Y7z8znbGyYjk5v~jsAocqgG4S6yb9XTHaoeW7vwIQrtxeJfTrbtYSYLeDmxPx7S1EtUkysukNdYrYKCREcKsHI8ExlpdcK2OGYKSf3IcXWN3wYXEIn5anDZeWBRnwjttsdhUk5jTSrP7Iv55dRROUCR4D4ttmgEmNXWXzHolaetcxGHSLSjet1prJG61EK0mux6O5AM1s3CLMLxc~EgOV-iGhOiGZGjGzEoQh~sCXgs~e6uAK~dem-48WN9YhwRRaxLKkv23M5QaoVYCL92mrKu9eZGwdkq5hT44H4pR1IYUNEvf~XiKSDqBjCDPxlmevxnGQ__"
+                                src="https://aahome.click/storage/logo.png"
                                 alt="Logo"
-                                class="h-8 w-8 object-contain"
+                                class="h-11 object-contain"
                             />
                         </router-link>
                         <select
@@ -245,7 +245,9 @@
 
             <!-- Banner -->
             <div class="container mt-24 bg-primary w-full mx-auto py-8">
-                <h1 class="text-center text-2xl font-bold mb-8">
+                <h1
+                    class="text-center text-4xl font-bold mb-8 text-white uppercase"
+                >
                     Phòng trọ nổi bật
                 </h1>
 
@@ -460,9 +462,10 @@
                                 <h2 class="text-xl font-bold text-blue-600">
                                     {{ post.title }}
                                 </h2>
-                                <p class="text-gray-500 break-words">
-                                    {{ post.description }}
-                                </p>
+                                <div
+                                    class="text-gray-500 break-words"
+                                    v-html="post.description"
+                                ></div>
                             </div>
 
                             <!-- Premium và Common bài đăng -->
@@ -499,9 +502,10 @@
                                     <p class="text-gray-500 text-sm">
                                         Người đăng: {{ post.posted_by }}
                                     </p>
-                                    <p class="text-gray-700 mt-2 break-words">
-                                        {{ post.description }}
-                                    </p>
+                                    <div
+                                        class="text-gray-700 mt-2 break-words"
+                                        v-html="post.description"
+                                    ></div>
                                     <div
                                         class="flex justify-between items-center mt-4"
                                     >

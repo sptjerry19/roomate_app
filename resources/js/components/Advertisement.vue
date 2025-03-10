@@ -9,9 +9,9 @@
                 <div class="flex items-center space-x-3">
                     <router-link to="/">
                         <img
-                            src="https://s3-alpha-sig.figma.com/img/94aa/de1b/7c2686b66c34627c8e323577a00ecd80?Expires=1740355200&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=Ex3TtLJcraaGGZJf0Y7z8znbGyYjk5v~jsAocqgG4S6yb9XTHaoeW7vwIQrtxeJfTrbtYSYLeDmxPx7S1EtUkysukNdYrYKCREcKsHI8ExlpdcK2OGYKSf3IcXWN3wYXEIn5anDZeWBRnwjttsdhUk5jTSrP7Iv55dRROUCR4D4ttmgEmNXWXzHolaetcxGHSLSjet1prJG61EK0mux6O5AM1s3CLMLxc~EgOV-iGhOiGZGjGzEoQh~sCXgs~e6uAK~dem-48WN9YhwRRaxLKkv23M5QaoVYCL92mrKu9eZGwdkq5hT44H4pR1IYUNEvf~XiKSDqBjCDPxlmevxnGQ__"
+                            src="https://aahome.click/storage/logo.png"
                             alt="Logo"
-                            class="h-8 w-8 object-contain"
+                            class="h-11 object-contain"
                         />
                     </router-link>
                     <select
@@ -242,7 +242,7 @@
                 <!-- Pricing Table -->
                 <div class="bg-white rounded-lg shadow-lg p-6 mb-8">
                     <h1 class="text-center text-2xl font-bold mb-4">
-                        Bảng giá tin đăng
+                        Bảng giá dịch vụ
                     </h1>
                     <div class="overflow-x-auto">
                         <table
@@ -372,13 +372,15 @@
 
                     <!-- Quảng cáo pop-up -->
                     <div class="mb-8">
-                        <h3 class="text-xl font-bold mb-2">Quảng cáo pop-up</h3>
+                        <h3 class="text-2xl font-bold mb-2">
+                            Quảng cáo pop-up
+                        </h3>
                         <i>⭐</i>
                         <i>⭐</i>
                         <i>⭐</i>
                         <i>⭐</i>
                         <i>⭐</i>
-                        <ul class="list-disc pl-5 mb-4">
+                        <ul class="list-disc pl-5 mb-4 text-xl">
                             <li>
                                 Hiển thị ngay khi người dùng truy cập trang chủ
                                 hoặc danh sách tin đăng.
@@ -400,9 +402,9 @@
                         <div class="mt-4">
                             <img
                                 alt="Laptop displaying a pop-up advertisement"
-                                class="w-full max-w-md mx-auto"
+                                class="w-full max-w-lg mx-auto"
                                 height="400"
-                                src="https://s3-alpha-sig.figma.com/img/3112/d10b/84cb9b38cce9bfc437da07b5d4c15d1d?Expires=1740960000&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=tXM2oLbbc~TVBQD3cW~YfbJbPPeGdExx0H8b8fjcLsI-Fz1v3~jdWXFBU2CYcBJCNGwDlSSw8XRCxFlIQsRdLPslxfH1dCDv~jXZhOIs3U5Lxx89WVCll1RMZcRb9Wjmf~iAXy81Kqi1zwrpNy2JX0UfA9tjQskSzIcQbCVmEHLI8NlAswgM8BxfE~w-hgUdxwZsL0-PsOuDs72CrSMxNW14YLIwtCa2QmkxkEP1ewrR4VCMAee0uA1cd5Rak1So5RJUCwDC1AEz41KSNmqzlF5fbxyzxBMmkSuQRpKxUrjUd-AFNrUZr4WSJYtdXP53qe81j-TEASXtZS63xUx~YA__"
+                                src="https://aahome.click/storage/popup.png"
                                 width="600"
                             />
                         </div>
@@ -410,12 +412,14 @@
 
                     <!-- Quảng cáo banner -->
                     <div class="mb-8">
-                        <h3 class="text-xl font-bold mb-2">Quảng cáo banner</h3>
+                        <h3 class="text-2xl font-bold mb-2">
+                            Quảng cáo banner
+                        </h3>
                         <i>⭐</i>
                         <i>⭐</i>
                         <i>⭐</i>
                         <i>⭐</i>
-                        <ul class="list-disc pl-5 mb-4">
+                        <ul class="list-disc pl-5 mb-4 text-xl">
                             <li>
                                 Hiển thị ở các vị trí cố định trên trang chủ,
                                 trang danh sách tin đăng, và các bài viết.
@@ -437,9 +441,9 @@
                         <div class="mt-4">
                             <img
                                 alt="Laptop displaying a banner advertisement"
-                                class="w-full max-w-md mx-auto"
+                                class="w-full max-w-lg mx-auto"
                                 height="400"
-                                src="https://s3-alpha-sig.figma.com/img/e634/e6bf/a3915899116ace5464854815a597917c?Expires=1740960000&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=cgblSk~Q2hHT8Z1R~TR6hOsOsI2nBbI4MQ3tW5PZ4XUBZW6cN3e~ku5~aXh3LowW-ZE0zowVf0YJoRlANPh00gUF9~9F2e0907GyBGStv7SbqtIzT4ZLpivANhP2TBrZkzRA47sDoKy691KWUrnY1mcUbkA8hcwrFrevzD5hEFJsAP6EZL9bQbHLmAlzEYgBCzVeeuRF6lot37CC6PoQd8aOULNxFTaYYx7GVGz-hTSjKvrJtuJCKaoV1gDlmriTSn7YkdTZewQtVw5wd9nDogk3a99KmdpYrftglvDxtarDIvIBwlwPX9u4sJXAi-T-US~wYIctuQ2BYu1JY~Lj7A__"
+                                src="https://aahome.click/storage/banner.png"
                                 width="600"
                             />
                         </div>
@@ -447,11 +451,11 @@
 
                     <!-- Đẩy tin premium -->
                     <div class="mb-8">
-                        <h3 class="text-xl font-bold mb-2">Đẩy tin premium</h3>
+                        <h3 class="text-2xl font-bold mb-2">Đẩy tin premium</h3>
                         <i>⭐</i>
                         <i>⭐</i>
                         <i>⭐</i>
-                        <ul class="list-disc pl-5 mb-4">
+                        <ul class="list-disc pl-5 mb-4 text-xl">
                             <li>
                                 Đưa tin đăng lên đầu danh sách trong mục tin
                                 liên quan.
@@ -475,9 +479,9 @@
                         <div class="mt-4">
                             <img
                                 alt="Laptop displaying a premium boosted post"
-                                class="w-full max-w-md mx-auto"
+                                class="w-full max-w-lg mx-auto"
                                 height="400"
-                                src="https://s3-alpha-sig.figma.com/img/10fe/6d03/1b76fd2bc68cea8de2d8a6f2f77356a2?Expires=1740960000&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=VBtzBbOrTqM6tcSQIGzA5~oClk-LRQSIf-GKCvqQZKH4U-BIcj6IKjq5HTgTm5CSpU845WXkfOnKyEWnINtekWbxTE7BWkyYvbUtYg5q9TlWKW-Uli0uONNveHO7rb59lzwDlz81Zs1taVoNT4e3jZqPwzvDmy13t3GHkqLESGDduFHUfz-4y8vGinYcbGpcyurfp9US2XpJAAGsLrMDfMxf5zynQwkpQnUFHRPeJhs33EbN4FobL9t-lGfVMOrBfgAA9ZKx72qS1stE6Zg60VCWvyQ0VuOsZH~ztO4MFyAwWmoMc2ik~F1hNcW2r93vUf6npe1bz6gcBmbEYRntFA__"
+                                src="https://aahome.click/storage/premium.png"
                                 width="600"
                             />
                         </div>
@@ -485,12 +489,12 @@
 
                     <!-- Đẩy tin thông thường -->
                     <div class="mb-8">
-                        <h3 class="text-xl font-bold mb-2">
+                        <h3 class="text-2xl font-bold mb-2">
                             Đẩy tin thông thường
                         </h3>
                         <i>⭐</i>
                         <i>⭐</i>
-                        <ul class="list-disc pl-5 mb-4">
+                        <ul class="list-disc pl-5 mb-4 text-xl">
                             <li>
                                 Giúp tin đăng xuất hiện trong danh sách "Tin nổi
                                 bật" trong 3 ngày.
@@ -513,10 +517,8 @@
                         <div class="mt-4">
                             <img
                                 alt="Laptop displaying a regular boosted post"
-                                class="w-full max-w-md mx-auto"
-                                height="400"
-                                src="https://s3-alpha-sig.figma.com/img/01b6/b8fe/bb9f99092fd9bbd1b107284144c7da9b?Expires=1740960000&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=goZ4d166gVZ~yePiscRHu19LenfepeC15Zt~PnYlX7VCM0gJR67Mf3Ol8FqCN63eJpHbWw1MdnN9f~N4UnGWIFIucHN8kFvLWNq8SyxPsuLTVpnQTIZTLaCZebXKvvLHXEj1RnHNCJDA4Rk0~6rduVpM31KDOhwyR8BSqP0wXOyMKUrQY8Mr2FXwULwmG~kb7USixj83gjDSabbQ~kWBlYkApwah1FQofo7eqvqukmk0OrgYdjkfZXQTzP16ziGPM1zUwIsckTUz6t-E7HaSK7mZtGqVxKRWieZtjUMlv5yJDONYdwqOQ0bW-h-iupOR2DHxZUzfLoj-bvvFU8Amnw__"
-                                width="600"
+                                class="w-full max-w-lg mx-auto"
+                                src="https://aahome.click/storage/common.png"
                             />
                         </div>
                     </div>
@@ -592,7 +594,7 @@
                                 alt="Laptop displaying a website with multiple listings"
                                 class="mx-auto mb-4"
                                 height="200"
-                                src="https://img.vietqr.io/image/MB-011911142003-compact.png"
+                                src="https://img.vietqr.io/image/vietcombank-1017046068-compact.jpg"
                                 width="300"
                             />
                             <div class="border-t border-gray-300 pt-4">

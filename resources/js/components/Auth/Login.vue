@@ -10,7 +10,7 @@
                     <!-- Logo và tên trang -->
                     <div class="flex items-center">
                         <img
-                            src="https://s3-alpha-sig.figma.com/img/94aa/de1b/7c2686b66c34627c8e323577a00ecd80?Expires=1740355200&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=Ex3TtLJcraaGGZJf0Y7z8znbGyYjk5v~jsAocqgG4S6yb9XTHaoeW7vwIQrtxeJfTrbtYSYLeDmxPx7S1EtUkysukNdYrYKCREcKsHI8ExlpdcK2OGYKSf3IcXWN3wYXEIn5anDZeWBRnwjttsdhUk5jTSrP7Iv55dRROUCR4D4ttmgEmNXWXzHolaetcxGHSLSjet1prJG61EK0mux6O5AM1s3CLMLxc~EgOV-iGhOiGZGjGzEoQh~sCXgs~e6uAK~dem-48WN9YhwRRaxLKkv23M5QaoVYCL92mrKu9eZGwdkq5hT44H4pR1IYUNEvf~XiKSDqBjCDPxlmevxnGQ__"
+                            src="https://aahome.click/storage/logo.png"
                             alt="Logo"
                             class="h-8 w-8 object-contain"
                         />
@@ -46,9 +46,13 @@
                     </div>
                 </div>
             </nav>
-            <div class="flex justify-center items-center mx-auto min-h-screen">
-                <!-- Left Side -->
-                <div class="bg-primary p-8 rounded-lg shadow-lg max-w-lg">
+            <div
+                class="flex justify-center items-center mx-auto min-h-screen flex-col md:flex-row"
+            >
+                <!-- Left Side (Ẩn khi màn hình nhỏ) -->
+                <div
+                    class="hidden md:block bg-primary p-8 rounded-lg shadow-lg max-w-lg"
+                >
                     <h2 class="text-3xl font-bold mb-4">AA++ HOME!</h2>
                     <p class="mb-8">
                         "Nơi kết nối bạn với không gian sống lý tưởng và những
@@ -58,16 +62,14 @@
                     </p>
                     <img
                         alt="Illustration of a cozy room with bunk beds, a desk, and a sofa"
-                        class="rounded-lg"
-                        height="300"
+                        class="rounded-lg w-full"
                         src="https://aahome.click/storage/aahome.png"
-                        width="400"
                     />
                 </div>
 
                 <!-- Right Side -->
                 <div
-                    class="bg-white text-black p-8 rounded-lg shadow-lg ml-8 max-w-md"
+                    class="bg-white text-black p-8 rounded-lg shadow-lg max-w-md w-96"
                 >
                     <h2
                         class="text-3xl font-bold text-gray-700 text-center mb-8"
@@ -75,7 +77,6 @@
                         Đăng nhập
                     </h2>
                     <form @submit.prevent="handleLogin">
-                        <!-- Email Input -->
                         <div class="mb-6">
                             <label for="email" class="block text-gray-600 mb-2"
                                 >Email</label
@@ -85,11 +86,10 @@
                                 id="email"
                                 v-model="email"
                                 class="w-full border border-gray-300 rounded-md py-3 px-4 focus:outline-none focus:border-blue-500"
-                                placeholder="Nhập email hoặc số điện thoại"
+                                placeholder="Nhập email"
                             />
                         </div>
 
-                        <!-- Password Input -->
                         <div class="mb-6">
                             <label
                                 for="password"
@@ -105,7 +105,6 @@
                             />
                         </div>
 
-                        <!-- Login Button -->
                         <button
                             type="submit"
                             class="w-full bg-blue-600 text-white font-bold py-3 rounded-md hover:bg-blue-700 transition"
@@ -114,19 +113,19 @@
                         </button>
                     </form>
 
-                    <!-- Links -->
                     <div class="mt-6 text-center">
                         <p class="text-gray-500">
                             Bạn chưa có tài khoản?
                             <router-link
                                 to="/register"
                                 class="text-blue-500 hover:underline"
-                                >Đăng ký</router-link
                             >
+                                Đăng ký
+                            </router-link>
                         </p>
                     </div>
 
-                    <div class="mt-4 flex justify-center space-x-4">
+                    <!-- <div class="mt-4 flex justify-center space-x-4">
                         <button
                             class="flex items-center justify-center px-6 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 transition"
                         >
@@ -137,7 +136,7 @@
                         >
                             Đăng nhập bằng Facebook
                         </button>
-                    </div>
+                    </div> -->
                 </div>
             </div>
         </div>

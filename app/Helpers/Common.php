@@ -69,7 +69,7 @@ class Common
                     return $path . str_replace(' ', '', $folder) . '/' . $fileName;
                 } else {
                     Storage::disk('public')->put($path . $fileName, base64_decode($data));
-                    return '/storage/' . $path . $fileName;
+                    return '/' . $path . $fileName;
                 }
             }
 
