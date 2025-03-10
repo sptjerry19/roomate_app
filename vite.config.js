@@ -2,7 +2,7 @@ import { defineConfig } from "vite";
 import laravel from "laravel-vite-plugin";
 import vue from "@vitejs/plugin-vue";
 
-export default defineConfig({
+export default defineConfig(({ command }) => ({
     plugins: [
         laravel({
             input: ["resources/css/app.css", "resources/js/app.js"],
@@ -13,13 +13,13 @@ export default defineConfig({
     build: {
         outDir: "public/build",
     },
-    base: "/build/",
+    base: command === "build" ? "/build/" : "/", // Chỉ đặt base khi build production
     server: {
-        host: "0.0.0.0", // Để container có thể truy cập từ ngoài
+        host: "0.0.0.0",
         port: 5173,
         strictPort: true,
         hmr: {
-            host: "localhost", // Nếu chạy trên WSL2, dùng IP host thay vì localhost
+            host: "localhost",
         },
     },
-});
+}));

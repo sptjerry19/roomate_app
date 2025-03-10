@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\FavoriteController;
+use App\Http\Controllers\MessageController;
 use App\Http\Controllers\MotorController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\RoomateController;
@@ -72,5 +73,10 @@ Route::group(['middleware' => 'api', 'prefix' => 'v1'], function () {
         Route::middleware('auth:api')->post('/', [CommentController::class, 'createComment'])->name('comment.createComment');
         Route::middleware('auth:api')->put('/{id}', [CommentController::class, 'updateComment'])->name('comment.updateComment');
         Route::middleware('auth:api')->delete('/{id}', [CommentController::class, 'deleteComment'])->name('comment.deleteComment');
+    });
+
+    Route::group(['middleware' => 'auth:api', 'prefix' => 'messages'], function () {
+        Route::get('/', [MessageController::class, 'index'])->name('message.index');
+        Route::post('/', [MessageController::class, 'store'])->name('message.store');
     });
 });
