@@ -2,6 +2,7 @@
 
 namespace App\Services\User;
 
+use App\Models\User;
 use App\Services\Base\BaseServiceInterface;
 
 interface UserService extends BaseServiceInterface
