@@ -13,6 +13,8 @@ use Illuminate\Http\Request;
 
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
+use App\Services\User\GetUserAction;
+use App\Services\User\UserService;
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\JsonResponse;
@@ -37,12 +39,38 @@ class AuthController extends Controller
      *
      * @return void
      */
-    public function __construct()
+
+    protected $userService;
+    public function __construct(UserService $userService)
     {
         $this->middleware('auth:api', ['except' => ['login', 'register', 'refresh', 'forgotPassword', 'resetPassword', 'loginSocial', 'loginWithGoogle', 'checkVerification', 'checkVerificationRegister']]);
         $this->middleware(['role:Supper Admin|Admin|User management'])->only('userProfilebyId', 'listUsers', 'setTimeToken');
+        $this->userService = $userService;
 
         // $this->googleClientService = $googleClientService;
+    }
+
+    public function getUser(Request $request)
+    {
+        $params = $request->validate([
+            'email' => 'required|string',
+        ]);
+        try {
+            $user = $this->userService->getUser($params['email']);
+            return ApiResponse::success($user, __("Get user successfully"));
+        } catch (Exception $e) {
+            Log::error($e->getMessage());
+            return ApiResponse::error(__("get user failed"), 500);
+        }
+    }
+
+    public function getUserAction(Request $request, GetUserAction $action)
+    {
+        $params = $request->validate([
+            'email' => 'required|string',
+        ]);
+        $user = $action->execute($params['email']);
+        return ApiResponse::success($user, __("Get user successfully"));
     }
 
     public function register(Request $request)
