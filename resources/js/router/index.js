@@ -16,6 +16,7 @@ import Regulations from "../components/Regulations.vue";
 import DashboardControl from "../components/Admin/DashboardControl.vue";
 import Advertisement from "../components/Advertisement.vue";
 import About from "../components/Footer/About.vue";
+import Chatlayout from "../components/Chatlayout.vue";
 
 const routes = [
     {
@@ -83,6 +84,10 @@ const routes = [
     {
         path: "/advertisement",
         component: Advertisement,
+    },
+    {
+        path: "/chat",
+        component: Chatlayout,
     },
 ];
 

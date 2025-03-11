@@ -369,7 +369,7 @@
 
                                 <!-- Nút nhắn tin -->
                                 <button
-                                    @click="toggleCommentBox"
+                                    @click="toggleChat"
                                     class="mt-4 bg-primary text-white px-4 py-2 rounded-lg flex items-center hover:bg-primary/90 transition"
                                 >
                                     <svg
@@ -389,8 +389,15 @@
                                     Nhắn tin
                                 </button>
 
+                                <!-- Hiển thị box chat -->
+                                <ChatBox
+                                    v-if="isChatOpen"
+                                    :receiverId="roomDetail.user.id"
+                                    :closeChat="toggleChat"
+                                />
+
                                 <!-- Box nhập comment -->
-                                <div v-if="showCommentBox" class="mt-4">
+                                <!-- <div v-if="showCommentBox" class="mt-4">
                                     <textarea
                                         v-model="commentContent"
                                         placeholder="Nhập bình luận..."
@@ -402,13 +409,27 @@
                                     >
                                         Gửi bình luận
                                     </button>
-                                </div>
+                                </div> -->
                             </div>
                         </div>
 
                         <!-- Danh sách bình luận -->
                         <div class="mt-6">
                             <h2 class="text-xl font-bold">Bình luận</h2>
+                            <!-- Box nhập comment -->
+                            <div class="mt-4">
+                                <textarea
+                                    v-model="commentContent"
+                                    placeholder="Nhập bình luận..."
+                                    class="w-full p-2 border rounded-lg"
+                                ></textarea>
+                                <button
+                                    @click="submitComment"
+                                    class="mt-2 bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 transition"
+                                >
+                                    Gửi bình luận
+                                </button>
+                            </div>
                             <div v-if="roomDetail.comment.length > 0">
                                 <div
                                     v-for="comment in roomDetail.comment"
@@ -623,9 +644,13 @@
 
 <script>
 import apiClient from "../axios";
+import ChatBox from "./ChatBox.vue";
 import loading from "./loading.vue";
 
 export default {
+    components: {
+        ChatBox,
+    },
     data() {
         return {
             loading: true,
@@ -645,6 +670,9 @@ export default {
 
             showCommentBox: false,
             commentContent: "",
+
+            isChatOpen: false,
+            receiverId: 2, // Thay bằng ID của người nhận
         };
     },
     computed: {
@@ -676,6 +704,9 @@ export default {
         },
     },
     methods: {
+        toggleChat() {
+            this.isChatOpen = !this.isChatOpen;
+        },
         navigateToRoute(event) {
             const selectedRoute = event.target.value;
             this.$router.push(selectedRoute);
