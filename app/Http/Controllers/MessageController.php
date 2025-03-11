@@ -23,6 +23,7 @@ class MessageController extends Controller
         try {
             $params = $request->validate([
                 'keyword' => 'string|nullable',
+                'receiver_id' => 'nullable|integer'
             ]);
             $messages = $this->messageService->getMessages($params);
             return ApiResponse::success($messages, __('messages.success'));
@@ -39,7 +40,7 @@ class MessageController extends Controller
     {
         try {
             $params = $request->validated();
-            $message = $this->messageService->createMessage($params['message']);
+            $message = $this->messageService->createMessage($params['message'], $params['receiver_id']);
             return ApiResponse::success($message, __('messages.success'));
         } catch (\Exception $e) {
             Log::error($e->getMessage());

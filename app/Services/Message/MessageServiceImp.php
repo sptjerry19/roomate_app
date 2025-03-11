@@ -29,12 +29,13 @@ class MessageServiceImp extends BaseServiceImp implements MessageService
         }
     }
 
-    public function createMessage(string $message): mixed
+    public function createMessage(string $message, ?int $receiverId): mixed
     {
         try {
             $data = [
                 'message' => $message,
-                'user_id' => auth()->user()->id
+                'user_id' => auth()->user()->id,
+                'receiver_id' => $receiverId ?? null
             ];
             $message = $this->repository->create($data);
             return $message;

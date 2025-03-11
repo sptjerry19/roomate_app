@@ -23,6 +23,7 @@ class MessageRequest extends FormRequest
     {
         return [
             'message' => 'required|string',
+            'receiver_id' => 'nullable|exists:users,id',
         ];
     }
 
@@ -31,6 +32,7 @@ class MessageRequest extends FormRequest
         return [
             'message.required' => 'nội dung tin nhắn là bắt buộc.',
             'message.string' => 'nội dung tin nhắn phải là chuỗi ký tự.',
+            'receiver_id.exists' => 'người nhận không tồn tại.',
         ];
     }
 }

@@ -8,5 +8,5 @@ interface MessageService extends BaseServiceInterface
 {
     public function getMessages(array $attribute): mixed;
 
-    public function createMessage(string $message): mixed;
+    public function createMessage(string $message, ?int $receiverId): mixed;
 }

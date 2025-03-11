@@ -1,93 +1,105 @@
 <template>
-    <div>
-        <div class="chat">
-            <div class="chat-title">
-                <h1>Chatroom</h1>
-            </div>
-            <div class="messages">
-                <ChatItem
-                    v-for="(message, index) in list_messages"
-                    :key="index"
-                    :message="message"
-                />
-            </div>
-            <div class="message-box">
-                <textarea
-                    v-model="message"
-                    class="message-input"
-                    placeholder="Type message..."
-                    @keydown.enter.prevent="sendMessage"
-                ></textarea>
-                <button @click="sendMessage" class="message-submit">
-                    Send
-                </button>
-            </div>
+    <div class="flex flex-col h-screen bg-gray-100">
+        <div class="p-4 bg-white shadow-md text-center">
+            <h1 class="text-xl font-bold">Chatroom</h1>
         </div>
-        <div class="bg"></div>
+
+        <div class="flex-1 overflow-y-auto p-4 space-y-2">
+            <ChatItem
+                v-for="(message, index) in list_messages"
+                :key="index"
+                :message="message"
+            />
+        </div>
+
+        <div class="p-4 bg-white shadow-md flex">
+            <textarea
+                v-model="message"
+                class="flex-1 p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+                placeholder="Type message..."
+                @keydown.enter.prevent="sendMessage"
+            ></textarea>
+            <button
+                @click="sendMessage"
+                class="ml-2 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
+            >
+                Send
+            </button>
+        </div>
     </div>
 </template>
 
-<script setup>
-import { ref, onBeforeMount, nextTick } from "vue";
-import axios from "axios"; // Import axios
+<script>
+import axios from "axios";
 import ChatItem from "./ChatItem.vue";
 
-const message = ref("");
-const list_messages = ref([]);
+export default {
+    components: { ChatItem },
+    data() {
+        return {
+            message: "",
+            list_messages: [],
+        };
+    },
+    mounted() {
+        this.loadMessages();
+    },
+    methods: {
+        async loadMessages() {
+            try {
+                const response = await axios.get("/api/v1/messages", {
+                    headers: {
+                        Authorization: `Bearer ${localStorage.getItem(
+                            "access_token"
+                        )}`,
+                    },
+                });
 
-onBeforeMount(() => {
-    loadMessages();
-});
+                // Lấy dữ liệu đúng từ `response.data.data`
+                this.list_messages = response.data.data || [];
 
-async function loadMessages() {
-    try {
-        const response = await axios.get("/api/v1/messages", {
-            headers: {
-                Authorization: `Bearer ${localStorage.getItem("access_token")}`,
-            },
-        });
-        list_messages.value = response.data.data;
-        console.log(list_messages.value);
+                console.log("Messages:", this.list_messages);
 
-        scrollToBottom();
-    } catch (error) {
-        console.error("Lỗi tải tin nhắn:", error);
-    }
-}
-
-async function sendMessage() {
-    if (!message.value.trim()) return; // Không gửi tin nhắn rỗng
-
-    try {
-        const response = await axios.post(
-            "/api/v1/messages",
-            { message: message.value },
-            {
-                headers: {
-                    Authorization: `Bearer ${localStorage.getItem(
-                        "access_token"
-                    )}`,
-                },
+                this.scrollToBottom();
+            } catch (error) {
+                console.error("Error fetching messages:", error);
             }
-        );
+        },
+        async sendMessage() {
+            if (!this.message.trim()) return;
 
-        list_messages.value.push(response.data.message); // Thêm tin nhắn vào danh sách
-        message.value = ""; // Xóa nội dung input
-        scrollToBottom();
-    } catch (error) {
-        console.error("Lỗi gửi tin nhắn:", error);
-    }
-}
+            try {
+                const response = await axios.post(
+                    "/api/v1/messages",
+                    { message: this.message },
+                    {
+                        headers: {
+                            Authorization: `Bearer ${localStorage.getItem(
+                                "access_token"
+                            )}`, // Gửi token
+                        },
+                    }
+                );
 
-function scrollToBottom() {
-    nextTick(() => {
-        const messages = document.querySelector(".messages");
-        if (messages) {
-            messages.scrollTo({
-                top: messages.scrollHeight,
-                behavior: "smooth",
+                this.list_messages.push(response.data);
+                this.message = "";
+                this.loadMessages();
+                this.scrollToBottom();
+            } catch (error) {
+                console.error("Error sending message:", error);
+            }
+        },
+        scrollToBottom() {
+            this.$nextTick(() => {
+                const messages = document.querySelector(".messages");
+                if (messages) {
+                    messages.scrollTo({
+                        top: messages.scrollHeight,
+                        behavior: "smooth",
+                    });
+                }
             });
-        }
-    });
-}
+        },
+    },
+};
 </script>
