@@ -143,6 +143,76 @@ class AuthController extends Controller
         return response($response, 200);
     }
 
+    public function loginSocial(Request $request)
+    {
+        $fields = $request->validate([
+            'facebook_id' => 'required_without:google_id',
+            'google_id' => 'required_without:facebook_id',
+            'email' => 'required|email',
+            'phone' => 'required_without:email|nullable|regex:/^0[0-9]{9,10}$/',
+            'name' => 'nullable|string'
+        ], [
+            'facebook_id.required_without' => 'Vui lòng cung cấp Facebook ID.',
+            'google_id.required_without' => 'Vui lòng cung cấp Google ID.',
+            'email.required' => 'Vui lòng nhập Email.',
+            'email.email' => 'Vui lòng nhập đúng định dạng Email.',
+            'phone.required_without' => 'Vui lòng nhập Số điện thoại hoặc Email.',
+            'phone.regex' => 'Số điện thoại không hợp lệ.',
+        ]);
+
+        // Tìm user theo social ID hoặc email
+        $user = User::query()
+            ->where('email', $fields['email'])
+            ->orWhere('facebook_id', $fields['facebook_id'] ?? null)
+            ->orWhere('google_id', $fields['google_id'] ?? null)
+            ->first();
+
+        if (!$user) {
+            $user = User::create([
+                'facebook_id' => $fields['facebook_id'] ?? null,
+                'google_id' => $fields['google_id'] ?? null,
+                'email' => $fields['email'],
+                'name' => $fields['name'],
+                'password' => bcrypt(Str::random(8))
+            ]);
+
+            $role = optional(Role::findByName('Viewer'));
+            if ($role) {
+                $user->assignRole($role);
+            }
+        } else {
+            $user->update([
+                'facebook_id' => $fields['facebook_id'] ?? $user->facebook_id,
+                'google_id' => $fields['google_id'] ?? $user->google_id,
+            ]);
+        }
+
+        // Tạo JWT token
+        if (!$token = auth()->login($user)) {
+            return response()->json(['message' => 'Unauthorized'], 401);
+        }
+
+        // Tạo refresh token
+        $refreshToken = JWTAuth::getJWTProvider()->encode([
+            'sub' => $user->id,
+            'random' => rand() . time(),
+            'exp' => time() + config('jwt.refresh_ttl'),
+        ]);
+
+        // Lấy danh sách role của user
+        $roles = DB::table('model_has_roles')
+            ->join('roles', 'model_has_roles.role_id', '=', 'roles.id')
+            ->where('model_has_roles.model_id', $user->id)
+            ->pluck('roles.name');
+
+        return response()->json([
+            'message' => 'Login successful',
+            'token' => $this->createNewToken($token, $refreshToken),
+            'user' => $user->toArray() + ['source' => $fields['facebook_id'] ? 'facebook' : 'google'],
+            'roles' => $roles,
+        ]);
+    }
+
     protected function createNewToken($token)
     {
         return [

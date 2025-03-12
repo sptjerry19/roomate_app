@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Helpers\ApiResponse;
-use App\Http\Requests\MessageRequest;
+use App\Http\Requests\Message\MessageRequest;
 use App\Services\Message\MessageService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -40,7 +40,7 @@ class MessageController extends Controller
     {
         try {
             $params = $request->validated();
-            $message = $this->messageService->createMessage($params['message'], $params['receiver_id']);
+            $message = $this->messageService->updateMessage($params['message'], $params['receiver_id']);
             return ApiResponse::success($message, __('messages.success'));
         } catch (\Exception $e) {
             Log::error($e->getMessage());
@@ -61,7 +61,14 @@ class MessageController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        try {
+            $params = $request->validated();
+            $message = $this->messageService->updateMessage($params['message'], $id);
+            return ApiResponse::success($message, __('messages.update.success'));
+        } catch (\Exception $e) {
+            Log::error($e->getMessage());
+            return ApiResponse::error(__('messages.update.error'), 500);
+        }
     }
 
     /**
@@ -69,6 +76,12 @@ class MessageController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        try {
+            $this->messageService->delete($id);
+            return ApiResponse::success([], __('messages.delete.success'));
+        } catch (\Exception $e) {
+            Log::error($e->getMessage());
+            return ApiResponse::error(__('messages.delete.error'), 500);
+        }
     }
 }

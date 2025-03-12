@@ -8,6 +8,7 @@ use App\Http\Requests\PostRequest;
 use App\Http\Resources\RoomateCollection;
 use App\Http\Resources\RoomateResource;
 use App\Models\Post;
+use App\Services\Roomate\RoomateService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -16,6 +17,11 @@ use function PHPUnit\Framework\isEmpty;
 
 class RoomateController extends Controller
 {
+    protected RoomateService $roomateService;
+    public function __construct(RoomateService $roomateService)
+    {
+        $this->roomateService = $roomateService;
+    }
     /**
      * Display a listing of the resource.
      */
@@ -31,59 +37,7 @@ class RoomateController extends Controller
         ]);
 
         try {
-            $keyword = $params['keyword'] ?? null;
-            $area = $params['area'] ?? null;
-            $price = $params['price'] ?? null;
-            $district = $params['district'] ?? null;
-            $type = $params['type'] ?? null;
-            $advertisementType = $params['advertisement_type'] ?? null;
-            $limit = $request->input('limit', 10);
-
-            $roomates = Post::query()
-                ->when(!is_null($area), function ($query) use ($area) {
-                    switch ($area) {
-                        case 10:
-                            return $query->where('area', '<=', 10);
-                            break;
-
-                        case 20:
-                            return $query->where('area', '<=', 20)->where('area', '>=', 10);
-                            break;
-
-                        case 30:
-                            return $query->where('area', '<=', 30)->where('area', '>=', 20);
-                            break;
-
-                        case 40:
-                            return $query->where('area', '<=', 40)->where('area', '>=', 30);
-                            break;
-
-                        case 50:
-                            return $query->where('area', '>=', 50);
-                            break;
-
-                        default:
-                            return $query->where('area', '<=', $area);
-                            break;
-                    }
-                })
-                ->when(!is_null($price), function ($query) use ($price) {
-                    return $query->where('price', '<', $price);
-                })
-                ->when(!is_null($district), function ($query) use ($district) {
-                    return $query->where('district', 'like', '%' . $district . '%');
-                })
-                ->when(!is_null($keyword), function ($query) use ($keyword) {
-                    return $query->where('title', 'like', '%' . $keyword . '%');
-                })
-                ->when(!is_null($type), function ($query) use ($type) {
-                    return $query->where('type', $type);
-                })
-                ->when(!is_null($advertisementType), function ($query) use ($advertisementType) {
-                    return $query->where('advertisement_type', $advertisementType);
-                })
-                ->orderByDesc('created_at')
-                ->paginate($limit);
+            $roomates = $this->roomateService->getRoomates($params);
 
             return ApiResponse::success(new RoomateCollection($roomates), 'Lấy danh sách Roomate thành công!');
         } catch (\Exception $e) {
@@ -108,33 +62,10 @@ class RoomateController extends Controller
                 return ApiResponse::error('Người dùng chưa đăng nhập hoặc không hợp lệ!', 401);
             }
 
-            $userId = $user->id;
+            $page = $request->input('page', 1);
             $limit = $request->input('limit', 10);
 
-            $roomates = Post::query()
-                ->when($params['area'] ?? null, function ($query, $area) {
-                    switch ($area) {
-                        case 10:
-                            return $query->where('area', '<=', 10);
-                        case 20:
-                            return $query->whereBetween('area', [10, 20]);
-                        case 30:
-                            return $query->whereBetween('area', [20, 30]);
-                        case 40:
-                            return $query->whereBetween('area', [30, 40]);
-                        case 50:
-                            return $query->where('area', '>=', 50);
-                        default:
-                            return $query->where('area', '<=', $area);
-                    }
-                })
-                ->when($params['price'] ?? null, fn($query, $price) => $query->where('price', '<', $price))
-                ->when($params['district'] ?? null, fn($query, $district) => $query->where('district', 'like', "%$district%"))
-                ->when($params['keyword'] ?? null, fn($query, $keyword) => $query->where('title', 'like', "%$keyword%"))
-                ->when($params['type'] ?? null, fn($query, $type) => $query->where('type', $type))
-                ->where('user_id', $userId)
-                ->orderByDesc('created_at')
-                ->paginate($limit);
+            $roomates = $this->roomateService->getRoomatesManager($params, $page, $limit);
 
             // Kiểm tra nếu không có dữ liệu
             if ($roomates->isEmpty()) {
@@ -157,53 +88,11 @@ class RoomateController extends Controller
             // Xác thực dữ liệu
             $params = $request->validated();
 
-            // Lấy danh sách ảnh base64 từ yêu cầu
-            $base64Images = $params['images'];
+            $roomate = $this->roomateService->createRoomate($params);
 
-            // Upload ảnh base64
-            $images = Common::uploadbase64Image($base64Images, '/room', true);
-
-            // Biến chứa URL ảnh sau khi upload
-            $uploadedImages = [];
-            foreach ($images as $image) {
-                // Xử lý và thêm URL ảnh đã upload vào mảng $uploadedImages
-                $uploadedImages[] = Common::responseImage($image); // Giả sử responseImage trả về URL của ảnh
-            }
-
-            // Xem dữ liệu đã upload
-            Log::info('Uploaded Images:', $uploadedImages);
-
-            // Dữ liệu bài đăng
-            $data = [
-                'title' => $params['title'],
-                'location' => $params['location'],
-                'district' => $params['district'],
-                'ward' => $params['ward'],
-                'price' => $params['price'],
-                'area' => $params['area'],
-                'posted_by' => $params['posted_by'],
-                'phone' => $params['phone'],
-                'description' => $params['description'],
-                'images' => $uploadedImages, // Lưu ảnh đã upload
-                'type' => $params['type'],
-                'advertisement_type' => $params['advertisement_type'],
-                'user_id' => auth()->user()->id ?? null, // Lưu ID người đăng
-                'status' => 'available',
-            ];
-
-            // Log dữ liệu để kiểm tra
-            Log::info('Roommate data:', $data);
-
-            // Tạo bài đăng
-            $roomate = Post::create($data);
-
-            // Trả về kết quả thành công
             return ApiResponse::success(new RoomateResource($roomate), 'Tạo Roomate thành công!');
         } catch (\Exception $e) {
-            // Ghi lại lỗi vào log
             Log::error('Error creating roommate post: ' . $e->getMessage());
-
-            // Trả về lỗi
             return ApiResponse::error('Tạo Roomate thất bại!', 500);
         }
     }
@@ -266,45 +155,7 @@ class RoomateController extends Controller
             // Xác thực dữ liệu
             $params = $request->validated();
 
-            // Lấy danh sách ảnh base64 từ yêu cầu
-            $base64Images = $params['images'];
-
-            // Upload ảnh base64
-            $images = Common::uploadbase64Image($base64Images, '/room', true);
-
-            // Biến chứa URL ảnh sau khi upload
-            $uploadedImages = [];
-            foreach ($images as $image) {
-                // Xử lý và thêm URL ảnh đã upload vào mảng $uploadedImages
-                $uploadedImages[] = Common::responseImage($image); // Giả sử responseImage trả về URL của ảnh
-            }
-
-            // Xem dữ liệu đã upload
-            Log::info('Uploaded Images:', $uploadedImages);
-
-            // Dữ liệu bài đăng
-            $data = [
-                'title' => $params['title'],
-                'location' => $params['location'],
-                'district' => $params['district'],
-                'ward' => $params['ward'],
-                'price' => $params['price'],
-                'area' => $params['area'],
-                'posted_by' => $params['posted_by'],
-                'phone' => $params['phone'],
-                'description' => $params['description'],
-                'images' => $uploadedImages, // Lưu ảnh đã upload
-                'type' => $params['type'],
-                'user_id' => auth()->user()->id ?? null, // Lưu ID người đăng
-                'status' => 'available',
-            ];
-
-            // Log dữ liệu để kiểm tra
-            Log::info('Roommate data:', $data);
-
-            // Tạo bài đăng
-            $roomate = Post::query()->findOrFail($id);
-            $roomate->update($data);
+            $roomate = $this->roomateService->updateRoomate($params, $id);
 
             // Trả về kết quả thành công
             return ApiResponse::success(new RoomateResource($roomate), 'Tạo Roomate thành công!');

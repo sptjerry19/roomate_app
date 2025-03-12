@@ -44,4 +44,18 @@ class MessageServiceImp extends BaseServiceImp implements MessageService
             return false;
         }
     }
+
+    public function updateMessage(string $message, int $messageId): mixed
+    {
+        try {
+            $data = [
+                'message' => $message,
+            ];
+            $message = parent::update($messageId, $data);
+            return $message;
+        } catch (Exception $e) {
+            Log::error($e->getMessage());
+            return false;
+        }
+    }
 }

@@ -27,6 +27,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::group(['middleware' => 'api', 'prefix' => 'v1'], function () {
     Route::post('/login', [AuthController::class, 'login'])->name('login');
+    Route::post('/login/social', [AuthController::class, 'loginSocial'])->name('loginSocial');
     Route::post('/register', [AuthController::class, 'register'])->name('register');
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
     Route::post('/update', [AuthController::class, 'update']);
@@ -78,5 +79,7 @@ Route::group(['middleware' => 'api', 'prefix' => 'v1'], function () {
     Route::group(['middleware' => 'auth:api', 'prefix' => 'messages'], function () {
         Route::get('/', [MessageController::class, 'index'])->name('message.index');
         Route::post('/', [MessageController::class, 'store'])->name('message.store');
+        Route::put('/{messageId}', [MessageController::class, 'update'])->name('message.update');
+        Route::delete('/{messageId}', [MessageController::class, 'destroy'])->name('message.destroy');
     });
 });
