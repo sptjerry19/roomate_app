@@ -972,6 +972,26 @@ export default {
         },
     },
     mounted() {
+        // const urlParams = new URLSearchParams(window.location.search);
+        // const token = urlParams.get("token");
+        // const userEncoded = urlParams.get("user"); // Dữ liệu user vẫn đang bị encode
+
+        // if (token) {
+        //     localStorage.setItem("access_token", token);
+
+        //     try {
+        //         // Decode URI component và parse JSON
+        //         const user = JSON.parse(decodeURIComponent(userEncoded));
+
+        //         // Lưu vào localStorage dưới dạng object (chuỗi JSON)
+        //         localStorage.setItem("user", JSON.stringify(user));
+
+        //         // Chuyển hướng về trang chính
+        //         window.location.href = "/";
+        //     } catch (error) {
+        //         console.error("Lỗi khi parse user JSON:", error);
+        //     }
+        // }
         this.fetchRoomatesData();
         this.fetchRoomatesDataBanner();
 

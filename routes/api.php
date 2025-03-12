@@ -7,6 +7,7 @@ use App\Http\Controllers\MessageController;
 use App\Http\Controllers\MotorController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\RoomateController;
+use App\Http\Controllers\SocialAuthController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -27,7 +28,8 @@ use Illuminate\Support\Facades\Route;
 
 Route::group(['middleware' => 'api', 'prefix' => 'v1'], function () {
     Route::post('/login', [AuthController::class, 'login'])->name('login');
-    Route::post('/login/social', [AuthController::class, 'loginSocial'])->name('loginSocial');
+    Route::get('/auth/{provider}', [SocialAuthController::class, 'redirectToProvider']);
+    Route::get('/auth/{provider}/callback', [SocialAuthController::class, 'handleProviderCallback']);
     Route::post('/register', [AuthController::class, 'register'])->name('register');
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
     Route::post('/update', [AuthController::class, 'update']);
