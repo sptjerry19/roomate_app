@@ -29,12 +29,17 @@ Dự án **Tìm Phòng Trọ** là một ứng dụng web giúp người dùng t
     - Người dùng có thể đăng tin phòng trọ với các thông tin chi tiết như giá thuê, địa chỉ, hình ảnh, và mô tả.
     - Quản lý các tin đã đăng.
 
-4. **Quản lý tài khoản**:
+4. **Nhắn tin thời gian thực**:
+
+    - Lựa chọn người đăng bài để nhắn tin.
+    - Xử lý tin nhắn với thời gian thực
+
+5. **Quản lý tài khoản**:
 
     - Cập nhật thông tin cá nhân.
     - Đổi mật khẩu.
 
-5. **Quản lý admin**:
+6. **Quản lý admin**:
     - Quản lý người dùng, tin đăng, và danh mục.
     - Duyệt hoặc xóa tin đăng không phù hợp.
 
