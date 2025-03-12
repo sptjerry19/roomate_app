@@ -137,7 +137,14 @@ Dự án **Tìm Phòng Trọ** là một ứng dụng web giúp người dùng t
 
     ```
 
-10. **Truy cập ứng dụng**:
+10. **Khởi chạy storage link**:
+
+    ```bash
+    php artisan storage:link
+
+    ```
+
+11. **Truy cập ứng dụng**:
     Mở trình duyệt và truy cập http://localhost:8000.
 
 ### Cấu trúc thư mục
