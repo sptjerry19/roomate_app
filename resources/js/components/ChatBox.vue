@@ -1,6 +1,6 @@
 <template>
     <div
-        class="fixed bottom-96 right-5 bg-white w-80 shadow-lg rounded-lg border border-gray-300"
+        class="fixed bottom-5 right-5 bg-white w-80 shadow-lg rounded-lg border border-gray-300"
     >
         <!-- Header -->
         <div
@@ -26,7 +26,10 @@
         </div>
 
         <!-- Messages -->
-        <div class="h-60 overflow-y-auto p-3 space-y-2 flex flex-col">
+        <div
+            ref="messageContainer"
+            class="h-60 overflow-y-auto p-3 space-y-2 flex flex-col"
+        >
             <div
                 v-for="(message, index) in messages"
                 :key="index"
@@ -63,6 +66,7 @@
 
 <script>
 import axios from "axios";
+import echo from "../echo";
 
 export default {
     props: {
@@ -82,6 +86,17 @@ export default {
             this.currentUserId = user.id;
         }
         this.loadMessages();
+
+        echo.channel("chat").listen(".message.sent", (event) => {
+            console.log("Tin nhắn mới:", event.message);
+            if (
+                event.message.user_id === this.receiverId ||
+                event.message.receiver_id === this.currentUserId
+            ) {
+                this.messages.push(event.message);
+                this.scrollToBottom(); // Cuộn xuống khi nhận tin nhắn mới
+            }
+        });
     },
     methods: {
         async loadMessages() {
@@ -97,10 +112,12 @@ export default {
                     }
                 );
                 this.messages = response.data.data;
+                this.scrollToBottom(); // Cuộn xuống sau khi tải tin nhắn
             } catch (error) {
                 console.error("Lỗi khi lấy tin nhắn:", error);
             }
         },
+
         async sendMessage() {
             if (!this.newMessage.trim()) return;
 
@@ -120,12 +137,28 @@ export default {
                     }
                 );
 
-                this.messages.push(response.data);
+                if (response.data.data && response.data.data.message) {
+                    this.messages.push({
+                        message: response.data.data.message,
+                        user_id: this.currentUserId,
+                        receiver_id: this.receiverId,
+                        created_at: new Date().toISOString(),
+                    });
+                    this.scrollToBottom(); // Cuộn xuống khi gửi tin nhắn
+                }
+
                 this.newMessage = "";
-                this.loadMessages();
             } catch (error) {
                 console.error("Lỗi khi gửi tin nhắn:", error);
             }
+        },
+        scrollToBottom() {
+            this.$nextTick(() => {
+                const container = this.$refs.messageContainer;
+                if (container) {
+                    container.scrollTop = container.scrollHeight;
+                }
+            });
         },
     },
 };

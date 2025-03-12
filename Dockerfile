@@ -3,6 +3,7 @@ FROM php:8.2-fpm
 
 # Install system dependencies
 RUN apt-get update && apt-get install -y \
+    net-tools\
     build-essential \
     libpng-dev \
     libjpeg-dev \
@@ -15,6 +16,7 @@ RUN apt-get update && apt-get install -y \
     git \
     nodejs \
     npm \
+    supervisor \
     && docker-php-ext-configure gd \
     && docker-php-ext-install -j$(nproc) gd mbstring zip pdo_mysql exif
 
@@ -33,8 +35,11 @@ RUN composer install --no-dev --optimize-autoloader
 # Cài đặt Node dependencies (npm)
 RUN npm install && npm run build
 
-# Expose port 9000
-EXPOSE 9000
+# Copy Supervisor configuration
+COPY docker/supervisord.conf /etc/supervisord.conf
 
-# Start PHP-FPM
-CMD ["php-fpm"]
+# Expose ports
+EXPOSE 9000 6001
+
+# Start Supervisor
+CMD ["supervisord", "-c", "/etc/supervisord.conf"]

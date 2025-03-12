@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\MessageSent;
 use App\Helpers\ApiResponse;
 use App\Http\Requests\Message\MessageRequest;
 use App\Services\Message\MessageService;
@@ -40,7 +41,10 @@ class MessageController extends Controller
     {
         try {
             $params = $request->validated();
-            $message = $this->messageService->updateMessage($params['message'], $params['receiver_id']);
+            $message = $this->messageService->createMessage($params['message'], $params['receiver_id']);
+
+            broadcast(new MessageSent($message))->toOthers();
+
             return ApiResponse::success($message, __('messages.success'));
         } catch (\Exception $e) {
             Log::error($e->getMessage());

@@ -26,7 +26,7 @@ class MessageRepositoryEloquent extends BaseRepository implements MessageReposit
                     ->where('user_id', $userId)
                     ->orWhere('receiver_id', $userId)
                     ->where('user_id', $receiverId);
-            })
+            })->orderBy('created_at', 'asc')
             ->get();
     }
 }

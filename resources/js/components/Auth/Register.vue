@@ -355,6 +355,7 @@ export default {
                 const response = await defaultApiClient.post("/register", {
                     name: this.name,
                     email: this.emailOrPhone,
+                    phone: this.Phone,
                     password: this.password,
                     password_confirmation: this.passwordConfirm,
                     role: this.role,
