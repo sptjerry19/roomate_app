@@ -287,7 +287,7 @@ export default {
             this.$router.push("/"); // Chuyển hướng về trang chủ
         },
         loginWith(provider) {
-            window.location.href = `http://127.0.0.1:8000/api/v1/auth/${provider}`;
+            window.location.href = `http://aahome.click/api/v1/auth/${provider}`;
         },
         async handleLogin() {
             console.log(this.email);

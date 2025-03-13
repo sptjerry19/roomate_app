@@ -24,7 +24,6 @@ class SocialAuthController extends Controller
                 ['email' => $socialUser->getEmail()],
                 [
                     'name' => $socialUser->getName(),
-                    'password' => bcrypt(Str::random(16)),
                     'provider' => $provider,
                     'provider_id' => $socialUser->getId(),
                     'avatar' => $socialUser->getAvatar(),
@@ -39,6 +38,11 @@ class SocialAuthController extends Controller
                 'email' => $user->email,
                 'avatar' => $user->avatar,
                 'phone' => $user->phone,
+                'age' => $user->age,
+                'hometown' => $user->hometown,
+                'job' => $user->job,
+                'workplace' => $user->workplace,
+                'role' => $user->role,
             ]);
 
             // return response()->json([
@@ -47,7 +51,7 @@ class SocialAuthController extends Controller
             //     'user' => $user
             // ]);
 
-            return redirect("http://127.0.0.1:8000?token=$token&name=" . urlencode($userData));
+            return redirect("http://aahome.click?token=$token&user=" . urlencode($userData));
         } catch (\Exception $e) {
             return response()->json(['error' => 'Unauthorized'], 401);
         }
