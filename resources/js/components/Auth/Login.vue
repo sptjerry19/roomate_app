@@ -125,18 +125,20 @@
                         </p>
                     </div>
 
-                    <!-- <div class="mt-4 flex justify-center space-x-4">
+                    <div class="mt-4 flex justify-center space-x-4">
                         <button
+                            @click="loginWith('google')"
                             class="flex items-center justify-center px-6 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 transition"
                         >
                             Đăng nhập bằng Google
                         </button>
                         <button
+                            @click="loginWith('github')"
                             class="flex items-center justify-center px-6 py-2 bg-blue-800 text-white rounded-md hover:bg-blue-900 transition"
                         >
-                            Đăng nhập bằng Facebook
+                            Đăng nhập bằng GitHub
                         </button>
-                    </div> -->
+                    </div>
                 </div>
             </div>
         </div>
@@ -283,6 +285,9 @@ export default {
     methods: {
         goHome() {
             this.$router.push("/"); // Chuyển hướng về trang chủ
+        },
+        loginWith(provider) {
+            window.location.href = `http://aahome.click/api/v1/auth/${provider}`;
         },
         async handleLogin() {
             console.log(this.email);

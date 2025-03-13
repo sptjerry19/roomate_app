@@ -36,9 +36,9 @@
                 class="p-2 rounded-lg w-fit break-words max-w-[70%]"
                 :class="{
                     'bg-blue-500 text-white self-end':
-                        message.user_id === currentUserId,
+                        message.user_id == currentUserId,
                     'bg-gray-200 text-black self-start':
-                        message.user_id !== currentUserId,
+                        message.user_id != currentUserId,
                 }"
             >
                 {{ message.message }}
