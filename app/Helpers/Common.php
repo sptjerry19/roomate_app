@@ -6,6 +6,8 @@ namespace App\Helpers;
 use Exception;
 use Illuminate\Http\Resources\Json\ResourceCollection;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
+use InvalidArgumentException;
 
 class Common
 {
@@ -38,48 +40,137 @@ class Common
         return self::uploadbase64Image($newImageBase64, $directory);
     }
 
-    public static function uploadbase64Image($file, $path, bool $multi = false, $folder = null): array|string
+    /**
+     * Upload base64 encoded image(s)
+     *
+     * @param string|array $file Single base64 string or array of base64 strings
+     * @param string $path Storage path
+     * @param bool $multi Whether handling multiple files
+     * @param string|null $folder Optional subfolder
+     * @return string|array Path(s) to uploaded file(s)
+     * @throws InvalidArgumentException
+     */
+    public static function uploadbase64Image($file, string $path, bool $multi = false, ?string $folder = null): string|array
     {
-        if ($multi) {
-            $uploadedPaths = [];
-            foreach ($file as $key => $item) {
-                if ($item) {
-                    $data = preg_replace('/^data:image\/\w+;base64,/', '', $item);
-                    $type = explode(';', $item)[0];
-                    $type = explode('/', $type)[1];
-
-                    // upload new file
-                    $fileName = $key . '_' . time() . rand(1, 99999) . '.' . $type;
-                    Storage::disk('public')->put($path . str_replace(' ', '', $folder) . '/' . $fileName, base64_decode($data));
-                    $uploadedPaths[] = $path . str_replace(' ', '', $folder) . '/' . $fileName;
-                }
-            }
-
-            return $uploadedPaths;
-        } else {
-            if ($file) {
-                $data = preg_replace('/^data:image\/\w+;base64,/', '', $file);
-                $type = explode(';', $file)[0];
-                $type = explode('/', $type)[1];
-
-                // upload new file
-                $fileName = str_replace('/', '', $path) . '_' . time() . rand(1, 99999) .  '.' . $type;
-                if ($folder) {
-                    Storage::disk('public')->put($path . str_replace(' ', '', $folder) . '/' . $fileName, base64_decode($data));
-                    return $path . str_replace(' ', '', $folder) . '/' . $fileName;
-                } else {
-                    Storage::disk('public')->put($path . $fileName, base64_decode($data));
-                    return '/' . $path . $fileName;
-                }
-            }
-
-            return '';
+        // Early return if no file
+        if (empty($file)) {
+            return $multi ? [] : '';
         }
+
+        try {
+            // Handle multiple files
+            if ($multi) {
+                if (!is_array($file)) {
+                    throw new InvalidArgumentException('Multiple file upload requires array input');
+                }
+                return self::handleMultipleUploads($file, $path, $folder);
+            }
+
+            // Handle single file
+            if (!is_string($file)) {
+                throw new InvalidArgumentException('Single file upload requires string input');
+            }
+            return self::handleSingleUpload($file, $path, $folder);
+        } catch (Exception $e) {
+            throw new InvalidArgumentException("Image upload failed: {$e->getMessage()}");
+        }
+    }
+
+    /**
+     * Handle multiple file uploads
+     */
+    private static function handleMultipleUploads(array $files, string $path, ?string $folder): array
+    {
+        $uploadedPaths = [];
+        foreach ($files as $key => $base64String) {
+            if (empty($base64String)) {
+                continue;
+            }
+
+            $uploadedPaths[] = self::processAndSaveImage(
+                $base64String,
+                $path,
+                $folder,
+                $key . '_'
+            );
+        }
+        return $uploadedPaths;
+    }
+
+    /**
+     * Handle single file upload
+     */
+    private static function handleSingleUpload(string $base64String, string $path, ?string $folder): string
+    {
+        return self::processAndSaveImage(
+            $base64String,
+            $path,
+            $folder,
+            str_replace('/', '', $path) . '_'
+        );
+    }
+
+    /**
+     * Process and save base64 image
+     */
+    private static function processAndSaveImage(string $base64String, string $path, ?string $folder, string $prefix): string
+    {
+        // Validate and extract image data
+        self::validateBase64Image($base64String);
+        $imageData = self::extractBase64Data($base64String);
+        $extension = self::getImageExtension($base64String);
+
+        // Generate secure filename
+        $fileName = $prefix . time() . '_' . Str::random(10) . '.' . $extension;
+
+        // Determine storage path
+        $storagePath = $folder
+            ? $path . trim(str_replace(' ', '', $folder), '/') . '/'
+            : $path;
+        $fullPath = trim($storagePath, '/') . '/' . $fileName;
+
+        // Save the file
+        Storage::disk('public')->put($fullPath, base64_decode($imageData));
+
+        // Return path with leading slash for consistency
+        return '/' . $fullPath;
+    }
+
+    /**
+     * Validate base64 image string
+     * @throws InvalidArgumentException
+     */
+    private static function validateBase64Image(string $base64String): void
+    {
+        if (strlen($base64String) > 5 * 1024 * 1024) { // 5MB limit
+            throw new InvalidArgumentException('Image size exceeds 5MB limit');
+        }
+
+        if (!preg_match('/^data:image\/(jpeg|jpg|png|gif);base64,/', $base64String)) {
+            throw new InvalidArgumentException('Invalid image format');
+        }
+    }
+
+    /**
+     * Extract base64 data from string
+     */
+    private static function extractBase64Data(string $base64String): string
+    {
+        return preg_replace('/^data:image\/\w+;base64,/', '', $base64String);
+    }
+
+    /**
+     * Get image extension from base64 string
+     */
+    private static function getImageExtension(string $base64String): string
+    {
+        preg_match('/^data:image\/(\w+);base64,/', $base64String, $matches);
+        return strtolower($matches[1]);
     }
 
     public static function responseImage($pathImg)
     {
-        $domain = env('APP_URL', 'https://jerry-roommate-app.click/storage');
+        $domain = env('APP_URL', 'https://aahome.click/storage');
         return $domain . $pathImg;
     }
 

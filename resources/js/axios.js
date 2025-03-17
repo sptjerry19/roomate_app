@@ -3,7 +3,7 @@ import axios from "axios";
 // Tạo một axios instance
 const apiClient = axios.create({
     baseURL: "https://aahome.click/api/v1", // Thay thế bằng URL API của bạn
-    // baseURL: "http://localhost:8080/api/v1", // Thay thế bằng URL API của bạn
+    // baseURL: "http://127.0.0.1:8000/api/v1", // Thay thế bằng URL API của bạn
     headers: {
         "Content-Type": "application/json",
     },

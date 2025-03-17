@@ -1070,10 +1070,18 @@ export default {
             // Toggle hiển thị dropdown menu
             this.showDropdown = !this.showDropdown;
         },
-        logout() {
+        async logout() {
             // Xử lý logic đăng xuất
             console.log("Đăng xuất");
             // Thực hiện các bước đăng xuất, ví dụ: gọi API, xóa token, chuyển hướng
+
+            const logout = await apiClient.post("/logout", {
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`, // Nếu có token
+                },
+            });
+
             localStorage.removeItem("access_token");
             localStorage.removeItem("user");
             this.user = null;
