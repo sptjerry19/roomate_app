@@ -1,326 +1,287 @@
 <template>
-    <div class="h-screen">
-        <div class="background h-2/3 flex items-center">
-            <nav
-                class="fixed top-0 left-0 z-20 w-full py-2.5 px-4 md:px-6 border-b"
-            >
-                <div
-                    class="container mx-auto flex items-center justify-between"
-                >
-                    <!-- Logo và tên trang -->
-                    <div class="flex items-center">
-                        <img
-                            src="https://aahome.click/storage/logo.png"
-                            alt="Logo"
-                            class="h-8 w-8 object-contain"
-                        />
-                        <span class="ml-2 text-xl font-bold text-blue-700"
-                            >AA+Home</span
-                        >
-                    </div>
-                    <div
-                        class="flex flex-wrap justify-center space-x-4 text-base font-bold"
-                    >
-                        <router-link to="/" class="hover:underline px-6 py-1"
-                            >Trang chủ</router-link
-                        >
-                        <router-link
-                            to="/about"
-                            class="hover:underline px-6 py-1"
-                            >Về chúng tôi</router-link
-                        >
-                        <router-link
-                            to="/room"
-                            class="hover:underline px-6 py-1"
-                            >Phòng trọ</router-link
-                        >
-                        <router-link
-                            to="/about"
-                            class="hover:underline px-6 py-1"
-                            >Liên hệ</router-link
-                        >
-                    </div>
-                    <div class="space-x-4">
-                        <i class="fas fa-search"> </i>
-                        <i class="fas fa-user"> </i>
-                    </div>
+    <div
+        class="min-h-screen bg-cover bg-center"
+        style="
+            background-image: url('https://s3-alpha-sig.figma.com/img/f88d/14fd/fd957412170343cd5d4c14d1db083c5e?Expires=1743379200&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=i77mpPSl~pRbX6HyUpm2ZF2e30~TmzfbdEyugHQlfGtGnePq00B6tpMWnpLVDHOUwtA47lGQUvXwLhKEUldlWesMkLqtlM8FbA3MtTSzTn-b2vLUl1Jhoq938ieRCV6x1fRZyDQTZNEeUDe3sdKb9c66VLen8~cjLavHqzTGkh~yxptAlYJmPEfzcuBVgHTKxGQvtlo0d7D7F~cWN1jedY31Q5B5Wki18cwVtnt3M81dW5YLDxRakpvF1UhKyNR1a80RjnZb87ULKLNOAMKw~TqL9iARrf4j3mjONR~yKWHOpGKU~UUWX7CoJPNLExxtDOR1~g2Qrl7UzH9derF-3A__');
+        "
+    >
+        <!-- Navigation -->
+        <nav class="fixed top-0 left-0 z-20 w-full py-2.5 px-4">
+            <div class="container mx-auto flex items-center justify-between">
+                <div class="flex items-center">
+                    <span class="text-xl font-bold text-white">AA+ HOME</span>
                 </div>
-            </nav>
-            <div
-                class="flex flex-col md:flex-row justify-center items-center mx-auto min-h-screen p-4"
-            >
-                <!-- Left Side - Ẩn khi màn hình nhỏ -->
+                <div class="flex items-center space-x-4">
+                    <router-link to="/" class="text-white hover:text-gray-200"
+                        >Trang chủ</router-link
+                    >
+                    <router-link
+                        to="/about"
+                        class="text-white hover:text-gray-200"
+                        >Về chúng tôi</router-link
+                    >
+                    <router-link
+                        to="/room"
+                        class="text-white hover:text-gray-200"
+                        >Phòng trọ</router-link
+                    >
+                    <router-link
+                        to="/contact"
+                        class="text-white hover:text-gray-200"
+                        >Liên hệ</router-link
+                    >
+                </div>
+                <div class="flex items-center space-x-4">
+                    <button class="text-white">
+                        <i class="fas fa-search"></i>
+                    </button>
+                    <button class="text-white">
+                        <i class="fas fa-user"></i>
+                    </button>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Main Content -->
+        <div
+            class="container mx-auto px-4 flex min-h-screen items-center justify-center"
+        >
+            <div class="flex w-full max-w-6xl">
+                <!-- Left Side -->
                 <div
-                    class="hidden md:block bg-primary p-8 rounded-lg shadow-lg max-w-lg"
+                    class="hidden md:flex md:flex-1 bg-[#1a365d] p-8 rounded-l-lg text-white"
                 >
-                    <h2 class="text-3xl font-bold mb-4">AA++ HOME!</h2>
-                    <p class="mb-8">
-                        "Nơi kết nối bạn với không gian sống lý tưởng và những
-                        người bạn cùng phòng hoàn hảo. Đăng nhập hoặc đăng ký
-                        ngay để bắt đầu hành trình tìm trọ nhanh chóng, tiện lợi
-                        và an toàn."
-                    </p>
-                    <img
-                        alt="Illustration of a cozy room with bunk beds, a desk, and a sofa"
-                        class="rounded-lg"
-                        height="300"
-                        src="https://aahome.click/storage/aahome.png"
-                        width="400"
-                    />
+                    <div>
+                        <h2 class="text-2xl font-bold mb-4">AA+ HOME!</h2>
+                        <p class="text-sm mb-4">
+                            "Hãy để chúng tôi MANG ĐẾN cho bạn KHÔNG GIAN SỐNG
+                            HOÀN HẢO và NHỮNG NGƯỜI BẠN CÙNG PHÒNG TUYỆT VỜI.
+                            Nơi mà bạn có thể TÌM THẤY SỰ BÌNH YÊN và NIỀM VUI
+                            mỗi ngày."
+                        </p>
+                        <img
+                            alt="Illustration of a cozy room with bunk beds, a desk, and a sofa"
+                            class="rounded-lg w-full"
+                            src="https://aahome.click/storage/aahome.png"
+                        />
+                    </div>
                 </div>
 
-                <!-- Right Side - Form đăng ký -->
+                <!-- Right Side -->
                 <div
-                    class="bg-white text-black p-8 rounded-lg shadow-lg w-full md:ml-8 md:max-w-md mt-96 md:mt-0"
+                    class="flex-1 bg-white rounded-lg md:rounded-r-lg md:rounded-l-none p-8"
                 >
-                    <h1 class="text-2xl font-semibold mb-4">Đăng ký</h1>
-                    <form @submit.prevent="handleSignup">
-                        <div class="mb-4">
-                            <label class="block text-gray-600">Tên</label>
+                    <h2 class="text-2xl font-bold text-center mb-6">
+                        Đăng ký tài khoản
+                    </h2>
+                    <form @submit.prevent="handleSignup" class="space-y-4">
+                        <div>
                             <input
                                 type="text"
                                 id="name"
                                 v-model="name"
-                                class="w-full border border-gray-300 rounded-md py-2 px-3 focus:outline-none focus:border-blue-500"
-                                autocomplete="off"
+                                class="w-full px-3 py-2 border border-gray-300 rounded-md"
+                                placeholder="Họ và tên"
                                 required
                             />
                         </div>
 
-                        <div class="mb-4">
-                            <label class="block text-gray-600">Email</label>
+                        <div>
                             <input
-                                type="text"
+                                type="email"
                                 id="email_or_phone"
                                 v-model="emailOrPhone"
-                                class="w-full border border-gray-300 rounded-md py-2 px-3 focus:outline-none focus:border-blue-500"
-                                autocomplete="off"
+                                class="w-full px-3 py-2 border border-gray-300 rounded-md"
+                                placeholder="Email"
                                 required
                             />
                         </div>
 
-                        <div class="mb-4">
-                            <label class="block text-gray-600"
-                                >Số điện thoại</label
-                            >
+                        <div>
                             <input
                                 type="text"
                                 id="phone"
                                 v-model="Phone"
-                                class="w-full border border-gray-300 rounded-md py-2 px-3 focus:outline-none focus:border-blue-500"
-                                autocomplete="off"
+                                class="w-full px-3 py-2 border border-gray-300 rounded-md"
+                                placeholder="Số điện thoại"
                             />
                         </div>
 
-                        <div class="mb-4">
-                            <label for="password" class="block text-gray-600"
-                                >Mật khẩu</label
-                            >
+                        <div>
                             <input
                                 type="password"
                                 id="password"
                                 v-model="password"
-                                class="w-full border border-gray-300 rounded-md py-2 px-3 focus:outline-none focus:border-blue-500"
-                                autocomplete="off"
+                                class="w-full px-3 py-2 border border-gray-300 rounded-md"
+                                placeholder="Mật khẩu"
                                 required
                             />
                         </div>
 
-                        <div class="mb-4">
-                            <label
-                                for="password_confirm"
-                                class="block text-gray-600"
-                                >Xác nhận mật khẩu</label
-                            >
+                        <div>
                             <input
                                 type="password"
                                 id="password_confirm"
                                 v-model="passwordConfirm"
-                                class="w-full border border-gray-300 rounded-md py-2 px-3 focus:outline-none focus:border-blue-500"
-                                autocomplete="off"
+                                class="w-full px-3 py-2 border border-gray-300 rounded-md"
+                                placeholder="Xác nhận mật khẩu"
                                 required
                             />
                         </div>
 
-                        <div class="mb-4">
-                            <label class="block text-gray-600">Vai trò</label>
-                            <div class="flex space-x-4">
-                                <label class="flex items-center space-x-2">
-                                    <input
-                                        type="radio"
-                                        v-model="role"
-                                        value="owner"
-                                        class="form-radio text-blue-500"
-                                    />
-                                    <span>Chủ sở hữu</span>
-                                </label>
-                                <label class="flex items-center space-x-2">
-                                    <input
-                                        type="radio"
-                                        v-model="role"
-                                        value="lessee"
-                                        class="form-radio text-blue-500"
-                                    />
-                                    <span>Người thuê</span>
-                                </label>
-                            </div>
+                        <div class="flex justify-center space-x-4">
+                            <label class="flex items-center space-x-2">
+                                <input
+                                    type="radio"
+                                    v-model="role"
+                                    value="owner"
+                                    class="form-radio text-[#1a365d]"
+                                />
+                                <span class="text-sm">Chủ sở hữu</span>
+                            </label>
+                            <label class="flex items-center space-x-2">
+                                <input
+                                    type="radio"
+                                    v-model="role"
+                                    value="lessee"
+                                    class="form-radio text-[#1a365d]"
+                                />
+                                <span class="text-sm">Người thuê</span>
+                            </label>
                         </div>
 
-                        <div class="mb-4 flex items-center">
+                        <div class="flex items-center">
                             <input
                                 type="checkbox"
                                 id="terms"
                                 v-model="acceptTerms"
-                                class="text-blue-500"
+                                class="text-[#1a365d]"
+                                required
                             />
-                            <label for="terms" class="text-gray-600 ml-2">
-                                Tôi chấp nhận các Điều khoản và Điều kiện
+                            <label
+                                for="terms"
+                                class="text-sm text-gray-600 ml-2"
+                            >
+                                Tôi đồng ý với các điều khoản và điều kiện
                             </label>
                         </div>
 
                         <button
                             type="submit"
-                            class="bg-blue-500 hover:bg-blue-600 text-white font-semibold rounded-md py-2 px-4 w-full"
+                            class="w-full bg-[#1a365d] text-white py-2 rounded-md hover:bg-[#152a4a]"
                         >
                             Đăng ký
                         </button>
                     </form>
 
-                    <div class="mt-6 text-blue-500 text-center">
-                        <p>
+                    <div class="mt-4 text-center text-sm">
+                        <p class="text-gray-600">
                             Đã có tài khoản?
-                            <router-link to="login" class="hover:underline"
-                                >Đăng nhập tại đây</router-link
+                            <router-link
+                                to="/login"
+                                class="font-medium text-[#1a365d] hover:text-[#152a4a]"
                             >
+                                Đăng nhập ngay
+                            </router-link>
                         </p>
+                    </div>
+
+                    <div class="mt-6">
+                        <div class="relative">
+                            <div class="absolute inset-0 flex items-center">
+                                <div
+                                    class="w-full border-t border-gray-300"
+                                ></div>
+                            </div>
+                            <div class="relative flex justify-center text-sm">
+                                <span class="px-2 bg-white text-gray-500"
+                                    >Hoặc đăng ký với</span
+                                >
+                            </div>
+                        </div>
+
+                        <div class="mt-6 grid grid-cols-2 gap-3">
+                            <button
+                                @click="loginWith('google')"
+                                class="w-full inline-flex justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm bg-white text-sm font-medium text-gray-500 hover:bg-gray-50"
+                            >
+                                <img
+                                    src="https://www.svgrepo.com/show/475656/google-color.svg"
+                                    class="h-5 w-5"
+                                    alt="Google logo"
+                                />
+                            </button>
+                            <button
+                                @click="loginWith('github')"
+                                class="w-full inline-flex justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm bg-white text-sm font-medium text-gray-500 hover:bg-gray-50"
+                            >
+                                <img
+                                    src="https://www.svgrepo.com/show/512317/github-142.svg"
+                                    class="h-5 w-5"
+                                    alt="GitHub logo"
+                                />
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-        <footer class="bg-primary text-white py-10 mt-96 md:mt-0">
-            <div class="container mx-auto gap-8 px-4 flex justify-around">
-                <!-- cột 1 + 2 -->
-                <div class="flex justify-around max-w-6xl">
-                    <!-- Cột 1 -->
-                    <div class="">
-                        <h3 class="text-lg font-semibold text-white mb-4">
-                            VỀ AA+ HOME
-                        </h3>
-                        <ul class="space-y-2 text-white text-xs">
-                            <li>
-                                <a href="/about" class="hover:text-gray-900"
-                                    >Giới thiệu</a
-                                >
-                            </li>
-                            <li>
-                                <a
-                                    href="/regulations"
-                                    class="hover:text-gray-900"
-                                    >Quý chế hoạt động</a
-                                >
-                            </li>
-                            <li>
-                                <a
-                                    href="/regulations"
-                                    class="hover:text-gray-900"
-                                    >Quy định sử dụng</a
-                                >
-                            </li>
-                            <li>
-                                <a
-                                    href="/regulations"
-                                    class="hover:text-gray-900"
-                                    >Chính sách bảo mật</a
-                                >
-                            </li>
-                            <li>
-                                <a
-                                    href="/regulations"
-                                    class="hover:text-gray-900"
-                                    >Liên hệ</a
-                                >
-                            </li>
-                        </ul>
-                    </div>
 
-                    <!-- Cột 2 -->
-                    <div class="pl-14">
-                        <h3 class="text-lg font-semibold text-white mb-4">
-                            Dành cho khách hàng
-                        </h3>
-                        <ul class="space-y-2 text-white text-xs">
-                            <li>
-                                <a
-                                    href="/regulations"
-                                    class="hover:text-gray-900"
-                                    >Câu hỏi thường gặp</a
-                                >
-                            </li>
-                            <li>
-                                <a
-                                    href="/regulations"
-                                    class="hover:text-gray-900"
-                                    >Hướng dẫn đăng tin</a
-                                >
-                            </li>
-                            <li>
-                                <a
-                                    href="/regulations"
-                                    class="hover:text-gray-900"
-                                    >Quy định đăng tin</a
-                                >
-                            </li>
-                            <li>
-                                <a
-                                    href="/regulations"
-                                    class="hover:text-gray-900"
-                                    >Bảng giá dịch vụ</a
-                                >
-                            </li>
-                            <li>
-                                <a
-                                    href="/regulations"
-                                    class="hover:text-gray-900"
-                                    >Hướng dẫn thanh toán</a
-                                >
-                            </li>
-                            <li>
-                                <a
-                                    href="/regulations"
-                                    class="hover:text-gray-900"
-                                    >Giải quyết khiếu nại</a
-                                >
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-
-                <!-- Cột 3 -->
-                <div>
-                    <h3 class="text-lg font-semibold text-white mb-4">
-                        ĐĂNG KÍ ĐỂ NHẬN ƯU ĐÃI
-                    </h3>
-                    <p class="text-white mb-4">
-                        Đăng ký để nhận ngay ưu đãi của AA++ HOME dành cho lần
-                        thuê trọ đầu tiên!
-                    </p>
-                    <form class="flex flex-col space-y-3">
-                        <input
-                            type="email"
-                            placeholder="EMAIL"
-                            class="px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-gray-400 focus:outline-none"
-                            required
+        <!-- Footer -->
+        <footer class="bg-[#1a365d] text-white py-6 absolute bottom-0 w-full">
+            <div class="container mx-auto px-4">
+                <div class="flex justify-between items-center">
+                    <div class="flex items-center">
+                        <img
+                            src="https://aahome.click/storage/logo-white.png"
+                            alt="Logo"
+                            class="h-8"
                         />
-                        <button
-                            type="submit"
-                            class="bg-gray-800 text-white py-2 rounded-md hover:bg-gray-900 transition"
-                        >
-                            ĐĂNG KÝ
-                        </button>
-                    </form>
-                    <p class="mt-4 text-center text-gray-500 font-medium">
-                        AA++ HOME
-                    </p>
+                    </div>
+                    <div class="flex space-x-8">
+                        <div>
+                            <h4 class="font-semibold mb-2">HƯỚNG DẪN</h4>
+                            <ul class="text-sm space-y-1">
+                                <li>
+                                    <a href="#" class="hover:text-gray-300"
+                                        >Trợ giúp</a
+                                    >
+                                </li>
+                                <li>
+                                    <a href="#" class="hover:text-gray-300"
+                                        >Bảo mật</a
+                                    >
+                                </li>
+                                <li>
+                                    <a href="#" class="hover:text-gray-300"
+                                        >Điều khoản</a
+                                    >
+                                </li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h4 class="font-semibold mb-2">LIÊN HỆ</h4>
+                            <ul class="text-sm space-y-1">
+                                <li>+84 123456789</li>
+                                <li>support@aahome.com</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h4 class="font-semibold mb-2">ĐĂNG KÝ NHẬN TIN</h4>
+                            <div class="flex">
+                                <input
+                                    type="email"
+                                    placeholder="Email của bạn"
+                                    class="px-3 py-1 text-sm bg-white/10 border border-white/20 rounded-l-md focus:outline-none"
+                                />
+                                <button
+                                    class="px-3 py-1 bg-blue-600 text-white rounded-r-md hover:bg-blue-700"
+                                >
+                                    Gửi
+                                </button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </footer>
